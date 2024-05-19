@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common'
-import { TesteController } from './controllers/teste-use-case.controller';
-import { TesteUseCase } from '../../domain/portal/application/use-cases/teste-use-case';
-import { TesteRepository } from '../../domain/portal/application/repositories/teste-repository';
 import { DataBaseModule } from '../databases/database.module';
+import { FetchSolicitationsUseCase } from 'src/domain/portal/application/use-cases/fetch-solicitations-use-case';
+import { FetchSolicitationsUseCaseController } from './controllers/fetch-solicitations-use-case.controller';
+import { SolicitationRepository } from 'src/domain/portal/application/repositories/solicitation-repository';
 
 @Module({
   imports: [DataBaseModule],
   controllers: [
-    TesteController
+    FetchSolicitationsUseCaseController
   ],
   providers: [
     {
-      provide: TesteUseCase,
-      useFactory: (testeRepository: TesteRepository) => {
-        return new TesteUseCase(testeRepository)
+      provide: FetchSolicitationsUseCase,
+      useFactory: (solicitationRepository: SolicitationRepository) => {
+        return new FetchSolicitationsUseCase(solicitationRepository)
       },
-      inject: [TesteRepository]
+      inject: [SolicitationRepository]
     }
   ],
 })

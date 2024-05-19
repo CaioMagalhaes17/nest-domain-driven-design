@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common'
-import { TesteRepository } from '../../domain/portal/application/repositories/teste-repository';
-import { SolicitationRepository } from './sequelize/repositories/solicitation-repository';
+import { SequelizeSolicitationRepository } from './sequelize/repositories/solicitation-repository';
 import { Sequelize } from 'sequelize-typescript';
 import { Solicitation } from './sequelize/model/solicitation.model';
+import { SolicitationRepository } from 'src/domain/portal/application/repositories/solicitation-repository';
 
 @Module({
   providers: [
     {
-      provide: TesteRepository,
+      provide: SolicitationRepository,
       useFactory: (solicitation: Solicitation) => {
-        return new SolicitationRepository(solicitation)
+        return new SequelizeSolicitationRepository(solicitation)
       },
       inject: [Sequelize]
     }
   ],
   exports: [
-    TesteRepository
+    SolicitationRepository
   ]
 })
 export class DataBaseModule {}
