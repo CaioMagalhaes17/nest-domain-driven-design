@@ -5,6 +5,6 @@ export class FetchSolicitationsUseCase {
 
   async execute(){
     const solicitation = await this.solicitationRepository.fetchSolicitations()
-    return solicitation.name
+    return solicitation.id
   }
 }

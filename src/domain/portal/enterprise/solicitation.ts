@@ -1,6 +1,6 @@
 import { BaseEntity } from "src/core/entities/base-entity";
 
-interface SolicitationProps {
+type SolicitationProps = {
   name: string
 }
 
