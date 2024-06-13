@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { SequelizeSolicitationRepository } from './sequelize/repositories/solicitation-repository';
 import { Sequelize } from 'sequelize-typescript';
-import { Solicitation } from './sequelize/model/solicitation.model';
+import { Solicitation } from './sequelize/model/repair/solicitation.model';
 import { SolicitationRepository } from 'src/domain/portal/application/repositories/solicitation-repository';
 
 @Module({
