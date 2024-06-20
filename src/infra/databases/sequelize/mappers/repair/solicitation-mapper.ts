@@ -1,5 +1,5 @@
 import { Solicitation } from 'src/domain/portal/enterprise/solicitation';
-import { Solicitation as SequelizeSolicitation } from '../model/repair/solicitation.model';
+import { Solicitation as SequelizeSolicitation } from '../../model/repair/solicitation.model';
 
 export class SolicitationMapper {
   static toDomain(row: SequelizeSolicitation): Solicitation {

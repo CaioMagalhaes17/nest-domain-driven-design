@@ -3,11 +3,12 @@ import { DataBaseModule } from '../databases/database.module';
 import { FetchSolicitationsUseCase } from 'src/domain/portal/application/use-cases/fetch-solicitations-use-case';
 import { FetchSolicitationsUseCaseController } from './controllers/fetch-solicitations-use-case.controller';
 import { SolicitationRepository } from 'src/domain/portal/application/repositories/solicitation-repository';
+import { UserModule } from './controllers/user/user.module';
 
 @Module({
-  imports: [DataBaseModule],
+  imports: [DataBaseModule, UserModule],
   controllers: [
-    FetchSolicitationsUseCaseController
+    FetchSolicitationsUseCaseController,
   ],
   providers: [
     {
@@ -16,7 +17,7 @@ import { SolicitationRepository } from 'src/domain/portal/application/repositori
         return new FetchSolicitationsUseCase(solicitationRepository)
       },
       inject: [SolicitationRepository]
-    }
+    },
   ],
 })
 export class HttpModule {}

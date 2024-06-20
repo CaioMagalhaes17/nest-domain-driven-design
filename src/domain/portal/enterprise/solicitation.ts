@@ -10,7 +10,7 @@ type SolicitationProps = {
 }
 
 export class Solicitation extends BaseEntity<SolicitationProps>{
-  static create(props: SolicitationProps, id: Number){
+  static create(props: SolicitationProps, id: number){
     return new Solicitation(props, id)
   }
 

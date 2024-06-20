@@ -1,6 +1,7 @@
 import { SequelizeModule } from "@nestjs/sequelize";
 import { Solicitation } from "./model/repair/solicitation.model";
 import { Form } from "./model/repair/form.model";
+import { User } from "./model/user/user.model";
 
 export const SequelizeConfigService = SequelizeModule.forRoot({
   dialect: 'mysql',
@@ -9,5 +10,5 @@ export const SequelizeConfigService = SequelizeModule.forRoot({
   username: 'root',
   password: '01052003Cc@',
   database: 'app_database',
-  models: [Solicitation, Form],
+  models: [Solicitation, Form, User],
 })

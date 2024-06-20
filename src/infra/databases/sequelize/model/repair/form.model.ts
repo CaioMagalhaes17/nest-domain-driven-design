@@ -9,7 +9,7 @@ export class Form extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
-  id: Number
+  id: number
   @Column
   brand: string
   @Column

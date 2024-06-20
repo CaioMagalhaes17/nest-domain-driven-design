@@ -7,7 +7,7 @@ export class FetchSolicitationsUseCaseController {
 
   @Get('/solicitations')
   async handle() {
-    const response = await this.fetchSolicitationsUseCase.execute()
-    return SolicitationsPresenter.toHttp(response)
+    const response = await this.fetchSolicitationsUseCase.execute();
+    return SolicitationsPresenter.toHttp(response);
   }
 }

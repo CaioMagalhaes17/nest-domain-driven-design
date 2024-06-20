@@ -8,7 +8,7 @@ export class Solicitation extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
-  id: Number
+  id: number
   @Column
   fk_id_user:string
   @Column
