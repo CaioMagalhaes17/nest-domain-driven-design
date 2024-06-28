@@ -6,7 +6,6 @@ import { SolicitationRepository } from 'src/domain/portal/application/repositori
 import { UserRepository } from 'src/domain/portal/application/repositories/user/user-repository';
 import { User } from './sequelize/model/user/user.model';
 import { SequelizeUserRepository } from './sequelize/repositories/user/user-repository';
-import { UserMapper } from './sequelize/mappers/user/user-mapper';
 
 @Module({
   providers: [

@@ -1,14 +1,25 @@
-import { SequelizeModule } from "@nestjs/sequelize";
+import { SequelizeModule, SequelizeModuleOptions, SequelizeOptionsFactory } from "@nestjs/sequelize";
 import { Solicitation } from "./model/repair/solicitation.model";
 import { Form } from "./model/repair/form.model";
 import { User } from "./model/user/user.model";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
-export const SequelizeConfigService = SequelizeModule.forRoot({
-  dialect: 'mysql',
-  host: '127.0.0.1',
-  port: 3306,
-  username: 'root',
-  password: '01052003Cc@',
-  database: 'app_database',
-  models: [Solicitation, Form, User],
-})
+@Injectable()
+export class SequelizeConfigService implements SequelizeOptionsFactory {
+  constructor(private readonly configService: ConfigService) {}
+
+  createSequelizeOptions(): SequelizeModuleOptions {
+    return {
+      dialect: 'mysql',
+      host: this.configService.get<string>('DATABASE_HOST'),
+      port: this.configService.get<number>('DATABASE_PORT'),
+      username: this.configService.get<string>('DATABASE_USERNAME'),
+      password: this.configService.get<string>('DATABASE_PASSWORD'),
+      database: this.configService.get<string>('DATABASE_NAME'),
+      models: [Solicitation, Form, User],
+      autoLoadModels: true, // Opcional: carrega automaticamente os modelos
+      synchronize: true, // Opcional: sincroniza os modelos com o banco de dados
+    };
+  }
+}

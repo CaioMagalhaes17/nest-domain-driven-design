@@ -8,10 +8,11 @@ export class SequelizeSolicitationRepository
   implements DomainSolicitationRepository
 {
   constructor(private solicitation: SequelizeSolicitation) {}
-  async fetchSolicitations(): Promise<Solicitation> {
-    const [result] = await SequelizeSolicitation.findAll({
+  async fetchSolicitations(userId: string): Promise<Solicitation[]> {
+    const result = await SequelizeSolicitation.findAll({
       include: [{ model: Form, as: 'solicitation_form' }],
+      where: {'fk_id_user' : userId}
     });
-    return SolicitationMapper.toDomain(result);
+    return result.map((item) => SolicitationMapper.toDomain(item))
   }
 }
