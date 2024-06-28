@@ -15,4 +15,15 @@ export class SequelizeUserRepository implements UserRepository {
       return UserMapper.toDomain(result[0])
     }
   }
+  
+  async createNewUser(name: string, login: string, passwordHash: string) : Promise<undefined | User> {
+    const result = await SequelizeUser.create({
+      name,
+      login,
+      password: passwordHash
+    })
+    if (result){
+      return UserMapper.toDomain(result)
+    }
+  }
 }
