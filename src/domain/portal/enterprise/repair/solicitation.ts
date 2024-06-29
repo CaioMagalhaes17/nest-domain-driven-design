@@ -1,16 +1,17 @@
-import { BaseEntity } from "src/core/entities/base-entity";
+import { BaseEntity } from "src/core/entities/base-entity"
+import { SolicitationFormDTO } from "../../application/dto/solicitation-form.dto"
 
 type SolicitationProps = {
-  userId:string,
-  createdAt: string,
-  updatedAt: string,
-  status: string,
+  userId: string
+  createdAt: string
+  updatedAt: string
+  status: string
   formId: number
-  form:any
+  form: SolicitationFormDTO
 }
 
-export class Solicitation extends BaseEntity<SolicitationProps>{
-  static create(props: SolicitationProps, id: number){
+export class Solicitation extends BaseEntity<SolicitationProps> {
+  static create(props: SolicitationProps, id: number) {
     return new Solicitation(props, id)
   }
 
@@ -34,7 +35,7 @@ export class Solicitation extends BaseEntity<SolicitationProps>{
     return this.props.formId
   }
 
-  get form(): any {
+  get form(): SolicitationFormDTO {
     return this.props.form
   }
 }

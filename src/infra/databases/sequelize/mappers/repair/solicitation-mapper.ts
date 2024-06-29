@@ -1,5 +1,5 @@
-import { Solicitation } from 'src/domain/portal/enterprise/solicitation';
-import { Solicitation as SequelizeSolicitation } from '../../model/repair/solicitation.model';
+import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
+import { Solicitation as SequelizeSolicitation } from "../../model/repair/solicitation.model"
 
 export class SolicitationMapper {
   static toDomain(row: SequelizeSolicitation): Solicitation {
@@ -18,10 +18,11 @@ export class SolicitationMapper {
           problemDescription: row.solicitation_form.problem_desc,
           problemCause: row.solicitation_form.problem_cause,
           previousRepair: row.solicitation_form.previous_repair,
-          originalHardware: row.solicitation_form.original_hardware === 'V' ? true : false,
-        }
+          originalHardware:
+            row.solicitation_form.original_hardware === "V" ? true : false,
+        },
       },
       row.id,
-    );
+    )
   }
 }

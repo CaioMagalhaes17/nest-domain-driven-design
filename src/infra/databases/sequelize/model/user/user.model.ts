@@ -1,7 +1,13 @@
-import { AutoIncrement, Column, Model, PrimaryKey, Table } from "sequelize-typescript";
+import {
+  AutoIncrement,
+  Column,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript"
 
 @Table({
-  tableName: 'users',
+  tableName: "users",
 })
 export class User extends Model {
   @PrimaryKey

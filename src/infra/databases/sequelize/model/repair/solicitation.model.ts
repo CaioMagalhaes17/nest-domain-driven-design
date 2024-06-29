@@ -1,8 +1,16 @@
-import { AutoIncrement, Column, ForeignKey, HasOne, Model, PrimaryKey, Table } from 'sequelize-typescript'
-import { Form } from './form.model'
+import {
+  AutoIncrement,
+  Column,
+  ForeignKey,
+  HasOne,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript"
+import { SolicitationForm } from "./form.model"
 
 @Table({
-  tableName: 'solicitations',
+  tableName: "solicitations",
 })
 export class Solicitation extends Model {
   @PrimaryKey
@@ -10,16 +18,12 @@ export class Solicitation extends Model {
   @Column
   id: number
   @Column
-  fk_id_user:string
-  @Column
-  createdAt: string
-  @Column
-  updatedAt: string
+  fk_id_user: string
   @Column
   status: string
-  @ForeignKey(() => Form)
+  @ForeignKey(() => SolicitationForm)
   @Column
   fk_id_form: number
-  @HasOne(() => Form, {as: 'solicitation_form'})
-  solicitation_form: Form
+  @HasOne(() => SolicitationForm, { as: "solicitation_form" })
+  solicitation_form: SolicitationForm
 }

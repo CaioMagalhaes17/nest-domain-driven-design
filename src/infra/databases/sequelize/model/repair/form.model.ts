@@ -1,11 +1,19 @@
-import { AutoIncrement, BelongsTo, Column, DefaultScope, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript'
-import { Solicitation } from './solicitation.model'
+import {
+  AutoIncrement,
+  BelongsTo,
+  Column,
+  ForeignKey,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript"
+import { Solicitation } from "./solicitation.model"
 
 @Table({
-  tableName: 'solicitation_form',
-  timestamps: false
+  tableName: "solicitation_form",
+  timestamps: false,
 })
-export class Form extends Model {
+export class SolicitationForm extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
@@ -30,5 +38,5 @@ export class Form extends Model {
   @Column
   fk_id_solicitation: number
   @BelongsTo(() => Solicitation)
-  solicitation: Solicitation;
+  solicitation: Solicitation
 }
