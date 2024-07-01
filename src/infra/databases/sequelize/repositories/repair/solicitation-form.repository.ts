@@ -23,12 +23,17 @@ export class SequelizeSolicitationFormRepository
 
   async insertSolicitationId(
     solicitationFormId: number,
-    solicitationId: string,
+    solicitationId: number,
   ): Promise<void> {
-    const result = await SolicitationForm.update(
+    await SolicitationForm.update(
       { fk_id_solicitation: solicitationId },
       { where: { id: solicitationFormId } },
     )
-    console.log(result)
+  }
+
+  async update(solicitationId: string, updatePayload: any): Promise<void> {
+    await SolicitationForm.update(updatePayload, {
+      where: { fk_id_solicitation: solicitationId },
+    })
   }
 }

@@ -6,6 +6,7 @@ export abstract class SolicitationFormRepository {
   ): Promise<number>
   abstract insertSolicitationId(
     solicitationFormId: number,
-    solicitationId: string,
+    solicitationId: number,
   ): Promise<void>
+  abstract update(solicitationId: string, updatePayload: any): Promise<void>
 }

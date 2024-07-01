@@ -13,12 +13,25 @@ type UserAuthLoginUseCaseResponse = Either<
 >
 
 export class UserAuthLoginUseCase {
-  constructor(private userRepository: UserRepository, private encrypterGateway: EncrypterGateway) {}
+  constructor(
+    private userRepository: UserRepository,
+    private encrypterGateway: EncrypterGateway,
+  ) {}
 
-  async execute(login: string, password: string) : Promise<UserAuthLoginUseCaseResponse>{
+  async execute(
+    login: string,
+    password: string,
+  ): Promise<UserAuthLoginUseCaseResponse> {
     const user = await this.userRepository.fetchUserByLogin(login)
-    const isPasswordValid: boolean = await this.encrypterGateway.comparePassword(password, user.password)
+    const isPasswordValid: boolean =
+      await this.encrypterGateway.comparePassword(password, user.password)
     if (!user || !isPasswordValid) return left(new InvalidCredentilsError())
-    return right({token: this.encrypterGateway.encryptToken({id: user.id, name: user.name}), user})
+    return right({
+      token: this.encrypterGateway.encryptToken({
+        id: user.id,
+        name: user.name,
+      }),
+      user,
+    })
   }
 }
