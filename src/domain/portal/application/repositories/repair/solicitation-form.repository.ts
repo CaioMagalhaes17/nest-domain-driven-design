@@ -9,4 +9,5 @@ export abstract class SolicitationFormRepository {
     solicitationId: number,
   ): Promise<void>
   abstract update(solicitationId: string, updatePayload: any): Promise<void>
+  abstract deleteById(solicitationId: number): Promise<void>
 }

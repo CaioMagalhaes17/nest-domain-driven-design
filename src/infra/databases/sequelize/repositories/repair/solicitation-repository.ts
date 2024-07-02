@@ -35,4 +35,10 @@ export class SequelizeSolicitationRepository
     })
     if (result) return SolicitationMapper.toDomain(result)
   }
+
+  async deleteById(solicitationId: string): Promise<void> {
+    await SequelizeSolicitation.destroy({
+      where: { id: solicitationId },
+    })
+  }
 }

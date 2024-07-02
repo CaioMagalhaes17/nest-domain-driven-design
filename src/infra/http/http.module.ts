@@ -9,6 +9,8 @@ import { SolicitationFormRepository } from "src/domain/portal/application/reposi
 import { CreateSolicitationUseCaseController } from "./controllers/repair/solicitations/create-solicitation-use-case.controller"
 import { EditSolicitationUseCaseController } from "./controllers/repair/solicitations/edit-solicitation-use-case.controller"
 import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
+import { DeleteSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/delete.solicitation-use-case"
+import { DeleteSolicitationUseCaseController } from "./controllers/repair/solicitations/delete-solicitation-use-case.controller"
 
 @Module({
   imports: [DataBaseModule, UserModule],
@@ -16,6 +18,7 @@ import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases
     FetchSolicitationsUseCaseController,
     CreateSolicitationUseCaseController,
     EditSolicitationUseCaseController,
+    DeleteSolicitationUseCaseController,
   ],
   providers: [
     {
@@ -45,6 +48,19 @@ import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases
         solicitationFormRepository: SolicitationFormRepository,
       ) => {
         return new EditSolicitationUseCase(
+          solicitationRepository,
+          solicitationFormRepository,
+        )
+      },
+      inject: [SolicitationRepository, SolicitationFormRepository],
+    },
+    {
+      provide: DeleteSolicitationUseCase,
+      useFactory: (
+        solicitationRepository: SolicitationRepository,
+        solicitationFormRepository: SolicitationFormRepository,
+      ) => {
+        return new DeleteSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
         )

@@ -36,4 +36,10 @@ export class SequelizeSolicitationFormRepository
       where: { fk_id_solicitation: solicitationId },
     })
   }
+
+  async deleteById(solicitationId: number): Promise<void> {
+    await SolicitationForm.destroy({
+      where: { id: solicitationId },
+    })
+  }
 }

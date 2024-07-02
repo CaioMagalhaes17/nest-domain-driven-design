@@ -7,4 +7,5 @@ export abstract class SolicitationRepository {
     solicitationPayload: SolicitationDTO,
   ): Promise<Solicitation>
   abstract fetchById(solicitationId: string): Promise<Solicitation | void>
+  abstract deleteById(solicitationId: string): Promise<void>
 }
