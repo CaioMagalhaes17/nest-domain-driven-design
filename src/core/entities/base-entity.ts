@@ -6,7 +6,7 @@ export class BaseEntity<T> {
     return this._id
   }
 
-  protected constructor(props: T, id?: number){
+  protected constructor(props: T, id?: number) {
     this.props = props
     this._id = id
   }

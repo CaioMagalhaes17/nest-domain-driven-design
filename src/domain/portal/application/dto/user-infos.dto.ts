@@ -1,4 +1,4 @@
 export class UserInfosDTO {
-  id: number 
+  id: number
   name: string
 }

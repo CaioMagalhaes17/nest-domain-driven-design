@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/core/entities/base-entity"
-import { SolicitationFormDTO } from "../../application/dto/solicitation-form.dto"
+import { SolicitationForm } from "./solicitation.form"
 
 type SolicitationProps = {
   userId: string
@@ -7,7 +7,7 @@ type SolicitationProps = {
   updatedAt: string
   status: string
   formId: number
-  form: SolicitationFormDTO
+  form: SolicitationForm
 }
 
 export class Solicitation extends BaseEntity<SolicitationProps> {
@@ -35,7 +35,7 @@ export class Solicitation extends BaseEntity<SolicitationProps> {
     return this.props.formId
   }
 
-  get form(): SolicitationFormDTO {
+  get form(): SolicitationForm {
     return this.props.form
   }
 }
