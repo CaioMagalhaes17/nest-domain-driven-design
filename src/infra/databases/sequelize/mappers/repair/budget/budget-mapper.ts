@@ -9,6 +9,8 @@ export class BudgetMapper {
         estimatedPrice: row.estimated_price,
         solicitationId: row.fk_id_solicitation,
         status: row.status,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
       },
       row.id,
     )

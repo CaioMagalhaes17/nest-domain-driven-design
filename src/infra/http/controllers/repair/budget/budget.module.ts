@@ -5,10 +5,12 @@ import { SolicitationRepository } from "src/domain/portal/application/repositori
 import { BudgetRepository } from "src/domain/portal/application/repositories/repair/budget-repository"
 import { BudgetDatabaseModule } from "src/infra/databases/budget-database.module"
 import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-database.module"
+import { FetchBudgetsUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budgets-use-case"
+import { FetchBudgetsUseCaseController } from "./fetch-budget-use-case.controller"
 
 @Module({
   imports: [BudgetDatabaseModule, SolicitationDatabaseModule],
-  controllers: [CreateBudgetUseCaseController],
+  controllers: [CreateBudgetUseCaseController, FetchBudgetsUseCaseController],
   providers: [
     {
       provide: CreateBudgetUseCase,
@@ -19,6 +21,13 @@ import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-dat
         return new CreateBudgetUseCase(budgetRepository, solicitationRepository)
       },
       inject: [BudgetRepository, SolicitationRepository],
+    },
+    {
+      provide: FetchBudgetsUseCase,
+      useFactory: (budgetRepository: BudgetRepository) => {
+        return new FetchBudgetsUseCase(budgetRepository)
+      },
+      inject: [BudgetRepository],
     },
   ],
 })

@@ -5,6 +5,8 @@ import { BudgetUpdateType } from "../../dto/budget/repository/budget-update"
 export abstract class BudgetRepository {
   abstract fetchById(budgetId: string): Promise<Budget>
 
+  abstract fetchByUser(userId: number): Promise<Budget[] | void>
+
   abstract insert(insertPayload: BudgetInsertType): Promise<number>
 
   abstract update(

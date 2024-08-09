@@ -47,4 +47,13 @@ export class SequelizeBudgetRepository extends BudgetRepository {
       return BudgetMapper.toDomain(result)
     }
   }
+
+  async fetchByUser(userId: number): Promise<Budget[] | void> {
+    const result = await SequelizeBudgetModel.findAll({
+      where: { fk_id_user: userId },
+    })
+    if (result) {
+      return result.map((item) => BudgetMapper.toDomain(item))
+    }
+  }
 }

@@ -6,6 +6,8 @@ type BudgetProps = {
   estimatedPrice: string
   solicitationId: number
   status: BudgetStatusType
+  createdAt: string
+  updatedAt: string
 }
 
 export class Budget extends BaseEntity<BudgetProps> {
@@ -27,5 +29,13 @@ export class Budget extends BaseEntity<BudgetProps> {
 
   get status(): BudgetStatusType {
     return this.props.status
+  }
+
+  get createdAt(): string {
+    return this.props.createdAt
+  }
+
+  get updatedAt(): string {
+    return this.props.updatedAt
   }
 }

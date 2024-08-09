@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards } from "@nestjs/common"
 import { FetchSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitations-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
-import { SolicitationsPresenter } from "src/infra/presenters/repair/solicitations.presenter"
+import { SolicitationsPresenter } from "src/infra/presenters/repair/solicitations/solicitations.presenter"
 
 @Controller()
 export class FetchSolicitationsUseCaseController {
