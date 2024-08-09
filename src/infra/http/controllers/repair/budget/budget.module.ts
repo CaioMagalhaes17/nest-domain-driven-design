@@ -6,11 +6,20 @@ import { BudgetRepository } from "src/domain/portal/application/repositories/rep
 import { BudgetDatabaseModule } from "src/infra/databases/budget-database.module"
 import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-database.module"
 import { FetchBudgetsUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budgets-use-case"
-import { FetchBudgetsUseCaseController } from "./fetch-budget-use-case.controller"
+import { FetchBudgetsUseCaseController } from "./fetch-budgets-use-case.controller"
+import { FetchBudgetUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budget-use-case"
+import { FetchBudgetUseCaseController } from "./fetch.budget-use-case.controller"
+import { DeleteBudgetUseCase } from "src/domain/portal/application/use-cases/budget/delete-budget-use-case"
+import { DeleteBudgetUseCaseController } from "./delete-budget-use-case.controller"
 
 @Module({
   imports: [BudgetDatabaseModule, SolicitationDatabaseModule],
-  controllers: [CreateBudgetUseCaseController, FetchBudgetsUseCaseController],
+  controllers: [
+    CreateBudgetUseCaseController,
+    FetchBudgetsUseCaseController,
+    FetchBudgetUseCaseController,
+    DeleteBudgetUseCaseController,
+  ],
   providers: [
     {
       provide: CreateBudgetUseCase,
@@ -26,6 +35,20 @@ import { FetchBudgetsUseCaseController } from "./fetch-budget-use-case.controlle
       provide: FetchBudgetsUseCase,
       useFactory: (budgetRepository: BudgetRepository) => {
         return new FetchBudgetsUseCase(budgetRepository)
+      },
+      inject: [BudgetRepository],
+    },
+    {
+      provide: FetchBudgetUseCase,
+      useFactory: (budgetRepository: BudgetRepository) => {
+        return new FetchBudgetUseCase(budgetRepository)
+      },
+      inject: [BudgetRepository],
+    },
+    {
+      provide: DeleteBudgetUseCase,
+      useFactory: (budgetRepository: BudgetRepository) => {
+        return new DeleteBudgetUseCase(budgetRepository)
       },
       inject: [BudgetRepository],
     },

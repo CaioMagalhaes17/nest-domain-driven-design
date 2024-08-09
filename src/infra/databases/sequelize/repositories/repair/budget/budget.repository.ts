@@ -6,9 +6,9 @@ import { BudgetInsertType } from "src/domain/portal/application/dto/budget/repos
 import { BudgetUpdateType } from "src/domain/portal/application/dto/budget/repository/budget-update"
 
 export class SequelizeBudgetRepository extends BudgetRepository {
-  async fetchById(budgetId: string): Promise<Budget> {
+  async fetchById(budgetId: number): Promise<Budget> {
     const result = await SequelizeBudgetModel.findByPk(budgetId)
-    return BudgetMapper.toDomain(result)
+    if (result) return BudgetMapper.toDomain(result)
   }
 
   async insert(insertPayload: BudgetInsertType): Promise<number> {
@@ -24,16 +24,15 @@ export class SequelizeBudgetRepository extends BudgetRepository {
 
   async update(
     updatePayload: BudgetUpdateType,
-    budgetId: string,
+    budgetId: number,
   ): Promise<Budget> {
     await SequelizeBudgetModel.update(updatePayload, {
       where: { id: budgetId },
     })
-
-    return this.fetchById(budgetId)
+    return await this.fetchById(budgetId)
   }
 
-  async delete(budgetId: string): Promise<void> {
+  async delete(budgetId: number): Promise<void> {
     await SequelizeBudgetModel.destroy({
       where: { id: budgetId },
     })

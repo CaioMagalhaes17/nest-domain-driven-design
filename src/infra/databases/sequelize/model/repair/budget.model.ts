@@ -22,7 +22,7 @@ export class Budget extends Model {
   @Column
   status: string
   @Column
-  fk_id_user: string
+  fk_id_user: number
   @ForeignKey(() => Solicitation)
   @Column
   fk_id_solicitation: number

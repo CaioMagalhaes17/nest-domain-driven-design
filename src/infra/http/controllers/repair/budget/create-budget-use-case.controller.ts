@@ -19,7 +19,7 @@ export class CreateBudgetUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/repair/budget")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { id: number } },
     @Body() createBudgetPayload: BudgetDTO,
   ) {
     const response = await this.createBudgetUseCase.execute(

@@ -21,7 +21,7 @@ export class CreateBudgetUseCase {
 
   async execute(
     createBudgetPayload: BudgetDTO,
-    userId: string,
+    userId: number,
   ): Promise<CreateBudgetUseCaseResponse> {
     const solicitation = await this.solicitationRepository.fetchById(
       createBudgetPayload.solicitationId,

@@ -3,7 +3,7 @@ import { BudgetInsertType } from "../../dto/budget/repository/budget-insert"
 import { BudgetUpdateType } from "../../dto/budget/repository/budget-update"
 
 export abstract class BudgetRepository {
-  abstract fetchById(budgetId: string): Promise<Budget>
+  abstract fetchById(budgetId: number): Promise<Budget>
 
   abstract fetchByUser(userId: number): Promise<Budget[] | void>
 
@@ -11,10 +11,10 @@ export abstract class BudgetRepository {
 
   abstract update(
     updatePayload: BudgetUpdateType,
-    budgetId: string,
+    budgetId: number,
   ): Promise<Budget>
 
-  abstract delete(budgetId: string): Promise<void>
+  abstract delete(budgetId: number): Promise<void>
 
   abstract fetchBySolicitationId(solicitationId: number): Promise<Budget | void>
 }
