@@ -6,7 +6,6 @@ type SolicitationProps = {
   createdAt: string
   updatedAt: string
   status: string
-  formId: number
   form: SolicitationForm
 }
 
@@ -29,10 +28,6 @@ export class Solicitation extends BaseEntity<SolicitationProps> {
 
   get status(): string {
     return this.props.status
-  }
-
-  get formId(): number {
-    return this.props.formId
   }
 
   get form(): SolicitationForm {

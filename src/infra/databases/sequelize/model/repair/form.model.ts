@@ -35,8 +35,8 @@ export class SolicitationForm extends Model {
   @Column
   original_hardware: string
   @ForeignKey(() => Solicitation)
-  @Column
   fk_id_solicitation: number
-  @BelongsTo(() => Solicitation)
+
+  @BelongsTo(() => Solicitation, { as: "solicitation_form" })
   solicitation: Solicitation
 }

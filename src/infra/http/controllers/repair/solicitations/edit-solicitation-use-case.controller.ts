@@ -23,7 +23,7 @@ export class EditSolicitationUseCaseController {
   async handle(
     @Req() req: { user: { id: string } },
     @Body() solicitationFormPayload: any,
-    @Param("solicitationId") solicitationId: string,
+    @Param("solicitationId") solicitationId: number,
   ) {
     const response = await this.editSolicitationUseCase.execute({
       solicitationFormPayload,

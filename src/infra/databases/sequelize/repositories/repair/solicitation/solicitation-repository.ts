@@ -1,8 +1,8 @@
-import { Solicitation as SequelizeSolicitation } from "../../model/repair/solicitation.model"
-import { SolicitationMapper } from "../../mappers/repair/solicitation-mapper"
+import { Solicitation as SequelizeSolicitation } from "../../../model/repair/solicitation.model"
+import { SolicitationMapper } from "../../../mappers/repair/solicitation/solicitation-mapper"
 import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
 import { SolicitationRepository as DomainSolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
-import { SolicitationForm } from "../../model/repair/form.model"
+import { SolicitationForm } from "../../../model/repair/form.model"
 import { SolicitationDTO } from "src/domain/portal/application/dto/solicitation.dto"
 
 export class SequelizeSolicitationRepository
@@ -20,23 +20,22 @@ export class SequelizeSolicitationRepository
 
   async createSolicitation(
     solicitationPayload: SolicitationDTO,
-  ): Promise<Solicitation> {
+  ): Promise<number> {
     const result = await SequelizeSolicitation.create({
       fk_id_user: solicitationPayload.userId,
       status: solicitationPayload.status,
-      fk_id_form: solicitationPayload.formId,
     })
-    return SolicitationMapper.toDomain(result)
+    return result.id
   }
 
-  async fetchById(solicitationId: string): Promise<Solicitation | void> {
+  async fetchById(solicitationId: number): Promise<Solicitation | void> {
     const result = await SequelizeSolicitation.findByPk(solicitationId, {
       include: [{ model: SolicitationForm, as: "solicitation_form" }],
     })
     if (result) return SolicitationMapper.toDomain(result)
   }
 
-  async deleteById(solicitationId: string): Promise<void> {
+  async deleteById(solicitationId: number): Promise<void> {
     await SequelizeSolicitation.destroy({
       where: { id: solicitationId },
     })

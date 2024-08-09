@@ -9,6 +9,7 @@ type SolicitationFormProps = {
   problemCause: string
   previousRepair: string
   originalHardware: boolean
+  solicitationId: number
 }
 
 export class SolicitationForm extends BaseEntity<SolicitationFormProps> {
@@ -46,5 +47,9 @@ export class SolicitationForm extends BaseEntity<SolicitationFormProps> {
 
   get originalHardware(): boolean {
     return this.props.originalHardware
+  }
+
+  get solicitationId(): number {
+    return this.props.solicitationId
   }
 }

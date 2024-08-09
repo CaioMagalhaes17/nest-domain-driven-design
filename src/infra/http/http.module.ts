@@ -1,72 +1,10 @@
 import { Module } from "@nestjs/common"
 import { DataBaseModule } from "../databases/database.module"
-import { FetchSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitations-use-case"
-import { FetchSolicitationsUseCaseController } from "./controllers/repair/solicitations/fetch-solicitations-use-case.controller"
-import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
 import { UserModule } from "./controllers/user/user.module"
-import { CreateSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
-import { SolicitationFormRepository } from "src/domain/portal/application/repositories/repair/solicitation-form.repository"
-import { CreateSolicitationUseCaseController } from "./controllers/repair/solicitations/create-solicitation-use-case.controller"
-import { EditSolicitationUseCaseController } from "./controllers/repair/solicitations/edit-solicitation-use-case.controller"
-import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
-import { DeleteSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/delete.solicitation-use-case"
-import { DeleteSolicitationUseCaseController } from "./controllers/repair/solicitations/delete-solicitation-use-case.controller"
+import { SolicitationsModule } from "./controllers/repair/solicitations/solicitations.module"
+import { BudgetModule } from "./controllers/repair/budget/budget.module"
 
 @Module({
-  imports: [DataBaseModule, UserModule],
-  controllers: [
-    FetchSolicitationsUseCaseController,
-    CreateSolicitationUseCaseController,
-    EditSolicitationUseCaseController,
-    DeleteSolicitationUseCaseController,
-  ],
-  providers: [
-    {
-      provide: FetchSolicitationsUseCase,
-      useFactory: (solicitationRepository: SolicitationRepository) => {
-        return new FetchSolicitationsUseCase(solicitationRepository)
-      },
-      inject: [SolicitationRepository],
-    },
-    {
-      provide: CreateSolicitationUseCase,
-      useFactory: (
-        solicitationRepository: SolicitationRepository,
-        solicitationFormRepository: SolicitationFormRepository,
-      ) => {
-        return new CreateSolicitationUseCase(
-          solicitationRepository,
-          solicitationFormRepository,
-        )
-      },
-      inject: [SolicitationRepository, SolicitationFormRepository],
-    },
-    {
-      provide: EditSolicitationUseCase,
-      useFactory: (
-        solicitationRepository: SolicitationRepository,
-        solicitationFormRepository: SolicitationFormRepository,
-      ) => {
-        return new EditSolicitationUseCase(
-          solicitationRepository,
-          solicitationFormRepository,
-        )
-      },
-      inject: [SolicitationRepository, SolicitationFormRepository],
-    },
-    {
-      provide: DeleteSolicitationUseCase,
-      useFactory: (
-        solicitationRepository: SolicitationRepository,
-        solicitationFormRepository: SolicitationFormRepository,
-      ) => {
-        return new DeleteSolicitationUseCase(
-          solicitationRepository,
-          solicitationFormRepository,
-        )
-      },
-      inject: [SolicitationRepository, SolicitationFormRepository],
-    },
-  ],
+  imports: [DataBaseModule, UserModule, SolicitationsModule, BudgetModule],
 })
 export class HttpModule {}

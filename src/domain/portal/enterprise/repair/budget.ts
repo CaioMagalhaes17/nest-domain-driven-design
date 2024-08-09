@@ -1,10 +1,11 @@
 import { BaseEntity } from "src/core/entities/base-entity"
+import { BudgetStatusType } from "../../application/types/repair/budget/status"
 
 type BudgetProps = {
   userId: string
   estimatedPrice: string
   solicitationId: number
-  status: string
+  status: BudgetStatusType
 }
 
 export class Budget extends BaseEntity<BudgetProps> {
@@ -24,7 +25,7 @@ export class Budget extends BaseEntity<BudgetProps> {
     return this.props.solicitationId
   }
 
-  get status(): string {
+  get status(): BudgetStatusType {
     return this.props.status
   }
 }

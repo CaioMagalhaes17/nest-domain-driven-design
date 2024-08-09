@@ -11,7 +11,7 @@ type DeleteSolicitationUseCaseResponse = Either<
 
 interface DeleteSolicitationUseCaseI {
   userId: string
-  solicitationId: string
+  solicitationId: number
 }
 export class DeleteSolicitationUseCase {
   constructor(
@@ -29,6 +29,6 @@ export class DeleteSolicitationUseCase {
     if (userId !== solicitation.userId)
       return left(new UnauthorizedSolicitationActionError())
     await this.solicitationRepository.deleteById(solicitationId)
-    await this.solicitationFormRepository.deleteById(solicitation.formId)
+    await this.solicitationFormRepository.deleteById(solicitationId)
   }
 }

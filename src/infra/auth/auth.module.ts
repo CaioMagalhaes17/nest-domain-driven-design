@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common"
 import { JwtModule } from "@nestjs/jwt"
 import { JwtStrategy } from "./stategies/jwt-strategy"
-import { DataBaseModule } from "../databases/database.module"
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { UserDatabaseModule } from "../databases/user-database.module"
 
 @Module({
   imports: [
-    DataBaseModule,
+    UserDatabaseModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

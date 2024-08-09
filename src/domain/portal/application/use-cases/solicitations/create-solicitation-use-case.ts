@@ -10,21 +10,17 @@ export class CreateSolicitationUseCase {
   ) {}
 
   async execute(solicitationFormPayload: SolicitationFormDTO, userId: string) {
-    const formId = await this.solicitationFormRepository.createSolicitationForm(
-      solicitationFormPayload,
-    )
     const solicitationPayload: SolicitationDTO = {
       userId,
       status: "pending",
-      formId,
     }
 
-    const solicitation =
+    const solicitationId =
       await this.solicitationRepository.createSolicitation(solicitationPayload)
 
-    await this.solicitationFormRepository.insertSolicitationId(
-      formId,
-      solicitation.id,
+    await this.solicitationFormRepository.createSolicitationForm(
+      solicitationFormPayload,
+      solicitationId,
     )
   }
 }

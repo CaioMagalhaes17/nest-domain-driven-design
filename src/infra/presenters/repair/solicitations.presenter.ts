@@ -7,8 +7,16 @@ export class SolicitationsPresenter {
       userId: solicitation.userId,
       createdAt: solicitation.createdAt,
       status: solicitation.status,
-      formId: solicitation.formId,
-      form: solicitation.form,
+      form: {
+        brand: solicitation.form.brand,
+        model: solicitation.form.model,
+        imeiNumber: solicitation.form.imeiNumber,
+        usageTime: solicitation.form.usageTime,
+        problemDescription: solicitation.form.problemDescription,
+        problemCause: solicitation.form.problemCause,
+        previousRepair: solicitation.form.previousRepair,
+        originalHardware: solicitation.form.originalHardware,
+      },
     }
   }
 }
