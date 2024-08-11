@@ -9,7 +9,7 @@ export class CreateSolicitationUseCase {
     private solicitationFormRepository: SolicitationFormRepository,
   ) {}
 
-  async execute(solicitationFormPayload: SolicitationFormDTO, userId: string) {
+  async execute(solicitationFormPayload: SolicitationFormDTO, userId: number) {
     const solicitationPayload: SolicitationDTO = {
       userId,
       status: "pending",

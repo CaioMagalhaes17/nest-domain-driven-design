@@ -1,6 +1,6 @@
 import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
 
-export class SolicitationsPresenter {
+export class SolicitationPresenter {
   static toHttp(solicitation: Solicitation) {
     return {
       id: solicitation.id,

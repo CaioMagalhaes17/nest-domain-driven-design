@@ -18,7 +18,7 @@ export class Solicitation extends Model {
   id: number
 
   @Column
-  fk_id_user: string
+  fk_id_user: number
 
   @Column
   status: string

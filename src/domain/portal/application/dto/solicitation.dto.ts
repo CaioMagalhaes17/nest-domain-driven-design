@@ -1,4 +1,4 @@
 export class SolicitationDTO {
-  userId: string
+  userId: number
   status: string
 }

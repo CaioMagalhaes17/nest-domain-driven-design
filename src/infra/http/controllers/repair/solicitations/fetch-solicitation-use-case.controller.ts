@@ -3,22 +3,29 @@ import {
   Controller,
   Get,
   NotFoundException,
+  Param,
   Req,
   UseGuards,
 } from "@nestjs/common"
 import { SolicitationNotFoundError } from "src/domain/portal/application/errors/repair/solicitations/SolicitationNotFoundError"
-import { FetchSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitations-use-case"
+import { FetchSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitation-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
 import { SolicitationPresenter } from "src/infra/presenters/repair/solicitations/solicitation-presenter"
 
 @Controller()
-export class FetchSolicitationsUseCaseController {
-  constructor(private fetchSolicitationsUseCase: FetchSolicitationsUseCase) {}
+export class FetchSolicitationUseCaseController {
+  constructor(private fetchSolicitationUseCase: FetchSolicitationUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/repair/solicitation")
-  async handle(@Req() req: { user: { id: number } }) {
-    const response = await this.fetchSolicitationsUseCase.execute(req.user.id)
+  @Get("/repair/solicitation/solicitationId")
+  async handle(
+    @Req() req: { user: { id: number } },
+    @Param("solicitationId") solicitationId: number,
+  ) {
+    const response = await this.fetchSolicitationUseCase.execute(
+      solicitationId,
+      req.user.id,
+    )
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case SolicitationNotFoundError:
@@ -28,9 +35,9 @@ export class FetchSolicitationsUseCaseController {
       }
     }
 
-    const { solicitations } = response.value
+    const { solicitation } = response.value
     return {
-      data: solicitations.map((item) => SolicitationPresenter.toHttp(item)),
+      data: SolicitationPresenter.toHttp(solicitation),
     }
   }
 }

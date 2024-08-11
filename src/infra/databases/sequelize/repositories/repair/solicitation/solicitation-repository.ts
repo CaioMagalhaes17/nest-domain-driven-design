@@ -10,12 +10,14 @@ export class SequelizeSolicitationRepository
 {
   constructor(private solicitation: SequelizeSolicitation) {}
 
-  async fetchSolicitations(userId: string): Promise<Solicitation[]> {
+  async fetchSolicitations(userId: number): Promise<Solicitation[] | void> {
     const result = await SequelizeSolicitation.findAll({
       include: [{ model: SolicitationForm, as: "solicitation_form" }],
       where: { fk_id_user: userId },
     })
-    return result.map((item) => SolicitationMapper.toDomain(item))
+    if (result.length > 0) {
+      return result.map((item) => SolicitationMapper.toDomain(item))
+    }
   }
 
   async createSolicitation(

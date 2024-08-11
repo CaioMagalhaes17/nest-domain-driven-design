@@ -10,7 +10,7 @@ type DeleteSolicitationUseCaseResponse = Either<
 >
 
 interface DeleteSolicitationUseCaseI {
-  userId: string
+  userId: number
   solicitationId: number
 }
 export class DeleteSolicitationUseCase {

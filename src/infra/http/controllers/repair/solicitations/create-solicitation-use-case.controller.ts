@@ -10,7 +10,7 @@ export class CreateSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/repair/solicitation")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { id: number } },
     @Body() solicitationFormPayload: SolicitationFormDTO,
   ) {
     const response = await this.createSolicitationsUseCase.execute(

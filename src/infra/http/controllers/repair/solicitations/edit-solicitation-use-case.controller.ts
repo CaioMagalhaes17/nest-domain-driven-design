@@ -21,7 +21,7 @@ export class EditSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Put("/repair/solicitation/:solicitationId")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { id: number } },
     @Body() solicitationFormPayload: any,
     @Param("solicitationId") solicitationId: number,
   ) {
