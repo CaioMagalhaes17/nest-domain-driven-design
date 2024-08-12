@@ -1,6 +1,6 @@
 import { ClientProfile } from "src/domain/portal/enterprise/profile/client/client-profile"
-import { EditProfilePayload } from "../../../use-cases/profile/client/edit-client-profile"
-import { CreateProfilePayload } from "../../../use-cases/profile/client/create-client-profile"
+import { EditProfilePayload } from "../../../use-cases/profile/client/edit-client-profile-use-case"
+import { CreateProfilePayload } from "../../../use-cases/profile/client/create-client-profile-use-case"
 
 export abstract class ClientProfileRepository {
   abstract fetchById(profileId: number): Promise<ClientProfile | void>

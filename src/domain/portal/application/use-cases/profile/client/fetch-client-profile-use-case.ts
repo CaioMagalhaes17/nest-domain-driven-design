@@ -10,7 +10,7 @@ type FetchClientProfileResponse = Either<
   }
 >
 
-export class FetchClientProfile {
+export class FetchClientProfileUseCase {
   constructor(private clientProfileRepository: ClientProfileRepository) {}
 
   async execute(userId: number): Promise<FetchClientProfileResponse> {

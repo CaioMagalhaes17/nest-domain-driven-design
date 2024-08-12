@@ -9,6 +9,7 @@ export type EditProfilePayload = {
   address?: string
   preferredMapRadiusId?: number
   profileImg?: string
+  rating?: string
 }
 
 type EditClientProfileReturn = Either<

@@ -8,6 +8,8 @@ import { User } from "./model/user/user.model"
 import { Injectable } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { Budget } from "./model/repair/budget.model"
+import { ClientProfile } from "./model/profile/client/client-profile.model"
+import { CompanyProfile } from "./model/profile/company/company-profile.model"
 
 @Injectable()
 export class SequelizeConfigService implements SequelizeOptionsFactory {
@@ -21,7 +23,14 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
       username: this.configService.get<string>("DATABASE_USERNAME"),
       password: this.configService.get<string>("DATABASE_PASSWORD"),
       database: this.configService.get<string>("DATABASE_NAME"),
-      models: [Solicitation, SolicitationForm, User, Budget],
+      models: [
+        Solicitation,
+        SolicitationForm,
+        User,
+        Budget,
+        ClientProfile,
+        CompanyProfile,
+      ],
       autoLoadModels: true, // Opcional: carrega automaticamente os modelos
       synchronize: true, // Opcional: sincroniza os modelos com o banco de dados
     }
