@@ -10,10 +10,13 @@ import { SolicitationFormRepository } from "src/domain/portal/application/reposi
 import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
 import { DeleteSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/delete.solicitation-use-case"
 import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-database.module"
+import { FetchSolicitationUseCaseController } from "./fetch-solicitation-use-case.controller"
+import { FetchSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitation-use-case"
 
 @Module({
   imports: [SolicitationDatabaseModule],
   controllers: [
+    FetchSolicitationUseCaseController,
     FetchSolicitationsUseCaseController,
     CreateSolicitationUseCaseController,
     EditSolicitationUseCaseController,
@@ -65,6 +68,13 @@ import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-dat
         )
       },
       inject: [SolicitationRepository, SolicitationFormRepository],
+    },
+    {
+      provide: FetchSolicitationUseCase,
+      useFactory: (solicitationRepository: SolicitationRepository) => {
+        return new FetchSolicitationUseCase(solicitationRepository)
+      },
+      inject: [SolicitationRepository],
     },
   ],
 })
