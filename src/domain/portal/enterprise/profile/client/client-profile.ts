@@ -15,26 +15,26 @@ export class ClientProfile extends BaseEntity<ClientProfileProps> {
   }
 
   get name(): string {
-    return this.name
+    return this.props.name
   }
 
   get address(): string {
-    return this.address
+    return this.props.address
   }
 
-  get preferredMapRadiusId(): string {
-    return this.preferredMapRadiusId
+  get preferredMapRadiusId(): number {
+    return this.props.preferredMapRadiusId
   }
 
   get profileImg(): string {
-    return this.profileImg
+    return this.props.profileImg
   }
 
-  get rating(): string {
-    return this.rating
+  get rating(): number {
+    return this.props.rating
   }
 
   get userId(): number {
-    return this.userId
+    return this.props.userId
   }
 }

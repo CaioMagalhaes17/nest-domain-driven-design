@@ -12,7 +12,7 @@ export type CreateProfilePayload = {
 
 type CreateClientProfileResponse = Either<UserAlreadyHasProfile, void>
 
-export class CreateClientProfile {
+export class CreateClientProfileUseCase {
   constructor(private clientProfileRepository: ClientProfileRepository) {}
 
   async execute(

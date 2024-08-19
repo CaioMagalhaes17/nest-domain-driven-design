@@ -9,6 +9,7 @@ import {
 import { ProfileNotFound } from "src/domain/portal/application/errors/profile/ProfileNotFound"
 import { FetchClientProfileUseCase } from "src/domain/portal/application/use-cases/profile/client/fetch-client-profile-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
+import { ClientProfilePresenter } from "src/infra/presenters/profile/client/client-profile.presenter"
 
 @Controller()
 export class FetchClientProfileUseCaseController {
@@ -29,8 +30,9 @@ export class FetchClientProfileUseCaseController {
     }
 
     const { profile } = response.value
+
     return {
-      data: { profile },
+      data: ClientProfilePresenter.toHttp(profile),
     }
   }
 }

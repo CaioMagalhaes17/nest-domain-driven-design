@@ -18,9 +18,9 @@ export class SequelizeClientProfileRepository extends ClientProfileRepository {
     if (result) return ClientProfileMapper.toDomain(result)
   }
 
-  async deleteById(profileId: number): Promise<void> {
+  async deleteByUserId(userId: number): Promise<void> {
     await SequelizeClientProfileModel.destroy({
-      where: { id: profileId },
+      where: { fk_id_user: userId },
     })
   }
 
@@ -36,7 +36,10 @@ export class SequelizeClientProfileRepository extends ClientProfileRepository {
     })
   }
 
-  async editProfile(editProfilePayload: EditProfilePayload): Promise<void> {
+  async editProfile(
+    editProfilePayload: EditProfilePayload,
+    userId: number,
+  ): Promise<void> {
     await SequelizeClientProfileModel.update(
       {
         name: editProfilePayload.name,
@@ -46,7 +49,7 @@ export class SequelizeClientProfileRepository extends ClientProfileRepository {
         rating: editProfilePayload.rating,
       },
       {
-        where: { id: editProfilePayload.id },
+        where: { fk_id_user: userId },
       },
     )
   }

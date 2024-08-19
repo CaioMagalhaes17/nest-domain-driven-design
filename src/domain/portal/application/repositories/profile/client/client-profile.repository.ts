@@ -5,9 +5,12 @@ import { CreateProfilePayload } from "../../../use-cases/profile/client/create-c
 export abstract class ClientProfileRepository {
   abstract fetchById(profileId: number): Promise<ClientProfile | void>
   abstract fetchByUserId(userId: number): Promise<ClientProfile | void>
-  abstract deleteById(profileId: number): Promise<void>
+  abstract deleteByUserId(userId: number): Promise<void>
   abstract createProfile(
     createProfilePayload: CreateProfilePayload,
   ): Promise<void>
-  abstract editProfile(editProfilePayload: EditProfilePayload): Promise<void>
+  abstract editProfile(
+    editProfilePayload: EditProfilePayload,
+    userId: number,
+  ): Promise<void>
 }

@@ -10,7 +10,7 @@ type FetchSolicitationsUseCaseResponse = Either<
   }
 >
 
-export class FetchSolicitationsUseCase {
+export class FetchUserSolicitationsUseCase {
   constructor(private solicitationRepository: SolicitationRepository) {}
 
   async execute(userId: number): Promise<FetchSolicitationsUseCaseResponse> {

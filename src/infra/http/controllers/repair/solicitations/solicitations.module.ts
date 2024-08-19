@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common"
-import { FetchSolicitationsUseCaseController } from "./fetch-solicitations-use-case.controller"
+import { FetchUserSolicitationsUseCaseController } from "./fetch-user-solicitations-use-case.controller"
 import { CreateSolicitationUseCaseController } from "./create-solicitation-use-case.controller"
 import { EditSolicitationUseCaseController } from "./edit-solicitation-use-case.controller"
 import { DeleteSolicitationUseCaseController } from "./delete-solicitation-use-case.controller"
-import { FetchSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitations-use-case"
+import { FetchUserSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-user-solicitations-use-case"
 import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
 import { CreateSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
 import { SolicitationFormRepository } from "src/domain/portal/application/repositories/repair/solicitation-form.repository"
@@ -17,16 +17,16 @@ import { FetchSolicitationUseCase } from "src/domain/portal/application/use-case
   imports: [SolicitationDatabaseModule],
   controllers: [
     FetchSolicitationUseCaseController,
-    FetchSolicitationsUseCaseController,
+    FetchUserSolicitationsUseCaseController,
     CreateSolicitationUseCaseController,
     EditSolicitationUseCaseController,
     DeleteSolicitationUseCaseController,
   ],
   providers: [
     {
-      provide: FetchSolicitationsUseCase,
+      provide: FetchUserSolicitationsUseCase,
       useFactory: (solicitationRepository: SolicitationRepository) => {
-        return new FetchSolicitationsUseCase(solicitationRepository)
+        return new FetchUserSolicitationsUseCase(solicitationRepository)
       },
       inject: [SolicitationRepository],
     },
