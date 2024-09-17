@@ -1,5 +1,6 @@
 import { Either, left } from "src/core/Either"
 import { UserAlreadyHasProfile } from "../../../errors/profile/UserAlreadyHasProfile"
+import { CompanyProfileRepository } from "../../../repositories/profile/company/company-profile.repository"
 
 export type CreateProfilePayload = {
   name: string
@@ -12,7 +13,7 @@ export type CreateProfilePayload = {
 type CreateCompanyProfileResponse = Either<UserAlreadyHasProfile, void>
 
 export class CreateClientProfile {
-  constructor(private companyProfileRepository) {}
+  constructor(private companyProfileRepository: CompanyProfileRepository) {}
 
   async execute(
     createProfilePayload: CreateProfilePayload,

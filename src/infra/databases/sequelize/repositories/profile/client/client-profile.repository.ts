@@ -31,7 +31,7 @@ export class SequelizeClientProfileRepository extends ClientProfileRepository {
       name: createProfilePayload.name,
       fk_id_user: createProfilePayload.userId,
       address: createProfilePayload?.address,
-      fk_id_map_radius: createProfilePayload?.preferredMapRadiusId,
+      fk_id_geo_infos: createProfilePayload?.preferredMapRadiusId,
       profile_img: createProfilePayload?.profileImg,
     })
   }
@@ -44,7 +44,7 @@ export class SequelizeClientProfileRepository extends ClientProfileRepository {
       {
         name: editProfilePayload.name,
         address: editProfilePayload.address,
-        fk_id_map_radius: editProfilePayload.preferredMapRadiusId,
+        fk_id_geo_infos: editProfilePayload.preferredMapRadiusId,
         profile_img: editProfilePayload.profileImg,
         rating: editProfilePayload.rating,
       },

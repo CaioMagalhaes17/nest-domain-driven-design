@@ -26,7 +26,7 @@ export class CompanyProfile extends Model {
   @Column
   rating: number
   @Column
-  fk_id_map_radius: number
+  fk_id_geo_infos: number
   @Column
   bio: number
   @Column

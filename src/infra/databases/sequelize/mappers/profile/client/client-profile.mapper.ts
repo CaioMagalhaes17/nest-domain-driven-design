@@ -7,7 +7,7 @@ export class ClientProfileMapper {
       {
         name: row.name,
         address: row.address,
-        preferredMapRadiusId: row.fk_id_map_radius,
+        preferredMapRadiusId: row.fk_id_geo_infos,
         profileImg: row.profile_img,
         rating: row.rating,
         userId: row.fk_id_user,
