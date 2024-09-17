@@ -23,6 +23,7 @@ export class UserAuthSignUpUseCase {
     name,
     login,
     password,
+    isCompany,
   }: UserSignUpDTO): Promise<UserAuthSignUpUseCaseResponse> {
     if (await this.userRepository.fetchUserByLogin(login))
       return left(new LoginInUseError())
@@ -31,11 +32,13 @@ export class UserAuthSignUpUseCase {
       name,
       login,
       passwordHash,
+      isCompany,
     )
     return right({
       token: this.encrypterGateway.encryptToken({
         id: newUser.id,
         name: newUser.name,
+        isCompany: newUser.isCompany,
       }),
       user: newUser,
     })

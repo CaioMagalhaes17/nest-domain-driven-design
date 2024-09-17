@@ -7,9 +7,11 @@ import { EditGeolocationUseCaseController } from "./edit-geolocation-use-case.co
 import { EditGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/edit-geolocation-use-case"
 import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
 import { FetchGeolocationUseCaseController } from "./fetch-geolocation-use-case.controller"
+import { ClientProfileRepository } from "src/domain/portal/application/repositories/profile/client/client-profile.repository"
+import { ClientProfileDatabaseModule } from "src/infra/databases/client-profile-database.module"
 
 @Module({
-  imports: [GeolocationDatabaseModule],
+  imports: [GeolocationDatabaseModule, ClientProfileDatabaseModule],
   controllers: [
     CreateGeolocationUseCaseController,
     EditGeolocationUseCaseController,
@@ -18,10 +20,16 @@ import { FetchGeolocationUseCaseController } from "./fetch-geolocation-use-case.
   providers: [
     {
       provide: CreateGeolocationUseCase,
-      useFactory: (geolocationRepository: GeolocationRepository) => {
-        return new CreateGeolocationUseCase(geolocationRepository)
+      useFactory: (
+        geolocationRepository: GeolocationRepository,
+        clientProfileRepository: ClientProfileRepository,
+      ) => {
+        return new CreateGeolocationUseCase(
+          geolocationRepository,
+          clientProfileRepository,
+        )
       },
-      inject: [GeolocationRepository],
+      inject: [GeolocationRepository, ClientProfileRepository],
     },
     {
       provide: EditGeolocationUseCase,

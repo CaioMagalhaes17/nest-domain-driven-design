@@ -19,11 +19,13 @@ export class SequelizeUserRepository implements UserRepository {
     name: string,
     login: string,
     passwordHash: string,
+    isCompany: boolean,
   ): Promise<undefined | User> {
     const result = await SequelizeUser.create({
       name,
       login,
       password: passwordHash,
+      isCompany,
     })
     if (result) {
       return UserMapper.toDomain(result)

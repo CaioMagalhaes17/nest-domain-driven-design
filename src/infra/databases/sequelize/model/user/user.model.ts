@@ -20,4 +20,6 @@ export class User extends Model {
   password: string
   @Column
   name: string
+  @Column
+  isCompany: string
 }

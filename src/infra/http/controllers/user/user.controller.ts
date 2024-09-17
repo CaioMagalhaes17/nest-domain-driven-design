@@ -5,7 +5,6 @@ import {
   Post,
   UnauthorizedException,
 } from "@nestjs/common"
-import { UserInfosDTO } from "src/domain/portal/application/dto/user-infos.dto"
 import { UserSignUpDTO } from "src/domain/portal/application/dto/user-signup.dto"
 import { InvalidCredentilsError } from "src/domain/portal/application/errors/user/invalid-credentials.error"
 import { LoginInUseError } from "src/domain/portal/application/errors/user/login-in-use"
@@ -35,7 +34,7 @@ export class UserController {
 
     const { token, user } = response.value
 
-    const userInfos: UserInfosDTO = {
+    const userInfos = {
       id: user.id,
       name: user.name,
     }
@@ -52,6 +51,7 @@ export class UserController {
       login: signUpData.login,
       name: signUpData.name,
       password: signUpData.password,
+      isCompany: signUpData.isCompany,
     })
     if (response.isLeft()) {
       switch (response.value.constructor) {
@@ -64,7 +64,7 @@ export class UserController {
 
     const { token, user } = response.value
 
-    const userInfos: UserInfosDTO = {
+    const userInfos = {
       id: user.id,
       name: user.name,
     }

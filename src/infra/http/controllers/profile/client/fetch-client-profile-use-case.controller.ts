@@ -19,7 +19,6 @@ export class FetchClientProfileUseCaseController {
   @Get("/user/profile")
   async handle(@Req() req: { user: { id: number } }) {
     const response = await this.fetchClientProfileUseCase.execute(req.user.id)
-
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case ProfileNotFound:

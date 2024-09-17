@@ -6,5 +6,6 @@ export abstract class UserRepository {
     name: string,
     login: string,
     passwordHash: string,
+    isCompany: boolean,
   ): Promise<undefined | User>
 }
