@@ -8,7 +8,7 @@ export class UserMapper {
         name: row.name,
         login: row.login,
         password: row.password,
-        isCompany: row.isCompany === "false" ? false : true,
+        isStore: row.isStore == "false" ? false : true,
         createdAt: row.createdAt,
         updatedAt: row.updatedAt,
       },

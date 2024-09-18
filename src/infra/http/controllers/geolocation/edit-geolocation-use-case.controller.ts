@@ -20,14 +20,14 @@ export class EditGeolocationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Put("/geoinfo/:id")
   async handle(
-    @Req() req: { user: { isCompany: boolean } },
+    @Req() req: { user: { isStore: boolean } },
     @Param("id") id: number,
     @Body() createGeolocation,
   ) {
     const response = await this.editGeolocationUseCase.execute(
       id,
       createGeolocation,
-      req.user.isCompany,
+      req.user.isStore,
     )
 
     if (response.isLeft()) {

@@ -9,7 +9,7 @@ import { Injectable } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { Budget } from "./model/repair/budget.model"
 import { ClientProfile } from "./model/profile/client/client-profile.model"
-import { StoreProfile } from "./model/profile/company/company-profile.model"
+import { StoreProfile } from "./model/profile/store/store-profile.model"
 import { Geolocation } from "./model/geolocation/geolocation"
 
 @Injectable()

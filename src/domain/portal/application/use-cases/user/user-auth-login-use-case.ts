@@ -30,7 +30,7 @@ export class UserAuthLoginUseCase {
       token: this.encrypterGateway.encryptToken({
         id: user.id,
         name: user.name,
-        isCompany: user.isCompany,
+        isStore: user.isStore,
       }),
       user,
     })

@@ -14,9 +14,9 @@ export class FetchGeolocationUseCase {
 
   async execute(
     mapRadiusId: number,
-    isCompany: boolean,
+    isStore: boolean,
   ): Promise<FetchGeolocationUseCaseResponse> {
-    if (isCompany) return left(new ProfileActionNotAllowed())
+    if (isStore) return left(new ProfileActionNotAllowed())
     const result = await this.geolocationRepository.fetchById(mapRadiusId)
     if (!result) return left(new GeolocationNotFound())
     return right({ geolocation: result })

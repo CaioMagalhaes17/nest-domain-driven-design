@@ -19,12 +19,12 @@ export class FetchGeolocationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Get("/geoinfo/:geoinfoId")
   async handle(
-    @Req() req: { user: { isCompany: boolean } },
+    @Req() req: { user: { isStore: boolean } },
     @Param("geoinfoId") geoinfoId: number,
   ) {
     const response = await this.fetchGeolocationUseCase.execute(
       geoinfoId,
-      req.user.isCompany,
+      req.user.isStore,
     )
 
     if (response.isLeft()) {

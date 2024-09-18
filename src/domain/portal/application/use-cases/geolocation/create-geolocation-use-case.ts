@@ -12,9 +12,9 @@ export class CreateGeolocationUseCase {
 
   async execute(
     mapRadiusPayload,
-    user: { id: number; isCompany: boolean },
+    user: { id: number; isStore: boolean },
   ): Promise<CreateGeolocationUseCaseResponse> {
-    if (user.isCompany) return left(new ProfileActionNotAllowed())
+    if (user.isStore) return left(new ProfileActionNotAllowed())
     const id = await this.mapRadiusRepository.create(mapRadiusPayload)
     await this.clientProfileRepository.editProfile(
       { preferredMapRadiusId: id },

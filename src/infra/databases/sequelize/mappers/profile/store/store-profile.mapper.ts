@@ -1,5 +1,5 @@
 import { StoreProfile } from "src/domain/portal/enterprise/profile/store/store-profile"
-import { StoreProfile as SequelizeStoreProfile } from "../../../model/profile/company/company-profile.model"
+import { StoreProfile as SequelizeStoreProfile } from "../../../model/profile/store/store-profile.model"
 
 export class StoreProfileMapper {
   static toDomain(row: SequelizeStoreProfile): StoreProfile {

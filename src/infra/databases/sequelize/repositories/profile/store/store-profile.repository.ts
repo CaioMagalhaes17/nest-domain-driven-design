@@ -1,5 +1,5 @@
 import { StoreProfile } from "src/domain/portal/enterprise/profile/store/store-profile"
-import { StoreProfile as SequelizeStoreProfile } from "../../../model/profile/company/company-profile.model"
+import { StoreProfile as SequelizeStoreProfile } from "../../../model/profile/store/store-profile.model"
 import { StoreProfileMapper } from "../../../mappers/profile/store/store-profile.mapper"
 import { CreateStoreProfilePayload } from "src/domain/portal/application/use-cases/profile/store/create-store-profile"
 import { EditStoreProfilePayload } from "src/domain/portal/application/use-cases/profile/store/edit-store-profile"

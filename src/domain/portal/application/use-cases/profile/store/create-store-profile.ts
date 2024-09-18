@@ -1,6 +1,7 @@
 import { Either, left } from "src/core/Either"
 import { UserAlreadyHasProfile } from "../../../errors/profile/UserAlreadyHasProfile"
-import { CompanyProfileRepository } from "../../../repositories/profile/company/company-profile.repository"
+import { StoreProfileRepository } from "../../../repositories/profile/store/store-profile.repository"
+import { ProfileActionNotAllowed } from "../../../errors/profile/ProfileActionNotAllowed"
 
 export type CreateStoreProfilePayload = {
   name: string
@@ -9,20 +10,26 @@ export type CreateStoreProfilePayload = {
   profileImg?: string
 }
 
-type CreateStoreProfileResponse = Either<UserAlreadyHasProfile, void>
+type CreateStoreProfileResponse = Either<
+  UserAlreadyHasProfile | ProfileActionNotAllowed,
+  void
+>
 
-export class CreateClientProfile {
-  constructor(private companyProfileRepository: CompanyProfileRepository) {}
+export class CreateStoreProfileUseCase {
+  constructor(private storeProfileRepository: StoreProfileRepository) {}
 
   async execute(
     createProfilePayload: CreateStoreProfilePayload,
+    isStore: boolean,
   ): Promise<CreateStoreProfileResponse> {
-    const profile = await this.companyProfileRepository.fetchByUserId(
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", isStore)
+    if (!isStore) return left(new ProfileActionNotAllowed())
+    const profile = await this.storeProfileRepository.fetchByUserId(
       createProfilePayload.userId,
     )
 
     if (profile) return left(new UserAlreadyHasProfile())
 
-    await this.companyProfileRepository.createProfile(createProfilePayload)
+    await this.storeProfileRepository.createProfile(createProfilePayload)
   }
 }

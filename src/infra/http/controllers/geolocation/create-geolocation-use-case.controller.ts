@@ -9,7 +9,7 @@ export class CreateGeolocationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/geoinfo")
   async handle(
-    @Req() req: { user: { id: number; isCompany: boolean } },
+    @Req() req: { user: { id: number; isStore: boolean } },
     @Body() createGeolocation,
   ) {
     const response = await this.createGeolocationUseCase.execute(

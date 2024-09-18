@@ -21,5 +21,5 @@ export class User extends Model {
   @Column
   name: string
   @Column
-  isCompany: string
+  isStore: string
 }

@@ -13,18 +13,18 @@ export type EditStoreProfilePayload = {
   typeSubscriptionId?: number
 }
 
-type EditCompanyProfileReturn = Either<
+type EditStoreProfileReturn = Either<
   ProfileActionNotAllowed | ProfileNotFound,
   void
 >
-export class EditCompanyProfile {
-  constructor(private companyProfileRepository) {}
+export class EditStoreProfileUseCase {
+  constructor(private storeProfileRepository) {}
 
   async execute(
     editProfilePayload: EditStoreProfilePayload,
     userId: number,
-  ): Promise<EditCompanyProfileReturn> {
-    const profile = await this.companyProfileRepository.fetchById(
+  ): Promise<EditStoreProfileReturn> {
+    const profile = await this.storeProfileRepository.fetchById(
       editProfilePayload.id,
     )
 
@@ -32,6 +32,6 @@ export class EditCompanyProfile {
 
     if (profile.userId !== userId) return left(new ProfileActionNotAllowed())
 
-    await this.companyProfileRepository.editProfile(editProfilePayload)
+    await this.storeProfileRepository.editProfile(editProfilePayload)
   }
 }

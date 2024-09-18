@@ -6,7 +6,7 @@ type UserProps = {
   login: string
   password: string
   name: string
-  isCompany: boolean
+  isStore: boolean
 }
 
 export class User extends BaseEntity<UserProps> {
@@ -34,7 +34,7 @@ export class User extends BaseEntity<UserProps> {
     return this.props.name
   }
 
-  get isCompany(): boolean {
-    return this.props.isCompany
+  get isStore(): boolean {
+    return this.props.isStore
   }
 }

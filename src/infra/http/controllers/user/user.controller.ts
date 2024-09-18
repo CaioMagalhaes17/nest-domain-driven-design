@@ -51,7 +51,7 @@ export class UserController {
       login: signUpData.login,
       name: signUpData.name,
       password: signUpData.password,
-      isCompany: signUpData.isCompany,
+      isStore: signUpData.isStore,
     })
     if (response.isLeft()) {
       switch (response.value.constructor) {

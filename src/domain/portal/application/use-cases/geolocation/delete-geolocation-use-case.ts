@@ -12,9 +12,9 @@ export class DeleteGeolocationUseCase {
 
   async execute(
     mapRadiusId: number,
-    isCompany: boolean,
+    isStore: boolean,
   ): Promise<DeleteGeolocationUseCaseUseCaseResponse> {
-    if (isCompany) return left(new ProfileActionNotAllowed())
+    if (isStore) return left(new ProfileActionNotAllowed())
     const mapRadius = await this.mapRadiusRepository.fetchById(mapRadiusId)
     if (!mapRadius) return left(new GeolocationNotFound())
     await this.mapRadiusRepository.delete(mapRadiusId)
