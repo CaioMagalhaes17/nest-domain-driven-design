@@ -1,6 +1,6 @@
 import { BaseEntity } from "src/core/entities/base-entity"
 
-type CompanyProfileProps = {
+type StoreProfileProps = {
   name: string
   address: string
   preferredMapRadiusId: number
@@ -11,9 +11,9 @@ type CompanyProfileProps = {
   userId: number
 }
 
-export class CompanyProfile extends BaseEntity<CompanyProfileProps> {
-  static create(props: CompanyProfileProps, id: number) {
-    return new CompanyProfile(props, id)
+export class StoreProfile extends BaseEntity<StoreProfileProps> {
+  static create(props: StoreProfileProps, id: number) {
+    return new StoreProfile(props, id)
   }
 
   get name(): string {

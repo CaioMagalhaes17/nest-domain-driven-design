@@ -1,11 +1,11 @@
 import { Either, left, right } from "src/core/Either"
 import { ProfileNotFound } from "../../../errors/profile/ProfileNotFound"
-import { CompanyProfile } from "src/domain/portal/enterprise/profile/company/company-profile"
+import { StoreProfile } from "src/domain/portal/enterprise/profile/store/store-profile"
 
 type FetchCompanyProfileResponse = Either<
   ProfileNotFound,
   {
-    profile: CompanyProfile
+    profile: StoreProfile
   }
 >
 

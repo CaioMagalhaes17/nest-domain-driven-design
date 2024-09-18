@@ -12,7 +12,7 @@ import { User } from "../../user/user.model"
 @Table({
   tableName: "company_profile",
 })
-export class CompanyProfile extends Model {
+export class StoreProfile extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column
@@ -28,7 +28,7 @@ export class CompanyProfile extends Model {
   @Column
   fk_id_geo_infos: number
   @Column
-  bio: number
+  bio: string
   @Column
   fk_id_type_subscription: number
   @ForeignKey(() => User)

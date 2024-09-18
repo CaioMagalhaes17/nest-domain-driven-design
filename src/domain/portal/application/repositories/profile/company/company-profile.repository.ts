@@ -1,13 +1,15 @@
-import { CompanyProfile } from "src/domain/portal/enterprise/profile/company/company-profile"
-import { CreateProfilePayload } from "../../../use-cases/profile/company/create-company-profile"
-import { EditProfilePayload } from "../../../use-cases/profile/company/edit-company-profile"
+import { StoreProfile } from "src/domain/portal/enterprise/profile/store/store-profile"
+import { CreateStoreProfilePayload } from "../../../use-cases/profile/store/create-store-profile"
+import { EditStoreProfilePayload } from "../../../use-cases/profile/store/edit-store-profile"
 
 export abstract class CompanyProfileRepository {
-  abstract fetchById(profileId: number): Promise<CompanyProfile | void>
-  abstract fetchByUserId(userId: number): Promise<CompanyProfile | void>
+  abstract fetchById(profileId: number): Promise<StoreProfile | void>
+  abstract fetchByUserId(userId: number): Promise<StoreProfile | void>
   abstract deleteById(profileId: number): Promise<void>
   abstract createProfile(
-    createProfilePayload: CreateProfilePayload,
+    createProfilePayload: CreateStoreProfilePayload,
   ): Promise<void>
-  abstract editProfile(editProfilePayload: EditProfilePayload): Promise<void>
+  abstract editProfile(
+    editProfilePayload: EditStoreProfilePayload,
+  ): Promise<void>
 }

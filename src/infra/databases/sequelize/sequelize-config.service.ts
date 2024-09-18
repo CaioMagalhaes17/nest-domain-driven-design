@@ -9,7 +9,7 @@ import { Injectable } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { Budget } from "./model/repair/budget.model"
 import { ClientProfile } from "./model/profile/client/client-profile.model"
-import { CompanyProfile } from "./model/profile/company/company-profile.model"
+import { StoreProfile } from "./model/profile/company/company-profile.model"
 import { Geolocation } from "./model/geolocation/geolocation"
 
 @Injectable()
@@ -30,7 +30,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         User,
         Budget,
         ClientProfile,
-        CompanyProfile,
+        StoreProfile,
         Geolocation,
       ],
       autoLoadModels: true, // Opcional: carrega automaticamente os modelos
