@@ -22,7 +22,6 @@ export class CreateStoreProfileUseCase {
     createProfilePayload: CreateStoreProfilePayload,
     isStore: boolean,
   ): Promise<CreateStoreProfileResponse> {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", isStore)
     if (!isStore) return left(new ProfileActionNotAllowed())
     const profile = await this.storeProfileRepository.fetchByUserId(
       createProfilePayload.userId,

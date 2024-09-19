@@ -23,7 +23,9 @@ export class EditStoreProfileUseCase {
   async execute(
     editProfilePayload: EditStoreProfilePayload,
     userId: number,
+    isStore: boolean,
   ): Promise<EditStoreProfileReturn> {
+    if (!isStore) return left(new ProfileActionNotAllowed())
     const profile = await this.storeProfileRepository.fetchById(
       editProfilePayload.id,
     )

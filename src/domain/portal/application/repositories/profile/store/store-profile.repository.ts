@@ -5,7 +5,7 @@ import { EditStoreProfilePayload } from "../../../use-cases/profile/store/edit-s
 export abstract class StoreProfileRepository {
   abstract fetchById(profileId: number): Promise<StoreProfile | void>
   abstract fetchByUserId(userId: number): Promise<StoreProfile | void>
-  abstract deleteById(profileId: number): Promise<void>
+  abstract deleteProfileById(userId: number): Promise<void>
   abstract createProfile(
     createProfilePayload: CreateStoreProfilePayload,
   ): Promise<void>

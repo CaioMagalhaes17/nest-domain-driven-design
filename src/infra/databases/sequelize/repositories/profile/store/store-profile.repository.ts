@@ -17,9 +17,9 @@ export class SequelizeStoreProfileRepository {
     if (result) return StoreProfileMapper.toDomain(result)
   }
 
-  async deleteById(profileId: number): Promise<void> {
+  async deleteProfileById(userId: number): Promise<void> {
     await SequelizeStoreProfile.destroy({
-      where: { id: profileId },
+      where: { fk_id_user: userId },
     })
   }
 

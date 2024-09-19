@@ -1,6 +1,7 @@
 import { Either, left } from "src/core/Either"
 import { ProfileNotFound } from "../../../errors/profile/ProfileNotFound"
 import { ProfileActionNotAllowed } from "../../../errors/profile/ProfileActionNotAllowed"
+import { StoreProfileRepository } from "../../../repositories/profile/store/store-profile.repository"
 
 type DeleteStoreProfileResponse = Either<
   ProfileActionNotAllowed | ProfileNotFound,
@@ -8,17 +9,18 @@ type DeleteStoreProfileResponse = Either<
 >
 
 export class DeleteStorreProfileUseCase {
-  constructor(private storeProfileRepository) {}
+  constructor(private storeProfileRepository: StoreProfileRepository) {}
 
   async execute(
-    profileId: number,
     userId: number,
+    isStore: boolean,
   ): Promise<DeleteStoreProfileResponse> {
-    const profile = await this.storeProfileRepository.fetchById(profileId)
+    if (!isStore) return left(new ProfileActionNotAllowed())
+    const profile = await this.storeProfileRepository.fetchByUserId(userId)
 
     if (!profile) return left(new ProfileNotFound())
     if (profile.userId !== userId) return left(new ProfileActionNotAllowed())
 
-    await this.storeProfileRepository.deleteById(profileId)
+    await this.storeProfileRepository.deleteProfileById(userId)
   }
 }
