@@ -1,9 +1,13 @@
 export class BaseEntity<T> {
-  private id: Number
+  private _id: number
   protected props: T
 
-  protected constructor(props: T, id?: Number){
+  get id() {
+    return this._id
+  }
+
+  protected constructor(props: T, id?: number) {
     this.props = props
-    this.id = id
+    this._id = id
   }
 }

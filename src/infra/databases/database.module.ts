@@ -1,21 +1,25 @@
-import { Module } from '@nestjs/common'
-import { TesteRepository } from '../../domain/portal/application/repositories/teste-repository';
-import { SolicitationRepository } from './sequelize/repositories/solicitation-repository';
-import { Sequelize } from 'sequelize-typescript';
-import { Solicitation } from './sequelize/model/solicitation.model';
+import { Module } from "@nestjs/common"
+import { SolicitationDatabaseModule } from "./solicitation-database.module"
+import { UserDatabaseModule } from "./user-database.module"
+import { BudgetDatabaseModule } from "./budget-database.module"
+import { ClientProfileDatabaseModule } from "./client-profile-database.module"
+import { GeolocationDatabaseModule } from "./geolocation-database.module"
 
 @Module({
-  providers: [
-    {
-      provide: TesteRepository,
-      useFactory: (solicitation: Solicitation) => {
-        return new SolicitationRepository(solicitation)
-      },
-      inject: [Sequelize]
-    }
+  imports: [
+    UserDatabaseModule,
+    SolicitationDatabaseModule,
+    BudgetDatabaseModule,
+    ClientProfileDatabaseModule,
+    GeolocationDatabaseModule,
   ],
+
   exports: [
-    TesteRepository
-  ]
+    UserDatabaseModule,
+    SolicitationDatabaseModule,
+    BudgetDatabaseModule,
+    ClientProfileDatabaseModule,
+    GeolocationDatabaseModule,
+  ],
 })
 export class DataBaseModule {}
