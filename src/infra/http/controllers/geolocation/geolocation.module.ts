@@ -10,6 +10,8 @@ import { FetchGeolocationUseCaseController } from "./fetch-geolocation-use-case.
 import { ClientProfileRepository } from "src/domain/portal/application/repositories/profile/client/client-profile.repository"
 import { ClientProfileDatabaseModule } from "src/infra/databases/client-profile-database.module"
 import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-covering-use-case"
+import { FetchStoresInsideRadiusUseCaseController } from "./fetch-stores-inside-radius-use-case.controller"
+import { FetchStoresInsideRadiusUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-stores-inside-radius-use-case"
 
 @Module({
   imports: [GeolocationDatabaseModule, ClientProfileDatabaseModule],
@@ -17,6 +19,7 @@ import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/applicat
     CreateGeolocationUseCaseController,
     EditGeolocationUseCaseController,
     FetchGeolocationUseCaseController,
+    FetchStoresInsideRadiusUseCaseController,
   ],
   providers: [
     {
@@ -50,6 +53,13 @@ import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/applicat
       provide: FetchGeolocationCoveringStoreUseCase,
       useFactory: (geolocationRepository: GeolocationRepository) => {
         return new FetchGeolocationCoveringStoreUseCase(geolocationRepository)
+      },
+      inject: [GeolocationRepository],
+    },
+    {
+      provide: FetchStoresInsideRadiusUseCase,
+      useFactory: (geolocationRepository: GeolocationRepository) => {
+        return new FetchStoresInsideRadiusUseCase(geolocationRepository)
       },
       inject: [GeolocationRepository],
     },

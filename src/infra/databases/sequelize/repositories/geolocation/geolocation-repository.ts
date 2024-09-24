@@ -23,7 +23,6 @@ export class SequelizeGeolocationRepository extends GeolocationRepository {
     latitudeLoja: string,
     longitudeLoja: string,
   ) {
-    console.log(longitudeLoja, latitudeLoja)
     const query = `
       SELECT fk_id_user, 
              (6371 * ACOS(COS(RADIANS(:latitudeLoja)) 
@@ -46,6 +45,34 @@ export class SequelizeGeolocationRepository extends GeolocationRepository {
     })
 
     return problemas
+  }
+
+  async fetchStoresInsideRadius(
+    latitude: string,
+    longitude: string,
+    radius: string,
+  ) {
+    const query = `
+      SELECT fk_id_user, 
+      (6371 * ACOS(COS(RADIANS(:latitude)) 
+                 * COS(RADIANS(latitude)) 
+                 * COS(RADIANS(longitude) - RADIANS(:longitude)) 
+                 + SIN(RADIANS(:latitude)) 
+                 * SIN(RADIANS(latitude)))) AS distancia_km
+      FROM geo_infos
+      WHERE type_profile = 'store'
+      HAVING distancia_km <= :radius`
+
+    const stores = await SequelizeGeolocation.sequelize.query(query, {
+      replacements: {
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
+        radius: parseFloat(radius),
+      },
+      type: QueryTypes.SELECT, // Define o tipo de consulta como SELECT
+    })
+
+    return stores
   }
 
   async delete(mapRadiusId: number) {

@@ -13,4 +13,9 @@ export abstract class GeolocationRepository {
   abstract create(mapRadiusPayload: GeoLocationRepositoryInterface)
   abstract edit(mapRadiusId: number, mapRadiusPayload)
   abstract fetchGeolocationCoveringStore(latitude: string, longitude: string)
+  abstract fetchStoresInsideRadius(
+    latitude: string,
+    longitude: string,
+    radius: string,
+  )
 }
