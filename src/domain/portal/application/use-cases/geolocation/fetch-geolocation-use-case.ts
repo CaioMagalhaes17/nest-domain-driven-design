@@ -12,12 +12,8 @@ type FetchGeolocationUseCaseResponse = Either<
 export class FetchGeolocationUseCase {
   constructor(private geolocationRepository: GeolocationRepository) {}
 
-  async execute(
-    mapRadiusId: number,
-    isStore: boolean,
-  ): Promise<FetchGeolocationUseCaseResponse> {
-    if (isStore) return left(new ProfileActionNotAllowed())
-    const result = await this.geolocationRepository.fetchById(mapRadiusId)
+  async execute(userId: number): Promise<FetchGeolocationUseCaseResponse> {
+    const result = await this.geolocationRepository.fetchByUserId(userId)
     if (!result) return left(new GeolocationNotFound())
     return right({ geolocation: result })
   }

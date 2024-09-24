@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   NotFoundException,
-  Param,
   Req,
   UseGuards,
 } from "@nestjs/common"
@@ -17,15 +16,9 @@ export class FetchGeolocationUseCaseController {
   constructor(private fetchGeolocationUseCase: FetchGeolocationUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/geoinfo/:geoinfoId")
-  async handle(
-    @Req() req: { user: { isStore: boolean } },
-    @Param("geoinfoId") geoinfoId: number,
-  ) {
-    const response = await this.fetchGeolocationUseCase.execute(
-      geoinfoId,
-      req.user.isStore,
-    )
+  @Get("/geoinfo")
+  async handle(@Req() req: { user: { id: number } }) {
+    const response = await this.fetchGeolocationUseCase.execute(req.user.id)
 
     if (response.isLeft()) {
       switch (response.value.constructor) {

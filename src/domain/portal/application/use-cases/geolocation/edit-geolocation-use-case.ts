@@ -13,9 +13,7 @@ export class EditGeolocationUseCase {
   async execute(
     mapRadiusId: number,
     mapRadiusPayload,
-    isStore: boolean,
   ): Promise<EditGeolocationUseCaseResponse> {
-    if (isStore) return left(new ProfileActionNotAllowed())
     const mapRadius = await this.mapRadiusRepository.fetchById(mapRadiusId)
     if (!mapRadius) return left(new GeolocationNotFound())
     await this.mapRadiusRepository.edit(mapRadiusId, mapRadiusPayload)

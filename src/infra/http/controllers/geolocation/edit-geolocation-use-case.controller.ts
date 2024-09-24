@@ -27,7 +27,6 @@ export class EditGeolocationUseCaseController {
     const response = await this.editGeolocationUseCase.execute(
       id,
       createGeolocation,
-      req.user.isStore,
     )
 
     if (response.isLeft()) {

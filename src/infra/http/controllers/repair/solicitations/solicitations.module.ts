@@ -12,15 +12,21 @@ import { DeleteSolicitationUseCase } from "src/domain/portal/application/use-cas
 import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-database.module"
 import { FetchSolicitationUseCaseController } from "./fetch-solicitation-use-case.controller"
 import { FetchSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitation-use-case"
+import { FetchAvaliableSolicitationsToStoreUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-avaliable-solicitations-to-store-use-case"
+import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-covering-use-case"
+import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
+import { FetchAvaliableSolicitationsToStoreUseCaseController } from "./fetch-avaliable-solicitations-to-store-use-case.controller"
+import { GeolocationModule } from "../../geolocation/geolocation.module"
 
 @Module({
-  imports: [SolicitationDatabaseModule],
+  imports: [SolicitationDatabaseModule, GeolocationModule],
   controllers: [
     FetchSolicitationUseCaseController,
     FetchUserSolicitationsUseCaseController,
     CreateSolicitationUseCaseController,
     EditSolicitationUseCaseController,
     DeleteSolicitationUseCaseController,
+    FetchAvaliableSolicitationsToStoreUseCaseController,
   ],
   providers: [
     {
@@ -29,6 +35,19 @@ import { FetchSolicitationUseCase } from "src/domain/portal/application/use-case
         return new FetchUserSolicitationsUseCase(solicitationRepository)
       },
       inject: [SolicitationRepository],
+    },
+    {
+      provide: FetchAvaliableSolicitationsToStoreUseCase,
+      useFactory: (
+        fetchGeolocationCoveringUseCase: FetchGeolocationCoveringStoreUseCase,
+        fetchGeolocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new FetchAvaliableSolicitationsToStoreUseCase(
+          fetchGeolocationCoveringUseCase,
+          fetchGeolocationUseCase,
+        )
+      },
+      inject: [FetchGeolocationCoveringStoreUseCase, FetchGeolocationUseCase],
     },
     {
       provide: CreateSolicitationUseCase,

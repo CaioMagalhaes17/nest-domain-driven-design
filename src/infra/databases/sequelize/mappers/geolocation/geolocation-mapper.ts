@@ -10,6 +10,8 @@ export class GeolocationMapper {
         radius: row.radius,
         createdAt: row.createdAt,
         updatedAt: row.updatedAt,
+        typeProfile: row.type_profile,
+        userId: row.fk_id_user,
       },
       row.id,
     )

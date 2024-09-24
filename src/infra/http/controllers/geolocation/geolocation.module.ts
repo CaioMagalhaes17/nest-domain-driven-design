@@ -9,6 +9,7 @@ import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases
 import { FetchGeolocationUseCaseController } from "./fetch-geolocation-use-case.controller"
 import { ClientProfileRepository } from "src/domain/portal/application/repositories/profile/client/client-profile.repository"
 import { ClientProfileDatabaseModule } from "src/infra/databases/client-profile-database.module"
+import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-covering-use-case"
 
 @Module({
   imports: [GeolocationDatabaseModule, ClientProfileDatabaseModule],
@@ -45,6 +46,14 @@ import { ClientProfileDatabaseModule } from "src/infra/databases/client-profile-
       },
       inject: [GeolocationRepository],
     },
+    {
+      provide: FetchGeolocationCoveringStoreUseCase,
+      useFactory: (geolocationRepository: GeolocationRepository) => {
+        return new FetchGeolocationCoveringStoreUseCase(geolocationRepository)
+      },
+      inject: [GeolocationRepository],
+    },
   ],
+  exports: [FetchGeolocationCoveringStoreUseCase, FetchGeolocationUseCase],
 })
 export class GeolocationModule {}

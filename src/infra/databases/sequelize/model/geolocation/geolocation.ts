@@ -20,4 +20,8 @@ export class Geolocation extends Model {
   longitude: string
   @Column
   radius: string
+  @Column
+  type_profile: string
+  @Column
+  fk_id_user: number
 }

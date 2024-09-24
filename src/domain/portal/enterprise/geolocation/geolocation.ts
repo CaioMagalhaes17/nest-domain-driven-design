@@ -6,6 +6,8 @@ interface GeolocationProps {
   radius: string
   createdAt: string
   updatedAt: string
+  typeProfile: string
+  userId: number
 }
 
 export class Geolocation extends BaseEntity<GeolocationProps> {
@@ -31,5 +33,13 @@ export class Geolocation extends BaseEntity<GeolocationProps> {
 
   get updatedAt(): string {
     return this.props.updatedAt
+  }
+
+  get typeProfile(): string {
+    return this.props.typeProfile
+  }
+
+  get userId(): number {
+    return this.props.userId
   }
 }

@@ -1,11 +1,51 @@
-import { GeolocationRepository } from "src/domain/portal/application/repositories/geolocation/geolocation-repository"
+import {
+  GeolocationRepository,
+  GeoLocationRepositoryInterface,
+} from "src/domain/portal/application/repositories/geolocation/geolocation-repository"
 import { Geolocation as SequelizeGeolocation } from "../../model/geolocation/geolocation"
 import { GeolocationMapper } from "../../mappers/geolocation/geolocation-mapper"
+import { QueryTypes } from "sequelize"
 
 export class SequelizeGeolocationRepository extends GeolocationRepository {
   async fetchById(mapRadiusId: number) {
     const result = await SequelizeGeolocation.findByPk(mapRadiusId)
     if (result) return GeolocationMapper.toDomain(result)
+  }
+
+  async fetchByUserId(userId: number) {
+    const result = await SequelizeGeolocation.findOne({
+      where: { fk_id_user: userId },
+    })
+    if (result) return GeolocationMapper.toDomain(result)
+  }
+
+  async fetchGeolocationCoveringStore(
+    latitudeLoja: string,
+    longitudeLoja: string,
+  ) {
+    console.log(longitudeLoja, latitudeLoja)
+    const query = `
+      SELECT fk_id_user, 
+             (6371 * ACOS(COS(RADIANS(:latitudeLoja)) 
+                          * COS(RADIANS(latitude)) 
+                          * COS(RADIANS(longitude) - RADIANS(:longitudeLoja)) 
+                          + SIN(RADIANS(:latitudeLoja)) 
+                          * SIN(RADIANS(latitude)))) AS distancia_km,
+             radius
+      FROM geo_infos
+      WHERE type_profile = 'client'
+      HAVING distancia_km <= radius;
+    `
+
+    const problemas = await SequelizeGeolocation.sequelize.query(query, {
+      replacements: {
+        latitudeLoja: parseFloat(latitudeLoja),
+        longitudeLoja: parseFloat(longitudeLoja),
+      },
+      type: QueryTypes.SELECT, // Define o tipo de consulta como SELECT
+    })
+
+    return problemas
   }
 
   async delete(mapRadiusId: number) {
@@ -14,8 +54,12 @@ export class SequelizeGeolocationRepository extends GeolocationRepository {
     })
   }
 
-  async create(mapRadiusPayload: any) {
-    const result = await SequelizeGeolocation.create(mapRadiusPayload)
+  async create(geoLocationPayload: GeoLocationRepositoryInterface) {
+    const result = await SequelizeGeolocation.create({
+      type_profile: geoLocationPayload.typeProfile,
+      fk_id_user: geoLocationPayload.userId,
+      ...geoLocationPayload,
+    })
     return result.id
   }
 
