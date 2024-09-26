@@ -1,5 +1,6 @@
 import { GeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 
+//Retorna lojas dentro da localizacao dada
 export class FetchStoresInsideRadiusUseCase {
   constructor(private geolocationRepository: GeolocationRepository) {}
 

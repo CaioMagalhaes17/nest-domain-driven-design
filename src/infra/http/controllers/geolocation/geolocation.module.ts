@@ -64,6 +64,10 @@ import { FetchStoresInsideRadiusUseCase } from "src/domain/portal/application/us
       inject: [GeolocationRepository],
     },
   ],
-  exports: [FetchGeolocationCoveringStoreUseCase, FetchGeolocationUseCase],
+  exports: [
+    FetchGeolocationCoveringStoreUseCase,
+    FetchGeolocationUseCase,
+    FetchStoresInsideRadiusUseCase,
+  ],
 })
 export class GeolocationModule {}

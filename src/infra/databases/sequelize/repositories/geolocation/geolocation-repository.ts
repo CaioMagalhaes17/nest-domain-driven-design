@@ -36,15 +36,18 @@ export class SequelizeGeolocationRepository extends GeolocationRepository {
       HAVING distancia_km <= radius;
     `
 
-    const problemas = await SequelizeGeolocation.sequelize.query(query, {
-      replacements: {
-        latitudeLoja: parseFloat(latitudeLoja),
-        longitudeLoja: parseFloat(longitudeLoja),
+    const clientsGeoLocation = await SequelizeGeolocation.sequelize.query(
+      query,
+      {
+        replacements: {
+          latitudeLoja: parseFloat(latitudeLoja),
+          longitudeLoja: parseFloat(longitudeLoja),
+        },
+        type: QueryTypes.SELECT, // Define o tipo de consulta como SELECT
       },
-      type: QueryTypes.SELECT, // Define o tipo de consulta como SELECT
-    })
+    )
 
-    return problemas
+    return clientsGeoLocation
   }
 
   async fetchStoresInsideRadius(

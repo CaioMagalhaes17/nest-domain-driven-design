@@ -17,9 +17,17 @@ import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/applicat
 import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
 import { FetchAvaliableSolicitationsToStoreUseCaseController } from "./fetch-avaliable-solicitations-to-store-use-case.controller"
 import { GeolocationModule } from "../../geolocation/geolocation.module"
+import { OnSolicitationCreatedUseCase } from "src/domain/portal/application/use-cases/solicitations/on-solicitation-created-use-case"
+import { EventStreamingGateway } from "src/domain/portal/application/gateway/event-streaming/event-streaming.gateway"
+import { FetchStoresInsideRadiusUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-stores-inside-radius-use-case"
+import { EventStreamingModule } from "src/infra/gateways/event-streaming/event-streaming.module"
 
 @Module({
-  imports: [SolicitationDatabaseModule, GeolocationModule],
+  imports: [
+    SolicitationDatabaseModule,
+    GeolocationModule,
+    EventStreamingModule,
+  ],
   controllers: [
     FetchSolicitationUseCaseController,
     FetchUserSolicitationsUseCaseController,
@@ -41,26 +49,38 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
       useFactory: (
         fetchGeolocationCoveringUseCase: FetchGeolocationCoveringStoreUseCase,
         fetchGeolocationUseCase: FetchGeolocationUseCase,
+        fetchUserSolicitationsUseCase: FetchUserSolicitationsUseCase,
       ) => {
         return new FetchAvaliableSolicitationsToStoreUseCase(
           fetchGeolocationCoveringUseCase,
           fetchGeolocationUseCase,
+          fetchUserSolicitationsUseCase,
         )
       },
-      inject: [FetchGeolocationCoveringStoreUseCase, FetchGeolocationUseCase],
+      inject: [
+        FetchGeolocationCoveringStoreUseCase,
+        FetchGeolocationUseCase,
+        FetchUserSolicitationsUseCase,
+      ],
     },
     {
       provide: CreateSolicitationUseCase,
       useFactory: (
         solicitationRepository: SolicitationRepository,
         solicitationFormRepository: SolicitationFormRepository,
+        onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
       ) => {
         return new CreateSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
+          onSolicitationCreatedUseCase,
         )
       },
-      inject: [SolicitationRepository, SolicitationFormRepository],
+      inject: [
+        SolicitationRepository,
+        SolicitationFormRepository,
+        OnSolicitationCreatedUseCase,
+      ],
     },
     {
       provide: EditSolicitationUseCase,
@@ -94,6 +114,25 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
         return new FetchSolicitationUseCase(solicitationRepository)
       },
       inject: [SolicitationRepository],
+    },
+    {
+      provide: OnSolicitationCreatedUseCase,
+      useFactory: (
+        eventStreamingGateway: EventStreamingGateway,
+        fetchStoresInsideRadiusUseCase: FetchStoresInsideRadiusUseCase,
+        fetchGeolocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new OnSolicitationCreatedUseCase(
+          eventStreamingGateway,
+          fetchStoresInsideRadiusUseCase,
+          fetchGeolocationUseCase,
+        )
+      },
+      inject: [
+        EventStreamingGateway,
+        FetchStoresInsideRadiusUseCase,
+        FetchGeolocationUseCase,
+      ],
     },
   ],
 })
