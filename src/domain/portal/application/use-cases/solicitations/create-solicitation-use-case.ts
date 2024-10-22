@@ -25,6 +25,6 @@ export class CreateSolicitationUseCase {
       solicitationId,
     )
 
-    await this.onSolicitationCreatedUseCase.execute({ userId, solicitationId })
+    await this.onSolicitationCreatedUseCase.execute(userId)
   }
 }

@@ -75,7 +75,15 @@ export class SequelizeGeolocationRepository extends GeolocationRepository {
       type: QueryTypes.SELECT, // Define o tipo de consulta como SELECT
     })
 
-    return stores
+    const result = stores.map(
+      (item: { fk_id_user: number; distancia_km: number }) => {
+        return {
+          storeId: item.fk_id_user,
+          distance: item.distancia_km,
+        }
+      },
+    )
+    return result
   }
 
   async delete(mapRadiusId: number) {

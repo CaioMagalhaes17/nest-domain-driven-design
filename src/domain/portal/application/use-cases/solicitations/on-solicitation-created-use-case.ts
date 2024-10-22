@@ -1,23 +1,15 @@
-import { EventStreamingGateway } from "../../gateway/event-streaming/event-streaming.gateway"
+import { MessagesProducerGateway } from "../../gateway/messageries/messages-producer.gateway"
 import { FetchGeolocationUseCase } from "../geolocation/fetch-geolocation-use-case"
 import { FetchStoresInsideRadiusUseCase } from "../geolocation/fetch-stores-inside-radius-use-case"
 
-interface OnSolicitationCreatedUseCaseInterface {
-  userId: number
-  solicitationId: number
-}
-
 export class OnSolicitationCreatedUseCase {
   constructor(
-    private eventStreamingGateway: EventStreamingGateway,
+    private messagesProducerGateway: MessagesProducerGateway,
     private fetchStoresInsideRadiusUseCase: FetchStoresInsideRadiusUseCase,
     private fetchGeolocationUseCase: FetchGeolocationUseCase,
   ) {}
 
-  async execute({
-    solicitationId,
-    userId,
-  }: OnSolicitationCreatedUseCaseInterface) {
+  async execute(userId: number) {
     const userLocation = await this.fetchGeolocationUseCase.execute(userId)
     if (userLocation.isRight()) {
       const storesInsideUserLocation =
@@ -28,5 +20,6 @@ export class OnSolicitationCreatedUseCase {
         })
       console.log(storesInsideUserLocation)
     }
+    this.messagesProducerGateway.produce("teste", [{ value: "testeing" }])
   }
 }

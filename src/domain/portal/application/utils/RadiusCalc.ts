@@ -55,7 +55,6 @@ export function areCirclesOverlapping(
   radius2: number,
 ): boolean {
   const distance = haversineDistance(lat1, lng1, lat2, lng2)
-  console.log(distance)
   return distance <= radius1 + radius2
 }
 

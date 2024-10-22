@@ -18,15 +18,17 @@ import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases
 import { FetchAvaliableSolicitationsToStoreUseCaseController } from "./fetch-avaliable-solicitations-to-store-use-case.controller"
 import { GeolocationModule } from "../../geolocation/geolocation.module"
 import { OnSolicitationCreatedUseCase } from "src/domain/portal/application/use-cases/solicitations/on-solicitation-created-use-case"
-import { EventStreamingGateway } from "src/domain/portal/application/gateway/event-streaming/event-streaming.gateway"
 import { FetchStoresInsideRadiusUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-stores-inside-radius-use-case"
-import { EventStreamingModule } from "src/infra/gateways/event-streaming/event-streaming.module"
+import { MessagesStreamingModule } from "src/infra/gateways/messageries/messages-streaming.module"
+import { MessagesProducerGateway } from "src/domain/portal/application/gateway/messageries/messages-producer.gateway"
+import { TestConsumer } from "src/infra/consumers/test-consumer"
+import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/messageries/messages-consumer.gateway"
 
 @Module({
   imports: [
     SolicitationDatabaseModule,
     GeolocationModule,
-    EventStreamingModule,
+    MessagesStreamingModule,
   ],
   controllers: [
     FetchSolicitationUseCaseController,
@@ -37,6 +39,13 @@ import { EventStreamingModule } from "src/infra/gateways/event-streaming/event-s
     FetchAvaliableSolicitationsToStoreUseCaseController,
   ],
   providers: [
+    {
+      provide: TestConsumer,
+      useFactory: (messagesConsumerGateway: MessagesConsumerGateway) => {
+        return new TestConsumer(messagesConsumerGateway)
+      },
+      inject: [MessagesConsumerGateway],
+    },
     {
       provide: FetchUserSolicitationsUseCase,
       useFactory: (solicitationRepository: SolicitationRepository) => {
@@ -118,18 +127,18 @@ import { EventStreamingModule } from "src/infra/gateways/event-streaming/event-s
     {
       provide: OnSolicitationCreatedUseCase,
       useFactory: (
-        eventStreamingGateway: EventStreamingGateway,
+        messagesProducerGateway: MessagesProducerGateway,
         fetchStoresInsideRadiusUseCase: FetchStoresInsideRadiusUseCase,
         fetchGeolocationUseCase: FetchGeolocationUseCase,
       ) => {
         return new OnSolicitationCreatedUseCase(
-          eventStreamingGateway,
+          messagesProducerGateway,
           fetchStoresInsideRadiusUseCase,
           fetchGeolocationUseCase,
         )
       },
       inject: [
-        EventStreamingGateway,
+        MessagesProducerGateway,
         FetchStoresInsideRadiusUseCase,
         FetchGeolocationUseCase,
       ],

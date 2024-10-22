@@ -23,9 +23,10 @@ export class UserAuthLoginUseCase {
     password: string,
   ): Promise<UserAuthLoginUseCaseResponse> {
     const user = await this.userRepository.fetchUserByLogin(login)
+    if (!user) return left(new InvalidCredentilsError())
     const isPasswordValid: boolean =
       await this.encrypterGateway.comparePassword(password, user.password)
-    if (!user || !isPasswordValid) return left(new InvalidCredentilsError())
+    if (!isPasswordValid) return left(new InvalidCredentilsError())
     return right({
       token: this.encrypterGateway.encryptToken({
         id: user.id,
