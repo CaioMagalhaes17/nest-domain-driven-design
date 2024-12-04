@@ -1,4 +1,4 @@
-import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
+import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
 import { Solicitation as SequelizeInfraModel } from "../../../model/repair/solicitation.model"
 import { SolicitationForm } from "src/domain/portal/enterprise/repair/solicitation.form"
 

@@ -8,10 +8,14 @@ export class TestConsumer implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    await this.messagesConsumerGateway.consume("teste", {
-      eachMessage: async ({ topic, partition, message }) => {
-        console.log("oioi", message.value.toString())
-      },
-    })
+    // await this.messagesConsumerGateway.consume(
+    //   "teste9998",
+    //   "solicitationCreated",
+    //   {
+    //     eachMessage: async ({ topic, partition, message }) => {
+    //       console.log("oioi", partition, message.value.toString())
+    //     },
+    //   },
+    // )
   }
 }

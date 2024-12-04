@@ -7,6 +7,8 @@ type ClientProfileProps = {
   profileImg: string
   rating: number
   userId: number
+  email: string
+  telNumber: string
 }
 
 export class ClientProfile extends BaseEntity<ClientProfileProps> {
@@ -36,5 +38,13 @@ export class ClientProfile extends BaseEntity<ClientProfileProps> {
 
   get userId(): number {
     return this.props.userId
+  }
+
+  get email(): string {
+    return this.props.email
+  }
+
+  get telNumber(): string {
+    return this.props.telNumber
   }
 }

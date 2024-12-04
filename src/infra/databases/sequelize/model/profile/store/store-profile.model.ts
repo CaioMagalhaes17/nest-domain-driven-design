@@ -31,6 +31,10 @@ export class StoreProfile extends Model {
   bio: string
   @Column
   fk_id_type_subscription: number
+  @Column
+  email: string
+  @Column
+  tel: string
   @ForeignKey(() => User)
   @Column
   fk_id_user: number

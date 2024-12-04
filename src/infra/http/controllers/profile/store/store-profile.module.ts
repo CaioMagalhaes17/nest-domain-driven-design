@@ -18,6 +18,7 @@ import { FetchStoreProfileUseCaseController } from "./fetch-store-profile-use-ca
     DeleteStoreProfileUseCaseController,
     FetchStoreProfileUseCaseController,
   ],
+  exports: [FetchStoreProfileUseCase],
   providers: [
     {
       provide: CreateStoreProfileUseCase,

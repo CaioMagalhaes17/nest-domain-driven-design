@@ -9,6 +9,8 @@ type StoreProfileProps = {
   bio: string
   typeSubscriptionId: number
   userId: number
+  email: string
+  telNumber: string
 }
 
 export class StoreProfile extends BaseEntity<StoreProfileProps> {
@@ -46,5 +48,13 @@ export class StoreProfile extends BaseEntity<StoreProfileProps> {
 
   get userId(): number {
     return this.props.userId
+  }
+
+  get email(): string {
+    return this.props.email
+  }
+
+  get telNumber(): string {
+    return this.props.telNumber
   }
 }

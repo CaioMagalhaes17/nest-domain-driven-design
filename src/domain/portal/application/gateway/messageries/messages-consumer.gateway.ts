@@ -1,3 +1,3 @@
 export abstract class MessagesConsumerGateway {
-  abstract consume(topic: string, config)
+  abstract consume(topic: string, groupId: string, config)
 }

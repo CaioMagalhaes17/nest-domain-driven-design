@@ -18,8 +18,9 @@ export class OnSolicitationCreatedUseCase {
           longitude: userLocation.value.geolocation.longitude,
           radius: userLocation.value.geolocation.radius,
         })
-      console.log(storesInsideUserLocation)
+      this.messagesProducerGateway.produce("stores", [
+        { value: JSON.stringify(storesInsideUserLocation) },
+      ])
     }
-    this.messagesProducerGateway.produce("teste", [{ value: "testeing" }])
   }
 }

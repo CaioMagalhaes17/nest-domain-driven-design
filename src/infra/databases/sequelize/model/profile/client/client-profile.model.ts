@@ -26,4 +26,8 @@ export class ClientProfile extends Model {
   fk_id_geo_infos: number
   @Column
   fk_id_user: number
+  @Column
+  email: string
+  @Column
+  tel: string
 }

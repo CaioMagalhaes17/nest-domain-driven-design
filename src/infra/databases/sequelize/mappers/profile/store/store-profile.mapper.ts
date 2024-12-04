@@ -13,6 +13,8 @@ export class StoreProfileMapper {
         bio: row.bio,
         userId: row.fk_id_user,
         typeSubscriptionId: row.fk_id_type_subscription,
+        email: row.email,
+        telNumber: row.tel,
       },
       row.id,
     )

@@ -11,6 +11,8 @@ export class ClientProfileMapper {
         profileImg: row.profile_img,
         rating: row.rating,
         userId: row.fk_id_user,
+        email: row.email,
+        telNumber: row.tel,
       },
       row.id,
     )
