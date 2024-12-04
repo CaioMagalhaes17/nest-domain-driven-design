@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common"
 import { FetchUserSolicitationsUseCaseController } from "./fetch-user-solicitations-use-case.controller"
-import { CreateSolicitationUseCaseController } from "./create-solicitation-use-case.controller"
 import { EditSolicitationUseCaseController } from "./edit-solicitation-use-case.controller"
 import { DeleteSolicitationUseCaseController } from "./delete-solicitation-use-case.controller"
 import { FetchUserSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-user-solicitations-use-case"
 import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
 import { CreateSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
+import { CreateSolicitationUseCase as CreateSolicitationUseCaseNew } from "@/domain/portal/application/use-cases/solicitations/new-create-solicitation-use-case"
 import { SolicitationFormRepository } from "src/domain/portal/application/repositories/repair/solicitation-form.repository"
 import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
 import { DeleteSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/delete.solicitation-use-case"
@@ -23,12 +23,19 @@ import { MessagesStreamingModule } from "src/infra/gateways/messageries/messages
 import { MessagesProducerGateway } from "src/domain/portal/application/gateway/messageries/messages-producer.gateway"
 import { TestConsumer } from "src/infra/consumers/test-consumer"
 import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/messageries/messages-consumer.gateway"
+import { CreateSolicitationUseCaseController } from "./new-create-solicitation-use-case.controller"
+import { MongoModule } from "@/infra/databases/mongo/mongo.module"
+import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.module"
+import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
+import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositories/solicitation.repository"
 
 @Module({
   imports: [
     SolicitationDatabaseModule,
     GeolocationModule,
     MessagesStreamingModule,
+    MongoModule,
+    SolicitationMongoModule,
   ],
   controllers: [
     FetchSolicitationUseCaseController,
@@ -37,8 +44,16 @@ import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/m
     EditSolicitationUseCaseController,
     DeleteSolicitationUseCaseController,
     FetchAvaliableSolicitationsToStoreUseCaseController,
+    CreateSolicitationUseCaseController,
   ],
   providers: [
+    {
+      provide: CreateSolicitationUseCaseNew,
+      useFactory: (solicitationRepository: ISolicitationRepository) => {
+        return new CreateSolicitationUseCaseNew(solicitationRepository)
+      },
+      inject: [InfraSolicitationRepository],
+    },
     {
       provide: TestConsumer,
       useFactory: (messagesConsumerGateway: MessagesConsumerGateway) => {

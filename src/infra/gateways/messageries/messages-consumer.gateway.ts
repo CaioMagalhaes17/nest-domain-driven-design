@@ -14,8 +14,8 @@ export class InfraMessagesConsumerGateway extends MessagesConsumerGateway {
       heartbeatInterval: 10000, // should be lower than sessionTimeout
       sessionTimeout: 60000,
     })
-    await consumer.connect()
-    await consumer.subscribe({ topic })
-    await consumer.run(config)
+    // await consumer.connect()
+    // await consumer.subscribe({ topic })
+    // await consumer.run(config)
   }
 }

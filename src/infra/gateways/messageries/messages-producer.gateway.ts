@@ -4,8 +4,7 @@ import { MessagesProducerGateway } from "src/domain/portal/application/gateway/m
 
 export class InfraMessagesProducerGateway
   extends MessagesProducerGateway
-  implements OnModuleInit
-{
+  implements OnModuleInit {
   private brokers = ["localhost:9092"]
 
   private readonly kafkaProducer = new Kafka({
@@ -15,7 +14,7 @@ export class InfraMessagesProducerGateway
   private readonly producer: Producer = this.kafkaProducer.producer()
 
   async onModuleInit() {
-    await this.producer.connect()
+    // await this.producer.connect()
   }
 
   async produce(topic: string, messages) {
