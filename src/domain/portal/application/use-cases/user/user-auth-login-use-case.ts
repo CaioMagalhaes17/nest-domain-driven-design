@@ -32,6 +32,7 @@ export class UserAuthLoginUseCase {
         id: user.id,
         name: user.name,
         isStore: user.isStore,
+        permission: "ADMIN",
       }),
       user,
     })

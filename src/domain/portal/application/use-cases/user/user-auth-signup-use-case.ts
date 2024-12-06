@@ -39,6 +39,7 @@ export class UserAuthSignUpUseCase {
         id: newUser.id,
         name: newUser.name,
         isStore: newUser.isStore,
+        permission: "ADMIN",
       }),
       user: newUser,
     })
