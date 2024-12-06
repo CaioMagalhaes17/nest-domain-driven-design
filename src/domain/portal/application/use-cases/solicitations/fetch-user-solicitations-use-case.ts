@@ -1,7 +1,7 @@
 import { Either, left, right } from "src/core/Either"
-import { SolicitationRepository } from "../../repositories/repair/solicitation-repository"
 import { SolicitationNotFoundError } from "../../errors/repair/solicitations/SolicitationNotFoundError"
 import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
+import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
 
 type FetchSolicitationsUseCaseResponse = Either<
   SolicitationNotFoundError,
@@ -11,11 +11,15 @@ type FetchSolicitationsUseCaseResponse = Either<
 >
 
 export class FetchUserSolicitationsUseCase {
-  constructor(private solicitationRepository: SolicitationRepository) {}
+  constructor(private solicitationRepository: ISolicitationRepository) {}
 
   async execute(userId: number): Promise<FetchSolicitationsUseCaseResponse> {
-    const solicitations =
-      await this.solicitationRepository.fetchSolicitations(userId)
+    const solicitations = await this.solicitationRepository.findByParam<{
+      userId: number
+    }>({
+      userId,
+    })
+    console.log(solicitations)
     if (!solicitations) return left(new SolicitationNotFoundError())
 
     return right({ solicitations })

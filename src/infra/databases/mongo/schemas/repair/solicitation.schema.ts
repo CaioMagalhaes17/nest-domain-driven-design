@@ -7,7 +7,7 @@ export class Solicitation extends Document {
   status: string
 
   @Prop()
-  fk_id_user: number
+  userId: number
 
   @Prop({ type: MangooseSchema.Types.ObjectId, ref: "SolicitationForm" })
   solicitation_form: MangooseSchema.Types.ObjectId

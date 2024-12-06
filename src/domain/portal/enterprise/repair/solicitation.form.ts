@@ -1,8 +1,8 @@
 import { BaseEntity } from "src/core/entities/base-entity"
 
-type SolicitationFormProps = {
+export type SolicitationFormProps = {
   brand: string
-  model: string
+  modelo: string
   imeiNumber: string
   usageTime: string
   problemDescription: string
@@ -21,8 +21,8 @@ export class SolicitationForm extends BaseEntity<SolicitationFormProps> {
     return this.props.brand
   }
 
-  get model(): string {
-    return this.props.model
+  get modelo(): string {
+    return this.props.modelo
   }
 
   get imeiNumber(): string {

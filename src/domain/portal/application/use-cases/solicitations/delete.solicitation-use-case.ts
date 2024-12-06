@@ -1,8 +1,8 @@
 import { Either, left } from "src/core/Either"
-import { SolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository"
-import { SolicitationRepository } from "../../repositories/repair/solicitation-repository"
 import { UnauthorizedSolicitationActionError } from "../../errors/repair/solicitations/UnauthorizedSolicitationAction"
 import { SolicitationNotFoundError } from "../../errors/repair/solicitations/SolicitationNotFoundError"
+import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
+import { ISolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository.interface"
 
 type DeleteSolicitationUseCaseResponse = Either<
   SolicitationNotFoundError | UnauthorizedSolicitationActionError,
@@ -11,12 +11,12 @@ type DeleteSolicitationUseCaseResponse = Either<
 
 interface DeleteSolicitationUseCaseI {
   userId: number
-  solicitationId: number
+  solicitationId: string
 }
 export class DeleteSolicitationUseCase {
   constructor(
-    private solicitationRepository: SolicitationRepository,
-    private solicitationFormRepository: SolicitationFormRepository,
+    private solicitationRepository: ISolicitationRepository,
+    private solicitationFormRepository: ISolicitationFormRepository,
   ) {}
 
   async execute({
@@ -24,11 +24,11 @@ export class DeleteSolicitationUseCase {
     solicitationId,
   }: DeleteSolicitationUseCaseI): Promise<DeleteSolicitationUseCaseResponse> {
     const solicitation =
-      await this.solicitationRepository.fetchById(solicitationId)
+      await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
     if (userId !== solicitation.userId)
       return left(new UnauthorizedSolicitationActionError())
     await this.solicitationRepository.deleteById(solicitationId)
-    await this.solicitationFormRepository.deleteById(solicitationId)
+    await this.solicitationFormRepository.deleteBySolicitationId(solicitationId)
   }
 }

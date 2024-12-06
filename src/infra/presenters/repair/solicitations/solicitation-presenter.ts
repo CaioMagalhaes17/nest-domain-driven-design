@@ -9,7 +9,7 @@ export class SolicitationPresenter {
       status: solicitation.status,
       form: {
         brand: solicitation.form.brand,
-        model: solicitation.form.model,
+        modelo: solicitation.form.modelo,
         imeiNumber: solicitation.form.imeiNumber,
         usageTime: solicitation.form.usageTime,
         problemDescription: solicitation.form.problemDescription,

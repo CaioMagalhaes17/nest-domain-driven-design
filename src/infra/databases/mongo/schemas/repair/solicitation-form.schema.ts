@@ -10,22 +10,22 @@ export class SolicitationForm extends Document {
   modelo: string
 
   @Prop({ required: true })
-  imei_num: string
+  imeiNumber: string
 
   @Prop({ required: true })
-  usage_time: string
+  usageTime: string
 
   @Prop({ required: true })
-  problem_desc: string
+  problemDescription: string
 
   @Prop({ required: true })
-  problem_cause: string
+  problemCause: string
 
   @Prop({ required: true })
-  previous_repair: string
+  previousRepair: string
 
   @Prop({ required: true })
-  original_hardware: string
+  originalHardware: string
 }
 
 export const SolicitationFormSchema =

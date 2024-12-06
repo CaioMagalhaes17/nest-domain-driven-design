@@ -1,10 +1,10 @@
 import { Either, left, right } from "src/core/Either"
 import { BudgetDTO } from "../../dto/budget/http/budget-create"
 import { BudgetRepository } from "../../repositories/repair/budget-repository"
-import { SolicitationRepository } from "../../repositories/repair/solicitation-repository"
 import { FetchInitialBudgetStatusUseCase } from "./status/fetch-initial-budget-status-use-case"
 import { SolicitationNotFoundError } from "../../errors/repair/solicitations/SolicitationNotFoundError"
 import { BudgetAlreadySent } from "../../errors/repair/budget/BudgetAlreadySent"
+import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
 
 type CreateBudgetUseCaseResponse = Either<
   SolicitationNotFoundError | BudgetAlreadySent,
@@ -16,19 +16,19 @@ type CreateBudgetUseCaseResponse = Either<
 export class CreateBudgetUseCase {
   constructor(
     private budgetRepository: BudgetRepository,
-    private solicitationRepository: SolicitationRepository,
+    private solicitationRepository: ISolicitationRepository,
   ) {}
 
   async execute(
     createBudgetPayload: BudgetDTO,
     userId: number,
   ): Promise<CreateBudgetUseCaseResponse> {
-    const solicitation = await this.solicitationRepository.fetchById(
+    const solicitation = await this.solicitationRepository.findById(
       createBudgetPayload.solicitationId,
     )
 
     const budget = await this.budgetRepository.fetchBySolicitationId(
-      createBudgetPayload.solicitationId,
+      Number(createBudgetPayload.solicitationId),
     )
 
     if (budget) return left(new BudgetAlreadySent())

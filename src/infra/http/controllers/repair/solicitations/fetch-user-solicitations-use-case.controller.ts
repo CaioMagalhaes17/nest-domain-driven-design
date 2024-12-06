@@ -34,7 +34,7 @@ export class FetchUserSolicitationsUseCaseController {
 
     const { solicitations } = response.value
     return {
-      data: solicitations.map((item) => SolicitationPresenter.toHttp(item)),
+      data: solicitations,
     }
   }
 }

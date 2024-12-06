@@ -1,13 +1,17 @@
-import { BaseRepository } from "@/core/infra/base.repository"
-import { InjectModel } from "@nestjs/mongoose"
+import { SolicitationForm as MongoSolicitation } from "../schemas/repair/solicitation-form.schema"
 import { Model } from "mongoose"
-import { SolicitationForm } from "../schemas/repair/solicitation-form.schema"
+import { BaseInfraRepository } from "@/core/infra/base.repository"
+import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation.form"
+import { SolicitationFormMapper } from "../mappers/repair/solicitation-form.mapper"
 
-export class SolicitationFormRepository extends BaseRepository<SolicitationForm> {
+export class InfraSolicitationFormRepository extends BaseInfraRepository<
+  MongoSolicitation,
+  SolicitationForm
+> {
   constructor(
-    @InjectModel(SolicitationForm.name)
-    private solicitationsFormModel: Model<SolicitationForm>,
+    protected readonly model: Model<MongoSolicitation>,
+    protected readonly mapper: SolicitationFormMapper,
   ) {
-    super(solicitationsFormModel)
+    super(model, mapper)
   }
 }

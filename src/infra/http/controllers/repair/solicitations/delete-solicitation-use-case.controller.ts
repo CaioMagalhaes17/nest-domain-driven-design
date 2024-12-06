@@ -21,7 +21,7 @@ export class DeleteSolicitationUseCaseController {
   @Delete("/repair/solicitation/:solicitationId")
   async handle(
     @Req() req: { user: { id: number } },
-    @Param("solicitationId") solicitationId: number,
+    @Param("solicitationId") solicitationId: string,
   ) {
     const response = await this.deleteSolicitationUseCase.execute({
       userId: req.user.id,

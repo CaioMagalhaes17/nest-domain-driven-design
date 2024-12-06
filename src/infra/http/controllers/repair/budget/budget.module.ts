@@ -3,17 +3,17 @@ import { CreateBudgetUseCaseController } from "./create-budget-use-case.controll
 import { CreateBudgetUseCase } from "src/domain/portal/application/use-cases/budget/create-budget-use-case"
 import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
 import { BudgetRepository } from "src/domain/portal/application/repositories/repair/budget-repository"
-import { BudgetDatabaseModule } from "src/infra/databases/budget-database.module"
-import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-database.module"
 import { FetchBudgetsUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budgets-use-case"
 import { FetchBudgetsUseCaseController } from "./fetch-budgets-use-case.controller"
 import { FetchBudgetUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budget-use-case"
 import { FetchBudgetUseCaseController } from "./fetch.budget-use-case.controller"
 import { DeleteBudgetUseCase } from "src/domain/portal/application/use-cases/budget/delete-budget-use-case"
 import { DeleteBudgetUseCaseController } from "./delete-budget-use-case.controller"
+import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.module"
+import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
 
 @Module({
-  imports: [BudgetDatabaseModule, SolicitationDatabaseModule],
+  imports: [SolicitationMongoModule],
   controllers: [
     CreateBudgetUseCaseController,
     FetchBudgetsUseCaseController,
@@ -25,7 +25,7 @@ import { DeleteBudgetUseCaseController } from "./delete-budget-use-case.controll
       provide: CreateBudgetUseCase,
       useFactory: (
         budgetRepository: BudgetRepository,
-        solicitationRepository: SolicitationRepository,
+        solicitationRepository: ISolicitationRepository,
       ) => {
         return new CreateBudgetUseCase(budgetRepository, solicitationRepository)
       },

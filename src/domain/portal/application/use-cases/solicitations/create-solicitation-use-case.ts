@@ -1,30 +1,34 @@
-import { SolicitationFormDTO } from "../../dto/solicitation-form.dto"
-import { SolicitationDTO } from "../../dto/solicitation.dto"
-import { SolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository"
-import { SolicitationRepository } from "../../repositories/repair/solicitation-repository"
+import {
+  SolicitationForm,
+  SolicitationFormProps,
+} from "@/domain/portal/enterprise/repair/solicitation.form"
+import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
+import { ISolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository.interface"
 import { OnSolicitationCreatedUseCase } from "./on-solicitation-created-use-case"
 
 export class CreateSolicitationUseCase {
   constructor(
-    private solicitationRepository: SolicitationRepository,
-    private solicitationFormRepository: SolicitationFormRepository,
-    private onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
+    private readonly solicitationRepository: ISolicitationRepository,
+    private readonly solicitationFormRepository: ISolicitationFormRepository,
   ) {}
 
-  async execute(solicitationFormPayload: SolicitationFormDTO, userId: number) {
-    // const solicitationPayload: SolicitationDTO = {
-    //   userId,
-    //   status: "pending",
-    // }
+  async execute(data: {
+    status: string
+    userId: number
+    solicitationForm: SolicitationFormProps
+  }) {
+    const resultForm = await this.solicitationFormRepository.create(
+      data.solicitationForm,
+    )
 
-    // const solicitationId =
-    //   await this.solicitationRepository.createSolicitation(solicitationPayload)
+    const result = await this.solicitationRepository.create({
+      status: "nigger",
+      userId: data.userId,
+      formId: resultForm.id,
+    })
 
-    // await this.solicitationFormRepository.createSolicitationForm(
-    //   solicitationFormPayload,
-    //   solicitationId,
-    // )
-
-    await this.onSolicitationCreatedUseCase.execute(userId)
+    //await this.onSolicitationCreatedUseCase.execute(data.userId)
+    console.log("O RESULTADO", result)
+    return resultForm
   }
 }

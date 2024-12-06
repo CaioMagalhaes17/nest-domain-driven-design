@@ -5,5 +5,5 @@ export class BudgetDTO {
   readonly estimatedPrice: string
 
   @IsNumber()
-  readonly solicitationId: number
+  readonly solicitationId: string
 }

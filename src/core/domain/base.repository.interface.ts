@@ -1,9 +1,12 @@
-export interface IRepository<T> {
-  create(data: Partial<T>): Promise<T>
-  findAll(): Promise<T[]>
-  findById(id: string): Promise<T | null>
-  updateById(id: string, updateData: Partial<T>): Promise<T | null>
+export interface BaseDomainRepository<DomainModel> {
+  create(data: Partial<DomainModel>): Promise<{ id: number }>
+  findAll(): Promise<DomainModel[]>
+  findById(id: string): Promise<DomainModel | null>
+  updateById(
+    id: string,
+    updateData: Partial<DomainModel>,
+  ): Promise<DomainModel | null>
   deleteById(id: string): Promise<void>
   deleteAll(): Promise<void>
-  findByParam(param: Partial<T>): Promise<T[]>
+  findByParam<ParamType>(param: Partial<ParamType>): Promise<DomainModel[]>
 }

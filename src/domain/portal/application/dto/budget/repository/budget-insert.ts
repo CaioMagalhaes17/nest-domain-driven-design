@@ -1,6 +1,6 @@
 export type BudgetInsertType = {
   userId: number
   status: string
-  solicitationId: number
+  solicitationId: string
   estimatedPrice: string
 }

@@ -3,56 +3,51 @@ import { FetchUserSolicitationsUseCaseController } from "./fetch-user-solicitati
 import { EditSolicitationUseCaseController } from "./edit-solicitation-use-case.controller"
 import { DeleteSolicitationUseCaseController } from "./delete-solicitation-use-case.controller"
 import { FetchUserSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-user-solicitations-use-case"
-import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
-import { CreateSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
-import { CreateSolicitationUseCase as CreateSolicitationUseCaseNew } from "@/domain/portal/application/use-cases/solicitations/new-create-solicitation-use-case"
-import { SolicitationFormRepository } from "src/domain/portal/application/repositories/repair/solicitation-form.repository"
-import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
+import { CreateSolicitationUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
+import { EditSolicitationFormUseCase } from "@/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
 import { DeleteSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/delete.solicitation-use-case"
-import { SolicitationDatabaseModule } from "src/infra/databases/solicitation-database.module"
 import { FetchSolicitationUseCaseController } from "./fetch-solicitation-use-case.controller"
 import { FetchSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-solicitation-use-case"
 import { FetchAvaliableSolicitationsToStoreUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-avaliable-solicitations-to-store-use-case"
 import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-covering-use-case"
 import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
 import { FetchAvaliableSolicitationsToStoreUseCaseController } from "./fetch-avaliable-solicitations-to-store-use-case.controller"
-import { GeolocationModule } from "../../geolocation/geolocation.module"
 import { OnSolicitationCreatedUseCase } from "src/domain/portal/application/use-cases/solicitations/on-solicitation-created-use-case"
 import { FetchStoresInsideRadiusUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-stores-inside-radius-use-case"
 import { MessagesStreamingModule } from "src/infra/gateways/messageries/messages-streaming.module"
 import { MessagesProducerGateway } from "src/domain/portal/application/gateway/messageries/messages-producer.gateway"
 import { TestConsumer } from "src/infra/consumers/test-consumer"
 import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/messageries/messages-consumer.gateway"
-import { CreateSolicitationUseCaseController } from "./new-create-solicitation-use-case.controller"
+import { CreateSolicitationUseCaseController } from "./create-solicitation-use-case.controller"
 import { MongoModule } from "@/infra/databases/mongo/mongo.module"
 import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.module"
 import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
 import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositories/solicitation.repository"
+import { ISolicitationFormRepository } from "@/domain/portal/application/repositories/repair/solicitation-form.repository.interface"
+import { InfraSolicitationFormRepository } from "@/infra/databases/mongo/repositories/solicitation-form.repository"
 
 @Module({
-  imports: [
-    SolicitationDatabaseModule,
-    GeolocationModule,
-    MessagesStreamingModule,
-    MongoModule,
-    SolicitationMongoModule,
-  ],
+  imports: [MessagesStreamingModule, MongoModule, SolicitationMongoModule],
   controllers: [
     FetchSolicitationUseCaseController,
     FetchUserSolicitationsUseCaseController,
-    CreateSolicitationUseCaseController,
     EditSolicitationUseCaseController,
     DeleteSolicitationUseCaseController,
-    FetchAvaliableSolicitationsToStoreUseCaseController,
     CreateSolicitationUseCaseController,
   ],
   providers: [
     {
-      provide: CreateSolicitationUseCaseNew,
-      useFactory: (solicitationRepository: ISolicitationRepository) => {
-        return new CreateSolicitationUseCaseNew(solicitationRepository)
+      provide: CreateSolicitationUseCase,
+      useFactory: (
+        solicitationRepository: ISolicitationRepository,
+        solicitationFormRepository: ISolicitationFormRepository,
+      ) => {
+        return new CreateSolicitationUseCase(
+          solicitationRepository,
+          solicitationFormRepository,
+        )
       },
-      inject: [InfraSolicitationRepository],
+      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
     },
     {
       provide: TestConsumer,
@@ -63,101 +58,82 @@ import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositorie
     },
     {
       provide: FetchUserSolicitationsUseCase,
-      useFactory: (solicitationRepository: SolicitationRepository) => {
+      useFactory: (solicitationRepository: ISolicitationRepository) => {
         return new FetchUserSolicitationsUseCase(solicitationRepository)
       },
-      inject: [SolicitationRepository],
+      inject: [InfraSolicitationRepository],
     },
+    // {
+    //   provide: FetchAvaliableSolicitationsToStoreUseCase,
+    //   useFactory: (
+    //     fetchGeolocationCoveringUseCase: FetchGeolocationCoveringStoreUseCase,
+    //     fetchGeolocationUseCase: FetchGeolocationUseCase,
+    //     fetchUserSolicitationsUseCase: FetchUserSolicitationsUseCase,
+    //   ) => {
+    //     return new FetchAvaliableSolicitationsToStoreUseCase(
+    //       fetchGeolocationCoveringUseCase,
+    //       fetchGeolocationUseCase,
+    //       fetchUserSolicitationsUseCase,
+    //     )
+    //   },
+    //   inject: [
+    //     FetchGeolocationCoveringStoreUseCase,
+    //     FetchGeolocationUseCase,
+    //     FetchUserSolicitationsUseCase,
+    //   ],
+    // },
     {
-      provide: FetchAvaliableSolicitationsToStoreUseCase,
+      provide: EditSolicitationFormUseCase,
       useFactory: (
-        fetchGeolocationCoveringUseCase: FetchGeolocationCoveringStoreUseCase,
-        fetchGeolocationUseCase: FetchGeolocationUseCase,
-        fetchUserSolicitationsUseCase: FetchUserSolicitationsUseCase,
+        solicitationRepository: ISolicitationRepository,
+        solicitationFormRepository: ISolicitationFormRepository,
       ) => {
-        return new FetchAvaliableSolicitationsToStoreUseCase(
-          fetchGeolocationCoveringUseCase,
-          fetchGeolocationUseCase,
-          fetchUserSolicitationsUseCase,
-        )
-      },
-      inject: [
-        FetchGeolocationCoveringStoreUseCase,
-        FetchGeolocationUseCase,
-        FetchUserSolicitationsUseCase,
-      ],
-    },
-    {
-      provide: CreateSolicitationUseCase,
-      useFactory: (
-        solicitationRepository: SolicitationRepository,
-        solicitationFormRepository: SolicitationFormRepository,
-        onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
-      ) => {
-        return new CreateSolicitationUseCase(
-          solicitationRepository,
-          solicitationFormRepository,
-          onSolicitationCreatedUseCase,
-        )
-      },
-      inject: [
-        SolicitationRepository,
-        SolicitationFormRepository,
-        OnSolicitationCreatedUseCase,
-      ],
-    },
-    {
-      provide: EditSolicitationUseCase,
-      useFactory: (
-        solicitationRepository: SolicitationRepository,
-        solicitationFormRepository: SolicitationFormRepository,
-      ) => {
-        return new EditSolicitationUseCase(
+        return new EditSolicitationFormUseCase(
           solicitationRepository,
           solicitationFormRepository,
         )
       },
-      inject: [SolicitationRepository, SolicitationFormRepository],
+      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
     },
     {
       provide: DeleteSolicitationUseCase,
       useFactory: (
-        solicitationRepository: SolicitationRepository,
-        solicitationFormRepository: SolicitationFormRepository,
+        solicitationRepository: ISolicitationRepository,
+        solicitationFormRepository: ISolicitationFormRepository,
       ) => {
         return new DeleteSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
         )
       },
-      inject: [SolicitationRepository, SolicitationFormRepository],
+      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
     },
     {
       provide: FetchSolicitationUseCase,
-      useFactory: (solicitationRepository: SolicitationRepository) => {
+      useFactory: (solicitationRepository: ISolicitationRepository) => {
         return new FetchSolicitationUseCase(solicitationRepository)
       },
-      inject: [SolicitationRepository],
+      inject: [InfraSolicitationRepository],
     },
-    {
-      provide: OnSolicitationCreatedUseCase,
-      useFactory: (
-        messagesProducerGateway: MessagesProducerGateway,
-        fetchStoresInsideRadiusUseCase: FetchStoresInsideRadiusUseCase,
-        fetchGeolocationUseCase: FetchGeolocationUseCase,
-      ) => {
-        return new OnSolicitationCreatedUseCase(
-          messagesProducerGateway,
-          fetchStoresInsideRadiusUseCase,
-          fetchGeolocationUseCase,
-        )
-      },
-      inject: [
-        MessagesProducerGateway,
-        FetchStoresInsideRadiusUseCase,
-        FetchGeolocationUseCase,
-      ],
-    },
+    // {
+    //   provide: OnSolicitationCreatedUseCase,
+    //   useFactory: (
+    //     messagesProducerGateway: MessagesProducerGateway,
+    //     fetchStoresInsideRadiusUseCase: FetchStoresInsideRadiusUseCase,
+    //     fetchGeolocationUseCase: FetchGeolocationUseCase,
+    //   ) => {
+    //     return new OnSolicitationCreatedUseCase(
+    //       messagesProducerGateway,
+    //       fetchStoresInsideRadiusUseCase,
+    //       fetchGeolocationUseCase,
+    //     )
+    //   },
+    //   inject: [
+    //     MessagesProducerGateway,
+    //     FetchStoresInsideRadiusUseCase,
+    //     FetchGeolocationUseCase,
+    //   ],
+    // },
   ],
 })
 export class SolicitationsModule {}

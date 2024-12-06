@@ -11,19 +11,19 @@ import {
 } from "@nestjs/common"
 import { SolicitationNotFoundError } from "src/domain/portal/application/errors/repair/solicitations/SolicitationNotFoundError"
 import { UnauthorizedSolicitationActionError } from "src/domain/portal/application/errors/repair/solicitations/UnauthorizedSolicitationAction"
-import { EditSolicitationUseCase } from "src/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
+import { EditSolicitationFormUseCase } from "@/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
 
 @Controller()
 export class EditSolicitationUseCaseController {
-  constructor(private editSolicitationUseCase: EditSolicitationUseCase) {}
+  constructor(private editSolicitationUseCase: EditSolicitationFormUseCase) {}
 
   @UseGuards(JwtAuthGuard)
   @Put("/repair/solicitation/:solicitationId")
   async handle(
     @Req() req: { user: { id: number } },
     @Body() solicitationFormPayload: any,
-    @Param("solicitationId") solicitationId: number,
+    @Param("solicitationId") solicitationId: string,
   ) {
     const response = await this.editSolicitationUseCase.execute({
       solicitationFormPayload,

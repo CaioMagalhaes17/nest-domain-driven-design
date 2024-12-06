@@ -1,6 +1,5 @@
-import { BaseRepository } from "@/core/infra/base.repository"
+import { BaseDomainRepository } from "@/core/domain/base.repository.interface"
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
 
-export interface ISolicitationRepository extends BaseRepository<Solicitation> {
-  getevery()
-}
+export interface ISolicitationRepository
+  extends BaseDomainRepository<Solicitation> {}

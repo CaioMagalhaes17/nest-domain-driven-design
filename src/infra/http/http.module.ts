@@ -12,10 +12,10 @@ import { StoreProfileModule } from "./controllers/profile/store/store-profile.mo
     DataBaseModule,
     UserModule,
     SolicitationsModule,
-    BudgetModule,
-    ClientProfileModule,
-    GeolocationModule,
-    StoreProfileModule,
+    // BudgetModule,
+    // ClientProfileModule,
+    // GeolocationModule,
+    // StoreProfileModule,
   ],
 })
 export class HttpModule {}
