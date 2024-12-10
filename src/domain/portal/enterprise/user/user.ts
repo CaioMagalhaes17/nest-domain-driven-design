@@ -7,6 +7,7 @@ type UserProps = {
   password: string
   name: string
   isStore: boolean
+  permission: string
 }
 
 export class User extends BaseEntity<UserProps> {
@@ -36,5 +37,9 @@ export class User extends BaseEntity<UserProps> {
 
   get isStore(): boolean {
     return this.props.isStore
+  }
+
+  get permission(): string {
+    return this.props.permission
   }
 }

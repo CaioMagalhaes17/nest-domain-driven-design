@@ -19,17 +19,16 @@ import { MessagesProducerGateway } from "src/domain/portal/application/gateway/m
 import { TestConsumer } from "src/infra/consumers/test-consumer"
 import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/messageries/messages-consumer.gateway"
 import { CreateSolicitationUseCaseController } from "./create-solicitation-use-case.controller"
-import { MongoModule } from "@/infra/databases/mongo/mongo.module"
 import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.module"
 import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
-import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositories/solicitation.repository"
+import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositories/repair/solicitation/solicitation.repository"
 import { ISolicitationFormRepository } from "@/domain/portal/application/repositories/repair/solicitation-form.repository.interface"
-import { InfraSolicitationFormRepository } from "@/infra/databases/mongo/repositories/solicitation-form.repository"
+import { InfraSolicitationFormRepository } from "@/infra/databases/mongo/repositories/repair/solicitation/solicitation-form.repository"
 import { AdminSolicitationUseCaseController } from "./admin/admin-solicitation-use-case.controller"
 import { AdminSolicitationUseCase } from "@/domain/portal/application/use-cases/solicitations/admin/admin-solicitataion.use-case"
 
 @Module({
-  imports: [MessagesStreamingModule, MongoModule, SolicitationMongoModule],
+  imports: [MessagesStreamingModule, SolicitationMongoModule],
   controllers: [
     FetchSolicitationUseCaseController,
     FetchUserSolicitationsUseCaseController,

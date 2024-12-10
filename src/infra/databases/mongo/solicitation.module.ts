@@ -5,9 +5,9 @@ import {
   Solicitation,
   SolicitationSchema,
 } from "./schemas/repair/solicitation.schema"
-import { InfraSolicitationRepository } from "./repositories/solicitation.repository"
+import { InfraSolicitationRepository } from "./repositories/repair/solicitation/solicitation.repository"
 import { Model } from "mongoose"
-import { InfraSolicitationFormRepository } from "./repositories/solicitation-form.repository"
+import { InfraSolicitationFormRepository } from "./repositories/repair/solicitation/solicitation-form.repository"
 import {
   SolicitationForm,
   SolicitationFormSchema,

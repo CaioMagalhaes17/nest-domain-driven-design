@@ -10,7 +10,7 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
     protected readonly mapper: BaseMapper<InfraModel, DomainModel>,
   ) {}
 
-  async create(data: Partial<DomainModel>): Promise<{ id: number }> {
+  async create(data: Partial<DomainModel>): Promise<{ id: string }> {
     return { id: (await this.model.create(data)).id }
   }
 

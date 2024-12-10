@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common"
-import { DataBaseModule } from "../databases/database.module"
 import { UserModule } from "./controllers/user/user.module"
 import { SolicitationsModule } from "./controllers/repair/solicitations/solicitations.module"
 import { BudgetModule } from "./controllers/repair/budget/budget.module"
@@ -9,7 +8,6 @@ import { StoreProfileModule } from "./controllers/profile/store/store-profile.mo
 
 @Module({
   imports: [
-    DataBaseModule,
     UserModule,
     SolicitationsModule,
     // BudgetModule,

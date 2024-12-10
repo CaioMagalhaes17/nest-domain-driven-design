@@ -4,7 +4,7 @@ export abstract class BaseDomainUseCase<DomainModel> {
   constructor(
     protected readonly repository: BaseDomainRepository<DomainModel>,
   ) {}
-  async create(data: Partial<DomainModel>): Promise<{ id: number }> {
+  async create(data: Partial<DomainModel>): Promise<{ id: string }> {
     return this.repository.create(data)
   }
   async findAll(): Promise<DomainModel[]> {

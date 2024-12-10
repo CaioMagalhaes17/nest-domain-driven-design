@@ -1,5 +1,5 @@
 export interface BaseDomainRepository<DomainModel> {
-  create(data: Partial<DomainModel>): Promise<{ id: number }>
+  create(data: Partial<DomainModel>): Promise<{ id: string }>
   findAll(): Promise<DomainModel[]>
   findById(id: string): Promise<DomainModel | null>
   updateById(

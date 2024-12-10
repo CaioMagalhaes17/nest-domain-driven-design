@@ -19,7 +19,7 @@ export abstract class BaseInfraUseCaseController<DomainModel> {
   async create(
     data: Partial<DomainModel>,
     @Req() req: { user: { permission: string } },
-  ): Promise<{ id: number }> {
+  ): Promise<{ id: string }> {
     if (req.user.permission === "ADMIN") {
       return this.useCase.create(data)
     }

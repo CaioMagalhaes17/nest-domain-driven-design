@@ -1,8 +1,8 @@
-import { Solicitation as MongoSolicitation } from "../schemas/repair/solicitation.schema"
+import { Solicitation as MongoSolicitation } from "../../../schemas/repair/solicitation.schema"
 import { Model } from "mongoose"
 import { BaseInfraRepository } from "@/core/infra/base.repository"
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
-import { SolicitationMapper } from "../mappers/repair/solicitation.mapper"
+import { SolicitationMapper } from "../../../mappers/repair/solicitation.mapper"
 import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
 
 export class InfraSolicitationRepository
@@ -21,7 +21,7 @@ export class InfraSolicitationRepository
     )
   }
 
-  async create(data: Partial<Solicitation>): Promise<{ id: number }> {
+  async create(data: Partial<Solicitation>): Promise<{ id: string }> {
     const datatoinsert = {
       solicitation_form: data.formId,
       ...data,
