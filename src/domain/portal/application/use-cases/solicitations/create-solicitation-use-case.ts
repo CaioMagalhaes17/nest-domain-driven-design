@@ -10,17 +10,17 @@ export class CreateSolicitationUseCase {
 
   async execute(data: {
     status: string
-    userId: number
+    userId: string
     solicitationForm: SolicitationFormProps
   }) {
     const resultForm = await this.solicitationFormRepository.create(
       data.solicitationForm,
     )
-
+    console.log(data.userId, resultForm.id)
     const result = await this.solicitationRepository.create({
-      status: "nigger",
+      status: data.status,
       userId: data.userId,
-      formId: Number(resultForm.id),
+      formId: resultForm.id,
     })
 
     //await this.onSolicitationCreatedUseCase.execute(data.userId)

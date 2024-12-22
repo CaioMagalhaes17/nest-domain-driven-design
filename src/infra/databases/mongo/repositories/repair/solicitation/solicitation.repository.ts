@@ -22,6 +22,7 @@ export class InfraSolicitationRepository
   }
 
   async create(data: Partial<Solicitation>): Promise<{ id: string }> {
+    console.log(data)
     const datatoinsert = {
       solicitation_form: data.formId,
       ...data,

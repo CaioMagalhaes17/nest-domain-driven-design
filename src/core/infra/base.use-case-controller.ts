@@ -63,6 +63,15 @@ export abstract class BaseInfraUseCaseController<DomainModel> {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Delete("deleteAll")
+  async deleteAll(@Req() req: { user: { permission: string } }): Promise<void> {
+    if (req.user.permission === "ADMIN") {
+      return this.useCase.deleteAll()
+    }
+    throw new UnauthorizedException("Ação não permitida")
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Delete(":id")
   async deleteById(
     id: string,
@@ -70,15 +79,6 @@ export abstract class BaseInfraUseCaseController<DomainModel> {
   ): Promise<void> {
     if (req.user.permission === "ADMIN") {
       return this.useCase.deleteById(id)
-    }
-    throw new UnauthorizedException("Ação não permitida")
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete("deleteAll")
-  async deleteAll(@Req() req: { user: { permission: string } }): Promise<void> {
-    if (req.user.permission === "ADMIN") {
-      return this.useCase.deleteAll()
     }
     throw new UnauthorizedException("Ação não permitida")
   }

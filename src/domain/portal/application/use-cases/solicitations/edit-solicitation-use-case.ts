@@ -12,7 +12,7 @@ type EditSolicitationFormUseCaseResponse = Either<
 
 interface EditSolicitationUseCaseI {
   solicitationFormPayload: SolicitationForm
-  userId: number
+  userId: string
   solicitationId: string
 }
 export class EditSolicitationFormUseCase {

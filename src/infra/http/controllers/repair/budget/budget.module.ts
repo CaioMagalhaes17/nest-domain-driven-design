@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common"
 import { CreateBudgetUseCaseController } from "./create-budget-use-case.controller"
 import { CreateBudgetUseCase } from "src/domain/portal/application/use-cases/budget/create-budget-use-case"
 import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
-import { BudgetRepository } from "src/domain/portal/application/repositories/repair/budget-repository"
+import { IBudgetRepository } from "src/domain/portal/application/repositories/repair/budget-repository"
 import { FetchBudgetsUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budgets-use-case"
 import { FetchBudgetsUseCaseController } from "./fetch-budgets-use-case.controller"
 import { FetchBudgetUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budget-use-case"
@@ -11,9 +11,11 @@ import { DeleteBudgetUseCase } from "src/domain/portal/application/use-cases/bud
 import { DeleteBudgetUseCaseController } from "./delete-budget-use-case.controller"
 import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.module"
 import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
+import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
+import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repair/budget/budget.repository"
 
 @Module({
-  imports: [SolicitationMongoModule],
+  imports: [SolicitationMongoModule, BudgetMongoModule],
   controllers: [
     CreateBudgetUseCaseController,
     FetchBudgetsUseCaseController,
@@ -24,33 +26,33 @@ import { ISolicitationRepository } from "@/domain/portal/application/repositorie
     {
       provide: CreateBudgetUseCase,
       useFactory: (
-        budgetRepository: BudgetRepository,
+        budgetRepository: IBudgetRepository,
         solicitationRepository: ISolicitationRepository,
       ) => {
         return new CreateBudgetUseCase(budgetRepository, solicitationRepository)
       },
-      inject: [BudgetRepository, SolicitationRepository],
+      inject: [InfraBudgetRepository, SolicitationRepository],
     },
     {
       provide: FetchBudgetsUseCase,
-      useFactory: (budgetRepository: BudgetRepository) => {
+      useFactory: (budgetRepository: IBudgetRepository) => {
         return new FetchBudgetsUseCase(budgetRepository)
       },
-      inject: [BudgetRepository],
+      inject: [InfraBudgetRepository],
     },
     {
       provide: FetchBudgetUseCase,
-      useFactory: (budgetRepository: BudgetRepository) => {
+      useFactory: (budgetRepository: IBudgetRepository) => {
         return new FetchBudgetUseCase(budgetRepository)
       },
-      inject: [BudgetRepository],
+      inject: [InfraBudgetRepository],
     },
     {
       provide: DeleteBudgetUseCase,
-      useFactory: (budgetRepository: BudgetRepository) => {
+      useFactory: (budgetRepository: IBudgetRepository) => {
         return new DeleteBudgetUseCase(budgetRepository)
       },
-      inject: [BudgetRepository],
+      inject: [InfraBudgetRepository],
     },
   ],
 })

@@ -2,12 +2,12 @@ import { BaseEntity } from "src/core/entities/base-entity"
 import { SolicitationForm } from "./solicitation.form"
 
 type SolicitationProps = {
-  userId: number
+  userId: string
   createdAt: string
   updatedAt: string
   status: string
   form: SolicitationForm
-  formId: number
+  formId: string
 }
 
 export class Solicitation extends BaseEntity<SolicitationProps> {
@@ -15,7 +15,7 @@ export class Solicitation extends BaseEntity<SolicitationProps> {
     return new Solicitation(props, id)
   }
 
-  get userId(): number {
+  get userId(): string {
     return this.props.userId
   }
 
@@ -35,7 +35,7 @@ export class Solicitation extends BaseEntity<SolicitationProps> {
     return this.props.form
   }
 
-  get formId(): number {
+  get formId(): string {
     return this.props.formId
   }
 }

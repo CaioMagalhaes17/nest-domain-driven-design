@@ -20,7 +20,7 @@ export class DeleteBudgetUseCaseController {
   @Delete("/repair/budget/:budgetId")
   async handle(
     @Req() req: { user: { id: number } },
-    @Param("budgetId") budgetId: number,
+    @Param("budgetId") budgetId: string,
   ) {
     const response = await this.deleteBudgetUseCase.execute(
       budgetId,

@@ -1,6 +1,6 @@
 import { Either, left, right } from "src/core/Either"
 import { BudgetDTO } from "../../dto/budget/http/budget-create"
-import { BudgetRepository } from "../../repositories/repair/budget-repository"
+import { IBudgetRepository } from "../../repositories/repair/budget-repository"
 import { FetchInitialBudgetStatusUseCase } from "./status/fetch-initial-budget-status-use-case"
 import { SolicitationNotFoundError } from "../../errors/repair/solicitations/SolicitationNotFoundError"
 import { BudgetAlreadySent } from "../../errors/repair/budget/BudgetAlreadySent"
@@ -9,13 +9,13 @@ import { ISolicitationRepository } from "../../repositories/repair/solicitation-
 type CreateBudgetUseCaseResponse = Either<
   SolicitationNotFoundError | BudgetAlreadySent,
   {
-    id: number
+    id: string
   }
 >
 
 export class CreateBudgetUseCase {
   constructor(
-    private budgetRepository: BudgetRepository,
+    private budgetRepository: IBudgetRepository,
     private solicitationRepository: ISolicitationRepository,
   ) {}
 
@@ -27,21 +27,25 @@ export class CreateBudgetUseCase {
       createBudgetPayload.solicitationId,
     )
 
-    const budget = await this.budgetRepository.fetchBySolicitationId(
-      Number(createBudgetPayload.solicitationId),
-    )
+    const budget = await this.budgetRepository.findByParam<{
+      userId: number
+      solicitation: number
+    }>({
+      userId,
+      solicitation: solicitation.id,
+    })
 
     if (budget) return left(new BudgetAlreadySent())
 
     if (!solicitation) return left(new SolicitationNotFoundError())
 
-    const result = await this.budgetRepository.insert({
+    const result = await this.budgetRepository.create({
       estimatedPrice: createBudgetPayload.estimatedPrice,
       status: FetchInitialBudgetStatusUseCase.execute(),
       solicitationId: createBudgetPayload.solicitationId,
       userId,
     })
 
-    return right({ id: result })
+    return right({ id: result.id })
   }
 }

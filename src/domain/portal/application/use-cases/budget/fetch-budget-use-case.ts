@@ -1,5 +1,5 @@
 import { Either, left, right } from "src/core/Either"
-import { BudgetRepository } from "../../repositories/repair/budget-repository"
+import { IBudgetRepository } from "../../repositories/repair/budget-repository"
 import { BudgetNotFound } from "../../errors/repair/budget/BudgetNotFound"
 import { Budget } from "src/domain/portal/enterprise/repair/budget"
 import { BudgetActionNotAllowed } from "../../errors/repair/budget/BudgetActionNotAllowed"
@@ -11,13 +11,13 @@ type FetchBudgetUseCaseResponse = Either<
   }
 >
 export class FetchBudgetUseCase {
-  constructor(private budgetRepository: BudgetRepository) {}
+  constructor(private budgetRepository: IBudgetRepository) {}
 
   async execute(
-    budgetId: number,
+    budgetId: string,
     userId: number,
   ): Promise<FetchBudgetUseCaseResponse> {
-    const budget = await this.budgetRepository.fetchById(budgetId)
+    const budget = await this.budgetRepository.findById(budgetId)
 
     if (!budget) return left(new BudgetNotFound())
 

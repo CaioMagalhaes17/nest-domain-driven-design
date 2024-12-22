@@ -4,7 +4,7 @@ import { BudgetStatusType } from "../../application/types/repair/budget/status"
 type BudgetProps = {
   userId: number
   estimatedPrice: string
-  solicitationId: number
+  solicitationId: string
   status: BudgetStatusType
   createdAt: string
   updatedAt: string
@@ -23,7 +23,7 @@ export class Budget extends BaseEntity<BudgetProps> {
     return this.props.estimatedPrice
   }
 
-  get solicitationId(): number {
+  get solicitationId(): string {
     return this.props.solicitationId
   }
 

@@ -31,11 +31,11 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
   }
 
   async deleteById(id: string): Promise<void> {
-    this.model.findByIdAndDelete(id).exec()
+    await this.model.findByIdAndDelete(id).exec()
   }
 
   async deleteAll(): Promise<void> {
-    this.model.deleteMany({})
+    await this.model.deleteMany({})
   }
 
   async findByParam<ParamType>(param: ParamType) {

@@ -16,7 +16,7 @@ export class FetchSolicitationUseCase {
 
   async execute(
     solicitationId: string,
-    userId: number,
+    userId: string,
   ): Promise<FetchSolicitationUseCaseResponse> {
     console.log("niggere")
     const solicitation =

@@ -20,7 +20,7 @@ export class DeleteSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Delete("/repair/solicitation/:solicitationId")
   async handle(
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { id: string } },
     @Param("solicitationId") solicitationId: string,
   ) {
     const response = await this.deleteSolicitationUseCase.execute({

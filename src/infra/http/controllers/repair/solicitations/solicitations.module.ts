@@ -26,6 +26,8 @@ import { ISolicitationFormRepository } from "@/domain/portal/application/reposit
 import { InfraSolicitationFormRepository } from "@/infra/databases/mongo/repositories/repair/solicitation/solicitation-form.repository"
 import { AdminSolicitationUseCaseController } from "./admin/admin-solicitation-use-case.controller"
 import { AdminSolicitationUseCase } from "@/domain/portal/application/use-cases/solicitations/admin/admin-solicitataion.use-case"
+import { AdminSolicitationFormUseCaseController } from "./admin/admin-solicitation-form-use-case.controller"
+import { AdminSolicitationFormUseCase } from "@/domain/portal/application/use-cases/solicitations/admin/admin-solicitation-form.use-case"
 
 @Module({
   imports: [MessagesStreamingModule, SolicitationMongoModule],
@@ -36,6 +38,7 @@ import { AdminSolicitationUseCase } from "@/domain/portal/application/use-cases/
     DeleteSolicitationUseCaseController,
     CreateSolicitationUseCaseController,
     AdminSolicitationUseCaseController,
+    AdminSolicitationFormUseCaseController,
   ],
   providers: [
     {
@@ -44,6 +47,14 @@ import { AdminSolicitationUseCase } from "@/domain/portal/application/use-cases/
         return new AdminSolicitationUseCase(solicitationRepository)
       },
       inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+    },
+
+    {
+      provide: AdminSolicitationFormUseCase,
+      useFactory: (solicitationRepository: ISolicitationFormRepository) => {
+        return new AdminSolicitationFormUseCase(solicitationRepository)
+      },
+      inject: [InfraSolicitationFormRepository],
     },
     {
       provide: CreateSolicitationUseCase,
