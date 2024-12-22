@@ -3,4 +3,5 @@ export class UserSignUpDTO {
   login: string
   password: string
   isStore: boolean
+  permission: string
 }

@@ -24,6 +24,7 @@ export class UserAuthSignUpUseCase {
     login,
     password,
     isStore,
+    permission,
   }: UserSignUpDTO): Promise<UserAuthSignUpUseCaseResponse> {
     if (await this.userRepository.fetchUserByLogin(login))
       return left(new LoginInUseError())
@@ -33,7 +34,7 @@ export class UserAuthSignUpUseCase {
       login,
       password: passwordHash,
       isStore: isStore,
-      permission: "ADMIN",
+      permission: permission,
     })
 
     const newUser = await this.userRepository.findById(idNewUser.id)
@@ -42,7 +43,7 @@ export class UserAuthSignUpUseCase {
         id: newUser.id,
         name: newUser.name,
         isStore: newUser.isStore,
-        permission: "ADMIN",
+        permission: newUser.permission,
       }),
       user: newUser,
     })
