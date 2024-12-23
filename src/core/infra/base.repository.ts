@@ -24,9 +24,9 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
 
   async updateById(
     id: string,
-    updateData: Partial<DomainModel>,
+    updateData: DomainModel,
   ): Promise<DomainModel> {
-    await this.model.updateOne({ _id: id }, [updateData])
+    await this.model.findByIdAndUpdate(id, updateData)
     return this.mapper.toDomain(await this.model.findById(id).exec())
   }
 

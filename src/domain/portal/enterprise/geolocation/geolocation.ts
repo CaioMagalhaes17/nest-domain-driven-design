@@ -11,7 +11,7 @@ interface GeolocationProps {
 }
 
 export class Geolocation extends BaseEntity<GeolocationProps> {
-  static create(props: GeolocationProps, id: number) {
+  static create(props: GeolocationProps, id: string) {
     return new Geolocation(props, id)
   }
 

@@ -18,7 +18,6 @@ export class FetchSolicitationUseCase {
     solicitationId: string,
     userId: string,
   ): Promise<FetchSolicitationUseCaseResponse> {
-    console.log("niggere")
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())

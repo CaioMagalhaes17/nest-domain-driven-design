@@ -22,11 +22,12 @@ export class EditSolicitationUseCaseController {
   @Put("/repair/solicitation/:solicitationId")
   async handle(
     @Req() req: { user: { id: string } },
-    @Body() solicitationFormPayload: any,
+    @Body() editBody: any,
     @Param("solicitationId") solicitationId: string,
   ) {
     const response = await this.editSolicitationUseCase.execute({
-      solicitationFormPayload,
+      solicitationFormPayload: editBody.form,
+      status: editBody.status,
       userId: req.user.id,
       solicitationId,
     })
@@ -39,6 +40,10 @@ export class EditSolicitationUseCaseController {
         default:
           throw new BadRequestException()
       }
+    }
+
+    return {
+      data: response.value,
     }
   }
 }

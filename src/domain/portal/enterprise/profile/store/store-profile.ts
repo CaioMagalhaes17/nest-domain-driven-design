@@ -14,7 +14,7 @@ type StoreProfileProps = {
 }
 
 export class StoreProfile extends BaseEntity<StoreProfileProps> {
-  static create(props: StoreProfileProps, id: number) {
+  static create(props: StoreProfileProps, id: string) {
     return new StoreProfile(props, id)
   }
 

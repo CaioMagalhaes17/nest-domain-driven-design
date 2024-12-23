@@ -21,8 +21,13 @@ export class InfraSolicitationRepository
     )
   }
 
+  async findById(id: string): Promise<any> {
+    return this.mapper.toDomainWithSolicitationForm(
+      await this.model.findById(id).populate("solicitation_form").exec(),
+    )
+  }
+
   async create(data: Partial<Solicitation>): Promise<{ id: string }> {
-    console.log(data)
     const datatoinsert = {
       solicitation_form: data.formId,
       ...data,

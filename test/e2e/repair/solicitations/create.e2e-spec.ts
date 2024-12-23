@@ -45,7 +45,6 @@ describe("SolicitationController (e2e)", () => {
       .send(payload)
       .expect(201)
 
-    console.log(response.body)
     // // Validar a resposta da API
     // expect(response.body).toMatchObject({
     //   id: expect.any(Number),

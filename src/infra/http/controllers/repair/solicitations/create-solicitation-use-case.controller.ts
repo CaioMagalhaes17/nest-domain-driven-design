@@ -13,7 +13,6 @@ export class CreateSolicitationUseCaseController {
     @Req() req: { user: { id: string } },
     @Body() solicitationForm: SolicitationFormProps,
   ) {
-    console.log(req.user.id)
     const response = await this.createSolicitationsUseCase.execute({
       status: "PENDENTE",
       userId: req.user.id,

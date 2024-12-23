@@ -29,7 +29,7 @@ export class CreateBudgetUseCase {
 
     const budget = await this.budgetRepository.findByParam<{
       userId: number
-      solicitation: number
+      solicitation: string
     }>({
       userId,
       solicitation: solicitation.id,

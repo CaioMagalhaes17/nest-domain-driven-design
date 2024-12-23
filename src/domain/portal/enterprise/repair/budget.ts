@@ -11,7 +11,7 @@ type BudgetProps = {
 }
 
 export class Budget extends BaseEntity<BudgetProps> {
-  static create(props: BudgetProps, id: number) {
+  static create(props: BudgetProps, id: string) {
     return new Budget(props, id)
   }
 

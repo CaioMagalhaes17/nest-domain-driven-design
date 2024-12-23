@@ -1,6 +1,7 @@
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
 import { Solicitation as MongoSolicitation } from "../../schemas/repair/solicitation.schema"
 import { BaseMapper } from "@/core/infra/base.mapper"
+import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation.form"
 
 export class SolicitationMapper
   implements BaseMapper<MongoSolicitation, Solicitation> {
@@ -18,5 +19,17 @@ export class SolicitationMapper
   toDomainArray(rows: MongoSolicitation[]): Solicitation[] {
     if (!rows || rows.length === 0) return []
     return rows.map((row) => this.toDomain(row)).filter((item) => item !== null)
+  }
+
+  toDomainWithSolicitationForm(row: MongoSolicitation): Solicitation {
+    const { _id, solicitation_form, ...rest } = row.toObject()
+    const tentativa = Solicitation.create(
+      {
+        form: SolicitationForm.create(solicitation_form, solicitation_form._id),
+        ...rest,
+      },
+      _id,
+    )
+    return tentativa
   }
 }

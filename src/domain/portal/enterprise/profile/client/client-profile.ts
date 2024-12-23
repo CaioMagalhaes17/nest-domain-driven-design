@@ -12,7 +12,7 @@ type ClientProfileProps = {
 }
 
 export class ClientProfile extends BaseEntity<ClientProfileProps> {
-  static create(props: ClientProfileProps, id: number) {
+  static create(props: ClientProfileProps, id: string) {
     return new ClientProfile(props, id)
   }
 

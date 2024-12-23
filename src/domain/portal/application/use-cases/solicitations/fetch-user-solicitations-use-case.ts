@@ -19,7 +19,6 @@ export class FetchUserSolicitationsUseCase {
     }>({
       userId,
     })
-    console.log(solicitations)
     if (!solicitations) return left(new SolicitationNotFoundError())
 
     return right({ solicitations })

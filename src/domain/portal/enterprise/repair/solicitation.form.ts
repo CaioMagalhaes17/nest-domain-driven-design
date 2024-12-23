@@ -13,7 +13,7 @@ export type SolicitationFormProps = {
 }
 
 export class SolicitationForm extends BaseEntity<SolicitationFormProps> {
-  static create(props: SolicitationFormProps, id: number) {
+  static create(props: SolicitationFormProps, id: string) {
     return new SolicitationForm(props, id)
   }
 

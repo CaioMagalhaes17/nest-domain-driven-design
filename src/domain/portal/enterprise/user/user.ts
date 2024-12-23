@@ -11,7 +11,7 @@ type UserProps = {
 }
 
 export class User extends BaseEntity<UserProps> {
-  static create(props: UserProps, id: number) {
+  static create(props: UserProps, id: string) {
     return new User(props, id)
   }
 

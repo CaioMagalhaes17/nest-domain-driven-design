@@ -16,7 +16,6 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
     await this.messagesConsumerGateway.consume("stores", "storesInside", {
       eachMessage: async ({ message }) => {
         const stores = JSON.parse(message.value)
-        console.log(stores)
         stores.map(async (item) => {
           const fetchedUser = await this.fetchStoreProfileUseCase.execute(
             item.storeId,
@@ -24,10 +23,7 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
           )
           if (fetchedUser.isRight()) {
             const storeProfile = fetchedUser.value.profile
-            console.log(1)
             await this.emailQueue.add({ email: storeProfile.email })
-            console.log(2)
-            console.log(storeProfile)
           }
         })
       },

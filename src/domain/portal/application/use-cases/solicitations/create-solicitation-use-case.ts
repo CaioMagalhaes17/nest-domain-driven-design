@@ -16,7 +16,6 @@ export class CreateSolicitationUseCase {
     const resultForm = await this.solicitationFormRepository.create(
       data.solicitationForm,
     )
-    console.log(data.userId, resultForm.id)
     const result = await this.solicitationRepository.create({
       status: data.status,
       userId: data.userId,
@@ -24,7 +23,6 @@ export class CreateSolicitationUseCase {
     })
 
     //await this.onSolicitationCreatedUseCase.execute(data.userId)
-    console.log("O RESULTADO", result)
-    return resultForm
+    return result
   }
 }

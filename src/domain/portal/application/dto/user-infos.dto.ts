@@ -1,5 +1,5 @@
 export class UserInfosDTO {
-  id: number
+  id: string
   name: string
   isStore: boolean
   permission: string
