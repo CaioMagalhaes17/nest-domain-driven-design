@@ -1,13 +1,10 @@
 import { BaseEntity } from "src/core/entities/base-entity"
 
 interface GeolocationProps {
-  latitude: string
-  longitude: string
-  radius: string
-  createdAt: string
-  updatedAt: string
-  typeProfile: string
-  userId: number
+  latitude: number
+  longitude: number
+  radius: number
+  userId: string
 }
 
 export class Geolocation extends BaseEntity<GeolocationProps> {
@@ -15,31 +12,19 @@ export class Geolocation extends BaseEntity<GeolocationProps> {
     return new Geolocation(props, id)
   }
 
-  get latitude(): string {
+  get latitude(): number {
     return this.props.latitude
   }
 
-  get longitude(): string {
+  get longitude(): number {
     return this.props.longitude
   }
 
-  get radius(): string {
+  get radius(): number {
     return this.props.radius
   }
 
-  get createdAt(): string {
-    return this.props.createdAt
-  }
-
-  get updatedAt(): string {
-    return this.props.updatedAt
-  }
-
-  get typeProfile(): string {
-    return this.props.typeProfile
-  }
-
-  get userId(): number {
+  get userId(): string {
     return this.props.userId
   }
 }

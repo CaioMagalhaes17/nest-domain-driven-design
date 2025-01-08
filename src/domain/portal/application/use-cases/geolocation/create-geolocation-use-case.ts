@@ -1,35 +1,42 @@
-import { Either } from "src/core/Either"
-import { ClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
+import { Either, left, right } from "src/core/Either"
 import { ProfileActionNotAllowed } from "../../errors/profile/ProfileActionNotAllowed"
-import { GeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
+import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
+import { GeolocationIncorrectValues } from "../../errors/geolocation/incorrect-geolocation"
 
-type CreateGeolocationUseCaseResponse = Either<ProfileActionNotAllowed, number>
+type CreateGeolocationUseCaseResponse = Either<
+  ProfileActionNotAllowed | GeolocationIncorrectValues,
+  string
+>
 
 export interface MapRadiusPayload {
-  latitude: string
-  longitude: string
-  radius?: string
+  latitude: number
+  longitude: number
+  radius?: number
+  userId: string
 }
 
 export class CreateGeolocationUseCase {
-  constructor(
-    private geoLocationRepository: GeolocationRepository,
-    private clientProfileRepository: ClientProfileRepository,
-  ) {}
+  constructor(private geoLocationRepository: IGeolocationRepository) {}
 
   async execute(
     mapRadiusPayload: MapRadiusPayload,
-    user: { id: number; isStore: boolean },
+    userId: string,
   ): Promise<CreateGeolocationUseCaseResponse> {
-    const id = await this.geoLocationRepository.create({
-      typeProfile: !user.isStore ? "client" : "store",
-      userId: user.id,
-      ...mapRadiusPayload,
+    if (
+      mapRadiusPayload.longitude < -180 ||
+      mapRadiusPayload.longitude > 180 ||
+      mapRadiusPayload.latitude < -90 ||
+      mapRadiusPayload.latitude > 90
+    ) {
+      return left(new GeolocationIncorrectValues())
+    }
+    const newGeoLocation = await this.geoLocationRepository.create({
+      latitude: mapRadiusPayload.latitude,
+      longitude: mapRadiusPayload.longitude,
+      userId: userId,
+      radius: mapRadiusPayload.radius ? mapRadiusPayload.radius : 0,
     })
-    await this.clientProfileRepository.editProfile(
-      { preferredMapRadiusId: id },
-      user.id,
-    )
-    return id
+
+    return right(newGeoLocation.id)
   }
 }

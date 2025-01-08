@@ -12,7 +12,7 @@ import { StoreProfileModule } from "./controllers/profile/store/store-profile.mo
     SolicitationsModule,
     BudgetModule,
     // ClientProfileModule,
-    // GeolocationModule,
+    GeolocationModule,
     // StoreProfileModule,
   ],
 })

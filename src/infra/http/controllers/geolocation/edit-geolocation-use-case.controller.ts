@@ -1,3 +1,4 @@
+import { GeolocationIncorrectValues } from "@/domain/portal/application/errors/geolocation/incorrect-geolocation"
 import {
   BadRequestException,
   Body,
@@ -5,7 +6,6 @@ import {
   NotFoundException,
   Param,
   Put,
-  Req,
   UseGuards,
 } from "@nestjs/common"
 import { GeolocationNotFound } from "src/domain/portal/application/errors/geolocation/geolocation-not-found"
@@ -19,22 +19,20 @@ export class EditGeolocationUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Put("/geoinfo/:id")
-  async handle(
-    @Req() req: { user: { isStore: boolean } },
-    @Param("id") id: number,
-    @Body() createGeolocation,
-  ) {
+  async handle(@Param("id") id: string, @Body() createGeolocation) {
     const response = await this.editGeolocationUseCase.execute(
       id,
       createGeolocation,
     )
 
-    if (response.isLeft()) {
+    if (response && response.isLeft()) {
       switch (response.value.constructor) {
         case GeolocationNotFound:
           throw new NotFoundException(response.value.message)
         case ProfileActionNotAllowed:
-          throw new NotFoundException(response.value.message)
+          throw new BadRequestException(response.value.message)
+        case GeolocationIncorrectValues:
+          throw new BadRequestException(response.value.message)
         default:
           throw new BadRequestException("Erro não tratado")
       }

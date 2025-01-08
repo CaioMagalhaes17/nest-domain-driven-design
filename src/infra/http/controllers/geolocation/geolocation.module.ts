@@ -1,71 +1,75 @@
 import { Module } from "@nestjs/common"
 import { CreateGeolocationUseCaseController } from "./create-geolocation-use-case.controller"
 import { CreateGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/create-geolocation-use-case"
-import { GeolocationRepository } from "src/domain/portal/application/repositories/geolocation/geolocation-repository"
+import { IGeolocationRepository } from "src/domain/portal/application/repositories/geolocation/geolocation-repository"
 import { EditGeolocationUseCaseController } from "./edit-geolocation-use-case.controller"
 import { EditGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/edit-geolocation-use-case"
 import { FetchGeolocationUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
 import { FetchGeolocationUseCaseController } from "./fetch-geolocation-use-case.controller"
-import { ClientProfileRepository } from "src/domain/portal/application/repositories/profile/client/client-profile.repository"
-import { FetchGeolocationCoveringStoreUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-geolocation-covering-use-case"
-import { FetchStoresInsideRadiusUseCaseController } from "./fetch-stores-inside-radius-use-case.controller"
-import { FetchStoresInsideRadiusUseCase } from "src/domain/portal/application/use-cases/geolocation/fetch-stores-inside-radius-use-case"
+import { FetchStoresInsideClientRadiusUseCaseController } from "./fetch-stores-inside-client-radius-use-case.controller"
+import { FetchStoresInsideClientRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-stores-inside-client-radius-use-case"
+import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.module"
+import { InfraGeolocationRepository } from "@/infra/databases/mongo/repositories/geolocation/geolocation.repository"
+import { FetchClientsInsideStoreLocationUseCaseController } from "./fetch-clients-inside-store-location-use-case.controller"
+import { FetchClientsInsideStoreLocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-clients-inside-store-location-use-case"
 
 @Module({
-  imports: [],
+  imports: [GeolocationMongoModule],
   controllers: [
     CreateGeolocationUseCaseController,
     EditGeolocationUseCaseController,
     FetchGeolocationUseCaseController,
-    FetchStoresInsideRadiusUseCaseController,
+    FetchStoresInsideClientRadiusUseCaseController,
+    FetchClientsInsideStoreLocationUseCaseController,
   ],
   providers: [
     {
       provide: CreateGeolocationUseCase,
-      useFactory: (
-        geolocationRepository: GeolocationRepository,
-        clientProfileRepository: ClientProfileRepository,
-      ) => {
-        return new CreateGeolocationUseCase(
-          geolocationRepository,
-          clientProfileRepository,
-        )
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
+        return new CreateGeolocationUseCase(geolocationRepository)
       },
-      inject: [GeolocationRepository, ClientProfileRepository],
+      inject: [InfraGeolocationRepository],
     },
     {
       provide: EditGeolocationUseCase,
-      useFactory: (geolocationRepository: GeolocationRepository) => {
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
         return new EditGeolocationUseCase(geolocationRepository)
       },
-      inject: [GeolocationRepository],
+      inject: [InfraGeolocationRepository],
     },
     {
       provide: FetchGeolocationUseCase,
-      useFactory: (geolocationRepository: GeolocationRepository) => {
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
         return new FetchGeolocationUseCase(geolocationRepository)
       },
-      inject: [GeolocationRepository],
+      inject: [InfraGeolocationRepository],
+    },
+    // {
+    //   provide: FetchGeolocationCoveringStoreUseCase,
+    //   useFactory: (geolocationRepository: IGeolocationRepository) => {
+    //     return new FetchGeolocationCoveringStoreUseCase(geolocationRepository)
+    //   },
+    //   inject: [InfraGeolocationRepository],
+    // },
+    {
+      provide: FetchStoresInsideClientRadiusUseCase,
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
+        return new FetchStoresInsideClientRadiusUseCase(geolocationRepository)
+      },
+      inject: [InfraGeolocationRepository],
     },
     {
-      provide: FetchGeolocationCoveringStoreUseCase,
-      useFactory: (geolocationRepository: GeolocationRepository) => {
-        return new FetchGeolocationCoveringStoreUseCase(geolocationRepository)
+      provide: FetchClientsInsideStoreLocationUseCase,
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
+        return new FetchClientsInsideStoreLocationUseCase(geolocationRepository)
       },
-      inject: [GeolocationRepository],
-    },
-    {
-      provide: FetchStoresInsideRadiusUseCase,
-      useFactory: (geolocationRepository: GeolocationRepository) => {
-        return new FetchStoresInsideRadiusUseCase(geolocationRepository)
-      },
-      inject: [GeolocationRepository],
+      inject: [InfraGeolocationRepository],
     },
   ],
   exports: [
-    FetchGeolocationCoveringStoreUseCase,
+    ///FetchGeolocationCoveringStoreUseCase,
     FetchGeolocationUseCase,
-    FetchStoresInsideRadiusUseCase,
+    FetchStoresInsideClientRadiusUseCase,
   ],
 })
 export class GeolocationModule {}

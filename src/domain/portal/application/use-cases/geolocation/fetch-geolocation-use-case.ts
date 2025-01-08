@@ -1,19 +1,21 @@
 import { Either, left, right } from "src/core/Either"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
-import { GeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
-import { Geolocation } from "src/domain/portal/enterprise/geolocation/geolocation"
+import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { ProfileActionNotAllowed } from "../../errors/profile/ProfileActionNotAllowed"
 
 type FetchGeolocationUseCaseResponse = Either<
   GeolocationNotFound | ProfileActionNotAllowed,
-  { geolocation: Geolocation }
+  any
 >
 
 export class FetchGeolocationUseCase {
-  constructor(private geolocationRepository: GeolocationRepository) {}
+  constructor(private geolocationRepository: IGeolocationRepository) {}
 
-  async execute(userId: number): Promise<FetchGeolocationUseCaseResponse> {
-    const result = await this.geolocationRepository.fetchByUserId(userId)
+  async execute(userId: string): Promise<FetchGeolocationUseCaseResponse> {
+    const result = await this.geolocationRepository.findByParam<{
+      userId: string
+    }>({ userId })
+    console.log(userId)
     if (!result) return left(new GeolocationNotFound())
     return right({ geolocation: result })
   }
