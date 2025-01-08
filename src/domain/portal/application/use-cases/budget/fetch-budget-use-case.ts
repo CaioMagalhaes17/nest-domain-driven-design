@@ -22,7 +22,6 @@ export class FetchBudgetUseCase {
     if (!budget) return left(new BudgetNotFound())
 
     if (budget.userId !== userId) return left(new BudgetActionNotAllowed())
-
     return right({ budget })
   }
 }

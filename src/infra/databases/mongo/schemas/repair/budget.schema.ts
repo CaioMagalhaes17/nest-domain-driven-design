@@ -4,7 +4,7 @@ import { Document, Schema as MangooseSchema } from "mongoose"
 @Schema({ timestamps: true })
 export class Budget extends Document {
   @Prop({ required: true })
-  userId: number
+  userId: string
 
   @Prop({ required: true })
   estimatedPrice: string

@@ -1,9 +1,9 @@
-import { IsNumber, IsString } from "class-validator"
+import { IsString } from "class-validator"
 
 export class BudgetDTO {
   @IsString()
   readonly estimatedPrice: string
 
-  @IsNumber()
+  @IsString()
   readonly solicitationId: string
 }

@@ -9,7 +9,6 @@ import {
 import { SolicitationNotFoundError } from "src/domain/portal/application/errors/repair/solicitations/SolicitationNotFoundError"
 import { FetchUserSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-user-solicitations-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
-import { SolicitationPresenter } from "src/infra/presenters/repair/solicitations/solicitation-presenter"
 
 @Controller()
 export class FetchUserSolicitationsUseCaseController {

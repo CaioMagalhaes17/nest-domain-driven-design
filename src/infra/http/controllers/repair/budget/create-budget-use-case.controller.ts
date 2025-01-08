@@ -26,7 +26,6 @@ export class CreateBudgetUseCaseController {
       createBudgetPayload,
       req.user.id,
     )
-
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case SolicitationNotFoundError:
@@ -38,6 +37,6 @@ export class CreateBudgetUseCaseController {
       }
     }
 
-    return response
+    return response.value
   }
 }

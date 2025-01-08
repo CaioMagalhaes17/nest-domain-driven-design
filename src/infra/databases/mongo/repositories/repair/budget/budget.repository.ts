@@ -14,4 +14,29 @@ export class InfraBudgetRepository extends BaseInfraRepository<
   ) {
     super(model, mapper)
   }
+
+  async findByParam<ParamType>(param: ParamType) {
+    return this.mapper.toDomainArray(
+      await this.model.find(param).populate("solicitation").exec(),
+    )
+  }
+
+  async findById(id: string): Promise<any> {
+    try {
+      return this.mapper.toDomainWithSolicitation(
+        await this.model.findById(id).populate("solicitation").exec(),
+      )
+    } catch (error) {
+      return
+    }
+  }
+
+  async create(data: Partial<Budget>): Promise<{ id: string }> {
+    const datatoinsert = {
+      solicitation: data.solicitationId,
+      ...data,
+    }
+
+    return { id: (await this.model.create(datatoinsert)).id }
+  }
 }

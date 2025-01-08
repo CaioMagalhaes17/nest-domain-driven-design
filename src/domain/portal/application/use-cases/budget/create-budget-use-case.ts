@@ -27,6 +27,8 @@ export class CreateBudgetUseCase {
       createBudgetPayload.solicitationId,
     )
 
+    if (!solicitation) return left(new SolicitationNotFoundError())
+
     const budget = await this.budgetRepository.findByParam<{
       userId: number
       solicitation: string
@@ -35,9 +37,7 @@ export class CreateBudgetUseCase {
       solicitation: solicitation.id,
     })
 
-    if (budget) return left(new BudgetAlreadySent())
-
-    if (!solicitation) return left(new SolicitationNotFoundError())
+    if (budget.length > 0) return left(new BudgetAlreadySent())
 
     const result = await this.budgetRepository.create({
       estimatedPrice: createBudgetPayload.estimatedPrice,
@@ -45,7 +45,6 @@ export class CreateBudgetUseCase {
       solicitationId: createBudgetPayload.solicitationId,
       userId,
     })
-
     return right({ id: result.id })
   }
 }

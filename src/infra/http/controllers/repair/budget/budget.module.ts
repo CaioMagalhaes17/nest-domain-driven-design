@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common"
 import { CreateBudgetUseCaseController } from "./create-budget-use-case.controller"
 import { CreateBudgetUseCase } from "src/domain/portal/application/use-cases/budget/create-budget-use-case"
-import { SolicitationRepository } from "src/domain/portal/application/repositories/repair/solicitation-repository"
 import { IBudgetRepository } from "src/domain/portal/application/repositories/repair/budget-repository"
 import { FetchBudgetsUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budgets-use-case"
 import { FetchBudgetsUseCaseController } from "./fetch-budgets-use-case.controller"
@@ -13,6 +12,7 @@ import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.mo
 import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"
 import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
 import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repair/budget/budget.repository"
+import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositories/repair/solicitation/solicitation.repository"
 
 @Module({
   imports: [SolicitationMongoModule, BudgetMongoModule],
@@ -31,7 +31,7 @@ import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repa
       ) => {
         return new CreateBudgetUseCase(budgetRepository, solicitationRepository)
       },
-      inject: [InfraBudgetRepository, SolicitationRepository],
+      inject: [InfraBudgetRepository, InfraSolicitationRepository],
     },
     {
       provide: FetchBudgetsUseCase,

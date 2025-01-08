@@ -22,9 +22,13 @@ export class InfraSolicitationRepository
   }
 
   async findById(id: string): Promise<any> {
-    return this.mapper.toDomainWithSolicitationForm(
-      await this.model.findById(id).populate("solicitation_form").exec(),
-    )
+    try {
+      return this.mapper.toDomainWithSolicitationForm(
+        await this.model.findById(id).populate("solicitation_form").exec(),
+      )
+    } catch (error) {
+      return
+    }
   }
 
   async create(data: Partial<Solicitation>): Promise<{ id: string }> {

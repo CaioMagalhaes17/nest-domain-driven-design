@@ -11,7 +11,6 @@ import { BudgetActionNotAllowed } from "src/domain/portal/application/errors/rep
 import { BudgetNotFound } from "src/domain/portal/application/errors/repair/budget/BudgetNotFound"
 import { FetchBudgetUseCase } from "src/domain/portal/application/use-cases/budget/fetch-budget-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
-import { BudgetsPresenter } from "src/infra/presenters/repair/budget/budgets.presenter"
 
 @Controller()
 export class FetchBudgetUseCaseController {
@@ -42,7 +41,7 @@ export class FetchBudgetUseCaseController {
     const { budget } = response.value
 
     return {
-      data: BudgetsPresenter.toHttp(budget),
+      data: budget,
     }
   }
 }
