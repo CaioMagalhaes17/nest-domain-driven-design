@@ -12,6 +12,10 @@ import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.modu
 import { InfraGeolocationRepository } from "@/infra/databases/mongo/repositories/geolocation/geolocation.repository"
 import { FetchClientsInsideStoreLocationUseCaseController } from "./fetch-clients-inside-store-location-use-case.controller"
 import { FetchClientsInsideStoreLocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-clients-inside-store-location-use-case"
+import { FetchGeolocationsCoveringLocationUseCaseController } from "./fetch-geolocations-covering-locatio-use-case.controller"
+import { FetchGeolocationsInsideRadiusUseCaseController } from "./fetch-geolocations-inside-radius-use-case.controller"
+import { FetchGeolocationCoveringLocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocations-covering-location"
+import { FetchGeolocationInsideRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocations-inside-radius"
 
 @Module({
   imports: [GeolocationMongoModule],
@@ -21,6 +25,8 @@ import { FetchClientsInsideStoreLocationUseCase } from "@/domain/portal/applicat
     FetchGeolocationUseCaseController,
     FetchStoresInsideClientRadiusUseCaseController,
     FetchClientsInsideStoreLocationUseCaseController,
+    FetchGeolocationsCoveringLocationUseCaseController,
+    FetchGeolocationsInsideRadiusUseCaseController,
   ],
   providers: [
     {
@@ -62,6 +68,22 @@ import { FetchClientsInsideStoreLocationUseCase } from "@/domain/portal/applicat
       provide: FetchClientsInsideStoreLocationUseCase,
       useFactory: (geolocationRepository: IGeolocationRepository) => {
         return new FetchClientsInsideStoreLocationUseCase(geolocationRepository)
+      },
+      inject: [InfraGeolocationRepository],
+    },
+    {
+      provide: FetchGeolocationInsideRadiusUseCase,
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
+        return new FetchGeolocationInsideRadiusUseCase(geolocationRepository)
+      },
+      inject: [InfraGeolocationRepository],
+    },
+    {
+      provide: FetchGeolocationCoveringLocationUseCase,
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
+        return new FetchGeolocationCoveringLocationUseCase(
+          geolocationRepository,
+        )
       },
       inject: [InfraGeolocationRepository],
     },

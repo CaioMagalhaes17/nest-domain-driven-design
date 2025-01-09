@@ -18,7 +18,7 @@ export class EditGeolocationUseCaseController {
   constructor(private editGeolocationUseCase: EditGeolocationUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Put("/geoinfo/:id")
+  @Put("/geolocation/:id")
   async handle(@Param("id") id: string, @Body() createGeolocation) {
     const response = await this.editGeolocationUseCase.execute(
       id,

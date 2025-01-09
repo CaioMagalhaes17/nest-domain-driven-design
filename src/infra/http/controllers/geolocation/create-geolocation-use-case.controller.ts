@@ -15,7 +15,7 @@ export class CreateGeolocationUseCaseController {
   constructor(private createGeolocationUseCase: CreateGeolocationUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/geoinfo")
+  @Post("/geolocation")
   async handle(
     @Req() req: { user: { id: string } },
     @Body() createGeolocation,

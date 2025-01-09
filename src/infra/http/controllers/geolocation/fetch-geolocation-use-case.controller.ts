@@ -16,7 +16,7 @@ export class FetchGeolocationUseCaseController {
   constructor(private fetchGeolocationUseCase: FetchGeolocationUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/geoinfo")
+  @Get("/geolocation")
   async handle(@Req() req: { user: { id: string } }) {
     const response = await this.fetchGeolocationUseCase.execute(req.user.id)
 

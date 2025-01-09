@@ -9,7 +9,7 @@ export class FetchClientsInsideStoreLocationUseCaseController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/clients/in-range")
+  @Get("/geolocation/clients/in-range")
   async handle(@Req() req: { user: { id: string } }) {
     const response = await this.fetchStoresInsideRadiusUseCase.execute(
       req.user.id,
