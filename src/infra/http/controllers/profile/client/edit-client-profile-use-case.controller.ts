@@ -19,9 +19,9 @@ export class EditClientProfileUseCaseController {
   constructor(private editClientProfileUseCase: EditClientProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Put("/user/profile")
+  @Put("/profile/client")
   async handle(
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { id: string } },
     @Body() editClientProfile: EditProfilePayload,
   ) {
     const response = await this.editClientProfileUseCase.execute(

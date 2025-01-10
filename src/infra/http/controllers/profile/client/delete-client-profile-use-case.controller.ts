@@ -15,8 +15,8 @@ export class DeleteClientProfileUseCaseController {
   constructor(private deleteClientProfileUseCase: DeleteClientProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Delete("/user/profile")
-  async handle(@Req() req: { user: { id: number } }) {
+  @Delete("/profile/client")
+  async handle(@Req() req: { user: { id: string } }) {
     const response = await this.deleteClientProfileUseCase.execute(req.user.id)
     if (response && response.isLeft()) {
       switch (response.value.constructor) {

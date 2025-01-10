@@ -1,16 +1,5 @@
-import { ClientProfile } from "src/domain/portal/enterprise/profile/client/client-profile"
-import { EditProfilePayload } from "../../../use-cases/profile/client/edit-client-profile-use-case"
-import { CreateProfilePayload } from "../../../use-cases/profile/client/create-client-profile-use-case"
+import { BaseDomainRepository } from "@/core/domain/base.repository.interface"
+import { ClientProfile } from "@/domain/portal/enterprise/profile/client/client-profile"
 
-export abstract class ClientProfileRepository {
-  abstract fetchById(profileId: number): Promise<ClientProfile | void>
-  abstract fetchByUserId(userId: number): Promise<ClientProfile | void>
-  abstract deleteByUserId(userId: number): Promise<void>
-  abstract createProfile(
-    createProfilePayload: CreateProfilePayload,
-  ): Promise<void>
-  abstract editProfile(
-    editProfilePayload: EditProfilePayload,
-    userId: number,
-  ): Promise<void>
-}
+export interface IClientProfileRepository
+  extends BaseDomainRepository<ClientProfile> {}

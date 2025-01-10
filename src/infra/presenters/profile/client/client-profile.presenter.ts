@@ -5,8 +5,6 @@ export class ClientProfilePresenter {
     return {
       id: profile.id,
       name: profile.name,
-      address: profile.address,
-      preferredMapRadiusId: profile.preferredMapRadiusId,
       rating: profile.rating,
       userId: profile.userId,
     }

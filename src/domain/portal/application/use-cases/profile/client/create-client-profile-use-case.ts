@@ -1,29 +1,31 @@
-import { Either, left } from "src/core/Either"
+import { Either, left, right } from "src/core/Either"
 import { UserAlreadyHasProfile } from "../../../errors/profile/UserAlreadyHasProfile"
-import { ClientProfileRepository } from "../../../repositories/profile/client/client-profile.repository"
+import { IClientProfileRepository } from "../../../repositories/profile/client/client-profile.repository"
 
 export type CreateProfilePayload = {
   name: string
-  userId: number
-  address?: string
-  preferredMapRadiusId?: number
+  userId: string
   profileImg?: string
+  email?: string
+  telNumber?: string
 }
 
-type CreateClientProfileResponse = Either<UserAlreadyHasProfile, void>
+type CreateClientProfileResponse = Either<UserAlreadyHasProfile, string>
 
 export class CreateClientProfileUseCase {
-  constructor(private clientProfileRepository: ClientProfileRepository) {}
+  constructor(private clientProfileRepository: IClientProfileRepository) {}
 
   async execute(
     createProfilePayload: CreateProfilePayload,
   ): Promise<CreateClientProfileResponse> {
-    const profile = await this.clientProfileRepository.fetchByUserId(
-      createProfilePayload.userId,
-    )
+    const profile = await this.clientProfileRepository.findByParam<{
+      userId: string
+    }>({ userId: createProfilePayload.userId })
 
-    if (profile) return left(new UserAlreadyHasProfile())
+    if (profile && profile.length > 0) return left(new UserAlreadyHasProfile())
 
-    await this.clientProfileRepository.createProfile(createProfilePayload)
+    const newProfile =
+      await this.clientProfileRepository.create(createProfilePayload)
+    return right(newProfile.id)
   }
 }

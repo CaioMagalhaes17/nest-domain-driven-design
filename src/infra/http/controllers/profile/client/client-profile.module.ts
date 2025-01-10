@@ -1,16 +1,18 @@
 import { Module } from "@nestjs/common"
 import { FetchClientProfileUseCaseController } from "./fetch-client-profile-use-case.controller"
 import { FetchClientProfileUseCase } from "src/domain/portal/application/use-cases/profile/client/fetch-client-profile-use-case"
-import { ClientProfileRepository } from "src/domain/portal/application/repositories/profile/client/client-profile.repository"
+import { IClientProfileRepository } from "src/domain/portal/application/repositories/profile/client/client-profile.repository"
 import { CreateClientProfileUseCaseController } from "./create-client-profile-use-case.controller"
 import { CreateClientProfileUseCase } from "src/domain/portal/application/use-cases/profile/client/create-client-profile-use-case"
 import { EditClientProfileUseCase } from "src/domain/portal/application/use-cases/profile/client/edit-client-profile-use-case"
 import { EditClientProfileUseCaseController } from "./edit-client-profile-use-case.controller"
 import { DeleteClientProfileUseCase } from "src/domain/portal/application/use-cases/profile/client/delete-client-profile-use-case"
 import { DeleteClientProfileUseCaseController } from "./delete-client-profile-use-case.controller"
+import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
+import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 
 @Module({
-  imports: [],
+  imports: [ProfilesMongoModule],
   controllers: [
     FetchClientProfileUseCaseController,
     CreateClientProfileUseCaseController,
@@ -20,31 +22,31 @@ import { DeleteClientProfileUseCaseController } from "./delete-client-profile-us
   providers: [
     {
       provide: FetchClientProfileUseCase,
-      useFactory: (clientProfileRepository: ClientProfileRepository) => {
+      useFactory: (clientProfileRepository: IClientProfileRepository) => {
         return new FetchClientProfileUseCase(clientProfileRepository)
       },
-      inject: [ClientProfileRepository],
+      inject: [InfraClientProfileRepository],
     },
     {
       provide: CreateClientProfileUseCase,
-      useFactory: (clientProfileRepository: ClientProfileRepository) => {
+      useFactory: (clientProfileRepository: IClientProfileRepository) => {
         return new CreateClientProfileUseCase(clientProfileRepository)
       },
-      inject: [ClientProfileRepository],
+      inject: [InfraClientProfileRepository],
     },
     {
       provide: EditClientProfileUseCase,
-      useFactory: (clientProfileRepository: ClientProfileRepository) => {
+      useFactory: (clientProfileRepository: IClientProfileRepository) => {
         return new EditClientProfileUseCase(clientProfileRepository)
       },
-      inject: [ClientProfileRepository],
+      inject: [InfraClientProfileRepository],
     },
     {
       provide: DeleteClientProfileUseCase,
-      useFactory: (clientProfileRepository: ClientProfileRepository) => {
+      useFactory: (clientProfileRepository: IClientProfileRepository) => {
         return new DeleteClientProfileUseCase(clientProfileRepository)
       },
-      inject: [ClientProfileRepository],
+      inject: [InfraClientProfileRepository],
     },
   ],
 })

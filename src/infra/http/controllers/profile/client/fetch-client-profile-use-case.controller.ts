@@ -16,8 +16,8 @@ export class FetchClientProfileUseCaseController {
   constructor(private fetchClientProfileUseCase: FetchClientProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/user/profile")
-  async handle(@Req() req: { user: { id: number } }) {
+  @Get("/profile/client")
+  async handle(@Req() req: { user: { id: string } }) {
     const response = await this.fetchClientProfileUseCase.execute(req.user.id)
     if (response.isLeft()) {
       switch (response.value.constructor) {

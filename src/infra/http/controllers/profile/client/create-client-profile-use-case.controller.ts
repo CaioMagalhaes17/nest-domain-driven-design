@@ -22,9 +22,9 @@ export class CreateClientProfileUseCaseController {
   constructor(private createClientProfileUseCase: CreateClientProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/user/profile")
+  @Post("/profile/client")
   async handle(
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { id: string } },
     @Body() createClientProfile: CreateClientProfileHttp,
   ) {
     const response = await this.createClientProfileUseCase.execute({
@@ -40,5 +40,7 @@ export class CreateClientProfileUseCaseController {
           throw new BadRequestException("Erro não tratado")
       }
     }
+
+    return { id: response.value }
   }
 }

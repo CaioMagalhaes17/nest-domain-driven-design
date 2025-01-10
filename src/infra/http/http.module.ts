@@ -11,7 +11,7 @@ import { StoreProfileModule } from "./controllers/profile/store/store-profile.mo
     UserModule,
     SolicitationsModule,
     BudgetModule,
-    // ClientProfileModule,
+    ClientProfileModule,
     GeolocationModule,
     // StoreProfileModule,
   ],

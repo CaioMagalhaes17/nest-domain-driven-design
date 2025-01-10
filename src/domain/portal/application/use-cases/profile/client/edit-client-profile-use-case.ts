@@ -1,27 +1,31 @@
 import { Either, left } from "src/core/Either"
 import { ProfileNotFound } from "../../../errors/profile/ProfileNotFound"
-import { ClientProfileRepository } from "../../../repositories/profile/client/client-profile.repository"
+import { IClientProfileRepository } from "../../../repositories/profile/client/client-profile.repository"
 
 export type EditProfilePayload = {
   name?: string
-  address?: string
-  preferredMapRadiusId?: number
   profileImg?: string
+  email?: string
+  telNumber?: string
   rating?: string
 }
 
 type EditClientProfileReturn = Either<ProfileNotFound, void>
 export class EditClientProfileUseCase {
-  constructor(private clientProfileRepository: ClientProfileRepository) {}
+  constructor(private clientProfileRepository: IClientProfileRepository) {}
 
   async execute(
     editProfilePayload: EditProfilePayload,
-    userId: number,
+    userId: string,
   ): Promise<EditClientProfileReturn> {
-    const profile = await this.clientProfileRepository.fetchByUserId(userId)
+    const profile = await this.clientProfileRepository.findByParam<{
+      userId: string
+    }>({ userId })
+    if (!profile[0] || profile.length === 0) return left(new ProfileNotFound())
 
-    if (!profile) return left(new ProfileNotFound())
-
-    await this.clientProfileRepository.editProfile(editProfilePayload, userId)
+    await this.clientProfileRepository.updateById(
+      profile[0].id,
+      editProfilePayload,
+    )
   }
 }
