@@ -103,33 +103,51 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
+        clientProfileRepository: IClientProfileRepository,
       ) => {
         return new EditSolicitationFormUseCase(
           solicitationRepository,
           solicitationFormRepository,
+          clientProfileRepository,
         )
       },
-      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+      inject: [
+        InfraSolicitationRepository,
+        InfraSolicitationFormRepository,
+        InfraClientProfileRepository,
+      ],
     },
     {
       provide: DeleteSolicitationUseCase,
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
+        clientProfileRepository: IClientProfileRepository,
       ) => {
         return new DeleteSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
+          clientProfileRepository,
         )
       },
-      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+      inject: [
+        InfraSolicitationRepository,
+        InfraSolicitationFormRepository,
+        InfraClientProfileRepository,
+      ],
     },
     {
       provide: FetchSolicitationUseCase,
-      useFactory: (solicitationRepository: ISolicitationRepository) => {
-        return new FetchSolicitationUseCase(solicitationRepository)
+      useFactory: (
+        solicitationRepository: ISolicitationRepository,
+        clientProfileRepository: IClientProfileRepository,
+      ) => {
+        return new FetchSolicitationUseCase(
+          solicitationRepository,
+          clientProfileRepository,
+        )
       },
-      inject: [InfraSolicitationRepository],
+      inject: [InfraSolicitationRepository, InfraClientProfileRepository],
     },
     {
       provide: OnSolicitationCreatedUseCase,

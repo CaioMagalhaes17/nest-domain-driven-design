@@ -5,6 +5,7 @@ import { ISolicitationRepository } from "../../repositories/repair/solicitation-
 import { ISolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository.interface"
 import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation.form"
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
+import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
 
 type EditSolicitationFormUseCaseResponse = Either<
   SolicitationNotFoundError | UnauthorizedSolicitationActionError,
@@ -21,6 +22,7 @@ export class EditSolicitationFormUseCase {
   constructor(
     private solicitationRepository: ISolicitationRepository,
     private solicitationFormRepository: ISolicitationFormRepository,
+    private clientProfileRepository: IClientProfileRepository,
   ) {}
 
   async execute({
@@ -32,7 +34,11 @@ export class EditSolicitationFormUseCase {
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
-    if (userId !== solicitation.userId)
+
+    const profile = await this.clientProfileRepository.findByParam<{
+      userId: string
+    }>({ userId })
+    if (userId !== profile[0].userId)
       return left(new UnauthorizedSolicitationActionError())
     if (status) {
       await this.solicitationRepository.updateById(solicitation.id, {

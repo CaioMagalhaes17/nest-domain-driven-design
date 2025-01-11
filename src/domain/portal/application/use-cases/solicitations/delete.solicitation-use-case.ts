@@ -3,6 +3,7 @@ import { UnauthorizedSolicitationActionError } from "../../errors/repair/solicit
 import { SolicitationNotFoundError } from "../../errors/repair/solicitations/SolicitationNotFoundError"
 import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
 import { ISolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository.interface"
+import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
 
 type DeleteSolicitationUseCaseResponse = Either<
   SolicitationNotFoundError | UnauthorizedSolicitationActionError,
@@ -17,6 +18,7 @@ export class DeleteSolicitationUseCase {
   constructor(
     private solicitationRepository: ISolicitationRepository,
     private solicitationFormRepository: ISolicitationFormRepository,
+    private clientProfileRepository: IClientProfileRepository,
   ) {}
 
   async execute({
@@ -26,7 +28,11 @@ export class DeleteSolicitationUseCase {
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
-    if (userId !== solicitation.userId)
+
+    const profile = await this.clientProfileRepository.findByParam<{
+      userId: string
+    }>({ userId })
+    if (userId !== profile[0].userId)
       return left(new UnauthorizedSolicitationActionError())
     await this.solicitationRepository.deleteById(solicitationId)
     await this.solicitationFormRepository.deleteById(solicitation.form.id)

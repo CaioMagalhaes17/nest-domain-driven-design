@@ -3,6 +3,7 @@ import { SolicitationNotFoundError } from "../../errors/repair/solicitations/Sol
 import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
 import { UnauthorizedSolicitationActionError } from "../../errors/repair/solicitations/UnauthorizedSolicitationAction"
 import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
+import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
 
 type FetchSolicitationUseCaseResponse = Either<
   SolicitationNotFoundError,
@@ -12,7 +13,10 @@ type FetchSolicitationUseCaseResponse = Either<
 >
 
 export class FetchSolicitationUseCase {
-  constructor(private solicitationRepository: ISolicitationRepository) {}
+  constructor(
+    private solicitationRepository: ISolicitationRepository,
+    private clientProfileRepository: IClientProfileRepository,
+  ) {}
 
   async execute(
     solicitationId: string,
@@ -21,7 +25,11 @@ export class FetchSolicitationUseCase {
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
-    if (solicitation.userId !== userId)
+
+    const profile = await this.clientProfileRepository.findByParam<{
+      userId: string
+    }>({ userId })
+    if (profile[0].userId !== userId)
       return left(new UnauthorizedSolicitationActionError())
 
     return right({ solicitation })
