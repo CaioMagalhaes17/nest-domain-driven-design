@@ -24,9 +24,6 @@ export class StoreProfile extends Document {
   @Prop({ required: true })
   address: string
 
-  @Prop()
-  subscriptionId: string
-
   @Prop({ required: true })
   description: string
 }

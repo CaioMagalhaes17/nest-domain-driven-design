@@ -9,7 +9,6 @@ export type EditStoreProfilePayload = {
   profileImg?: string
   rating?: string
   description?: string
-  subscriptionId?: string
 }
 
 type EditStoreProfileReturn = Either<

@@ -1,6 +1,15 @@
+import { ProfileNotFound } from "@/domain/portal/application/errors/profile/ProfileNotFound"
 import { CreateSolicitationUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
 import { SolicitationFormProps } from "@/domain/portal/enterprise/repair/solicitation.form"
-import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common"
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  NotFoundException,
+  Post,
+  Req,
+  UseGuards,
+} from "@nestjs/common"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
 
 @Controller()
@@ -18,6 +27,16 @@ export class CreateSolicitationUseCaseController {
       userId: req.user.id,
       solicitationForm,
     })
-    return response
+
+    if (response && response.isLeft()) {
+      switch (response.value.constructor) {
+        case ProfileNotFound:
+          throw new NotFoundException(response.value.message)
+        default:
+          throw new BadRequestException()
+      }
+    }
+
+    return { id: response.value }
   }
 }

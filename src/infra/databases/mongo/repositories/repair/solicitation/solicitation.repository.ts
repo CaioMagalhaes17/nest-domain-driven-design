@@ -17,14 +17,20 @@ export class InfraSolicitationRepository
 
   async findByParam<ParamType>(param: ParamType) {
     return this.mapper.toDomainArray(
-      await this.model.find(param).populate("solicitation_form").exec(),
+      await this.model
+        .find(param)
+        .populate(["solicitationForm", "clientProfile"])
+        .exec(),
     )
   }
 
   async findById(id: string): Promise<any> {
     try {
       return this.mapper.toDomainWithSolicitationForm(
-        await this.model.findById(id).populate("solicitation_form").exec(),
+        await this.model
+          .findById(id)
+          .populate(["solicitationForm", "clientProfile"])
+          .exec(),
       )
     } catch (error) {
       return
@@ -33,7 +39,8 @@ export class InfraSolicitationRepository
 
   async create(data: Partial<Solicitation>): Promise<{ id: string }> {
     const datatoinsert = {
-      solicitation_form: data.formId,
+      solicitationForm: data.solicitationForm,
+      clientProfile: data.clientProfile,
       ...data,
     }
 

@@ -6,11 +6,11 @@ export class Solicitation extends Document {
   @Prop({ required: true })
   status: string
 
-  @Prop()
-  userId: string
+  @Prop({ type: MangooseSchema.Types.ObjectId, ref: "ClientProfile" })
+  clientProfile: MangooseSchema.Types.ObjectId
 
   @Prop({ type: MangooseSchema.Types.ObjectId, ref: "SolicitationForm" })
-  solicitation_form: MangooseSchema.Types.ObjectId
+  solicitationForm: MangooseSchema.Types.ObjectId
 }
 
 export const SolicitationSchema = SchemaFactory.createForClass(Solicitation)

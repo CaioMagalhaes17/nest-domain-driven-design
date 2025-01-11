@@ -22,10 +22,10 @@ export class SolicitationMapper
   }
 
   toDomainWithSolicitationForm(row: MongoSolicitation): Solicitation {
-    const { _id, solicitation_form, ...rest } = row.toObject()
+    const { _id, solicitationForm, ...rest } = row.toObject()
     const tentativa = Solicitation.create(
       {
-        form: SolicitationForm.create(solicitation_form, solicitation_form._id),
+        form: SolicitationForm.create(solicitationForm, solicitationForm._id),
         ...rest,
       },
       _id,

@@ -12,7 +12,7 @@ import { UserMongoModule } from "../databases/mongo/user.module"
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>("JWT_SECRET"),
-        signOptions: { expiresIn: "50min" },
+        signOptions: { expiresIn: "500min" },
       }),
     }),
   ],

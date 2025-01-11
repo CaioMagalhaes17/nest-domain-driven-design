@@ -26,12 +26,16 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
 import { FetchAvaliableSolicitationsToStoreUseCaseController } from "./fetch-avaliable-solicitations-to-store-use-case.controller"
 import { FetchClientsInsideStoreLocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-clients-inside-store-location-use-case"
 import { FetchAvaliableSolicitationsToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/fetch-avaliable-solicitations-to-store-use-case"
+import { IClientProfileRepository } from "@/domain/portal/application/repositories/profile/client/client-profile.repository"
+import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
+import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 
 @Module({
   imports: [
     MessagesStreamingModule,
     SolicitationMongoModule,
     GeolocationModule,
+    ProfilesMongoModule,
   ],
   controllers: [
     FetchSolicitationUseCaseController,
@@ -65,25 +69,34 @@ import { FetchAvaliableSolicitationsToStoreUseCase } from "@/domain/portal/appli
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
         onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
+        clientProfileRepository: IClientProfileRepository,
       ) => {
         return new CreateSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
           onSolicitationCreatedUseCase,
+          clientProfileRepository,
         )
       },
       inject: [
         InfraSolicitationRepository,
         InfraSolicitationFormRepository,
         OnSolicitationCreatedUseCase,
+        InfraClientProfileRepository,
       ],
     },
     {
       provide: FetchUserSolicitationsUseCase,
-      useFactory: (solicitationRepository: ISolicitationRepository) => {
-        return new FetchUserSolicitationsUseCase(solicitationRepository)
+      useFactory: (
+        solicitationRepository: ISolicitationRepository,
+        clientProfileRepository: IClientProfileRepository,
+      ) => {
+        return new FetchUserSolicitationsUseCase(
+          solicitationRepository,
+          clientProfileRepository,
+        )
       },
-      inject: [InfraSolicitationRepository],
+      inject: [InfraSolicitationRepository, InfraClientProfileRepository],
     },
     {
       provide: EditSolicitationFormUseCase,
