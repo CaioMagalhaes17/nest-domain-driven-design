@@ -89,7 +89,7 @@ import { FetchGeolocationInsideRadiusUseCase } from "@/domain/portal/application
     },
   ],
   exports: [
-    ///FetchGeolocationCoveringStoreUseCase,
+    FetchClientsInsideStoreLocationUseCase,
     FetchGeolocationUseCase,
     FetchStoresInsideClientRadiusUseCase,
   ],

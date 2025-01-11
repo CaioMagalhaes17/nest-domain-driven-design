@@ -13,9 +13,9 @@ type FetchSolicitationsUseCaseResponse = Either<
 export class FetchUserSolicitationsUseCase {
   constructor(private solicitationRepository: ISolicitationRepository) {}
 
-  async execute(userId: number): Promise<FetchSolicitationsUseCaseResponse> {
+  async execute(userId: string): Promise<FetchSolicitationsUseCaseResponse> {
     const solicitations = await this.solicitationRepository.findByParam<{
-      userId: number
+      userId: string
     }>({
       userId,
     })

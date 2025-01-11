@@ -3,12 +3,11 @@ import { BaseEntity } from "src/core/entities/base-entity"
 type StoreProfileProps = {
   name: string
   address: string
-  preferredMapRadiusId: number
   profileImg: string
-  rating: number
-  bio: string
-  typeSubscriptionId: number
-  userId: number
+  rating?: string
+  description: string
+  subscriptionId: string
+  userId: string
   email: string
   telNumber: string
 }
@@ -26,27 +25,23 @@ export class StoreProfile extends BaseEntity<StoreProfileProps> {
     return this.props.address
   }
 
-  get preferredMapRadiusId(): number {
-    return this.props.preferredMapRadiusId
-  }
-
   get profileImg(): string {
     return this.props.profileImg
   }
 
-  get rating(): number {
+  get rating(): string {
     return this.props.rating
   }
 
-  get bio(): string {
-    return this.props.bio
+  get description(): string {
+    return this.props.description
   }
 
-  get typeSubscriptionId(): number {
-    return this.props.typeSubscriptionId
+  get subscriptionId(): string {
+    return this.props.subscriptionId
   }
 
-  get userId(): number {
+  get userId(): string {
     return this.props.userId
   }
 

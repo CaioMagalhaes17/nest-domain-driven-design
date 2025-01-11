@@ -19,9 +19,9 @@ export class EditStoreProfileUseCaseController {
   constructor(private editStoreProfileUseCase: EditStoreProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Put("/user/store/profile")
+  @Put("/profile/store")
   async handle(
-    @Req() req: { user: { id: number; isStore: boolean } },
+    @Req() req: { user: { id: string; isStore: boolean } },
     @Body() editClientProfile: EditStoreProfilePayload,
   ) {
     const response = await this.editStoreProfileUseCase.execute(

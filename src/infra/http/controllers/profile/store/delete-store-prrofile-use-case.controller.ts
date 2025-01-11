@@ -16,8 +16,8 @@ export class DeleteStoreProfileUseCaseController {
   constructor(private deleteStoreProfileUseCase: DeleteStorreProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Delete("/user/store/profile")
-  async handle(@Req() req: { user: { id: number; isStore: boolean } }) {
+  @Delete("/profile/store")
+  async handle(@Req() req: { user: { id: string; isStore: boolean } }) {
     const response = await this.deleteStoreProfileUseCase.execute(
       req.user.id,
       req.user.isStore,

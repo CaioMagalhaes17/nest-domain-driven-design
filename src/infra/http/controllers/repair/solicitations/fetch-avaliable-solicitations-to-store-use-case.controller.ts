@@ -1,3 +1,4 @@
+import { FetchAvaliableSolicitationsToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/fetch-avaliable-solicitations-to-store-use-case"
 import {
   BadRequestException,
   Controller,
@@ -7,21 +8,19 @@ import {
   UseGuards,
 } from "@nestjs/common"
 import { SolicitationNotFoundError } from "src/domain/portal/application/errors/repair/solicitations/SolicitationNotFoundError"
-import { FetchUserSolicitationsUseCase } from "src/domain/portal/application/use-cases/solicitations/fetch-user-solicitations-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
 
 @Controller()
-export class FetchUserSolicitationsUseCaseController {
+export class FetchAvaliableSolicitationsToStoreUseCaseController {
   constructor(
-    private fetchUserSolicitationsUseCase: FetchUserSolicitationsUseCase,
+    private fetchAvaliableSolicitationsToStoreUseCase: FetchAvaliableSolicitationsToStoreUseCase,
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/repair/solicitation")
+  @Get("/repair/avaliable/solicitations")
   async handle(@Req() req: { user: { id: string } }) {
-    const response = await this.fetchUserSolicitationsUseCase.execute(
-      req.user.id,
-    )
+    const response =
+      await this.fetchAvaliableSolicitationsToStoreUseCase.execute(req.user.id)
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case SolicitationNotFoundError:
@@ -31,9 +30,9 @@ export class FetchUserSolicitationsUseCaseController {
       }
     }
 
-    const { solicitations } = response.value
+    const retorno = response.value
     return {
-      data: solicitations,
+      data: retorno,
     }
   }
 }

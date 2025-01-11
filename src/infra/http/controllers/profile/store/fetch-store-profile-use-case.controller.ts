@@ -16,8 +16,8 @@ export class FetchStoreProfileUseCaseController {
   constructor(private fetchStoreProfileUseCase: FetchStoreProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/user/store/profile")
-  async handle(@Req() req: { user: { id: number; isStore: boolean } }) {
+  @Get("/profile/store")
+  async handle(@Req() req: { user: { id: string; isStore: boolean } }) {
     const response = await this.fetchStoreProfileUseCase.execute(
       req.user.id,
       req.user.isStore,

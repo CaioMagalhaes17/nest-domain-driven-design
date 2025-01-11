@@ -1,16 +1,15 @@
 import { Either, left } from "src/core/Either"
 import { ProfileNotFound } from "../../../errors/profile/ProfileNotFound"
 import { ProfileActionNotAllowed } from "../../../errors/profile/ProfileActionNotAllowed"
+import { IStoreProfileRepository } from "../../../repositories/profile/store/store-profile.repository"
 
 export type EditStoreProfilePayload = {
-  id: number
   name?: string
   address?: string
-  preferredMapRadiusId?: number
   profileImg?: string
-  rating?: number
-  bio?: string
-  typeSubscriptionId?: number
+  rating?: string
+  description?: string
+  subscriptionId?: string
 }
 
 type EditStoreProfileReturn = Either<
@@ -18,22 +17,23 @@ type EditStoreProfileReturn = Either<
   void
 >
 export class EditStoreProfileUseCase {
-  constructor(private storeProfileRepository) {}
+  constructor(private storeProfileRepository: IStoreProfileRepository) {}
 
   async execute(
     editProfilePayload: EditStoreProfilePayload,
-    userId: number,
+    userId: string,
     isStore: boolean,
   ): Promise<EditStoreProfileReturn> {
     if (!isStore) return left(new ProfileActionNotAllowed())
-    const profile = await this.storeProfileRepository.fetchById(
-      editProfilePayload.id,
-    )
+    const profile = await this.storeProfileRepository.findByParam<{
+      userId: string
+    }>({ userId })
 
     if (!profile) return left(new ProfileNotFound())
 
-    if (profile.userId !== userId) return left(new ProfileActionNotAllowed())
-
-    await this.storeProfileRepository.editProfile(editProfilePayload)
+    await this.storeProfileRepository.updateById(
+      profile[0].id,
+      editProfilePayload,
+    )
   }
 }

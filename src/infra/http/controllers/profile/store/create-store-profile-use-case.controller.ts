@@ -1,3 +1,4 @@
+import { StoreProfileDTO } from "@/domain/portal/application/dto/budget/http/store-profile"
 import {
   BadRequestException,
   Body,
@@ -11,21 +12,15 @@ import { UserAlreadyHasProfile } from "src/domain/portal/application/errors/prof
 import { CreateStoreProfileUseCase } from "src/domain/portal/application/use-cases/profile/store/create-store-profile"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
 
-type CreateStoreProfileHttp = {
-  name: string
-  address: string
-  profileImg?: string
-}
-
 @Controller()
 export class CreateStoreProfileUseCaseController {
   constructor(private createStoreProfileUseCase: CreateStoreProfileUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/user/store/profile")
+  @Post("/profile/store")
   async handle(
-    @Req() req: { user: { id: number; isStore: boolean } },
-    @Body() createClientProfile: CreateStoreProfileHttp,
+    @Req() req: { user: { id: string; isStore: boolean } },
+    @Body() createClientProfile: StoreProfileDTO,
   ) {
     const response = await this.createStoreProfileUseCase.execute(
       {
@@ -45,5 +40,7 @@ export class CreateStoreProfileUseCaseController {
           throw new BadRequestException("Erro não tratado")
       }
     }
+
+    return { id: response.value }
   }
 }

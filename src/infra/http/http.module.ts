@@ -13,7 +13,7 @@ import { StoreProfileModule } from "./controllers/profile/store/store-profile.mo
     BudgetModule,
     ClientProfileModule,
     GeolocationModule,
-    // StoreProfileModule,
+    StoreProfileModule,
   ],
 })
 export class HttpModule {}

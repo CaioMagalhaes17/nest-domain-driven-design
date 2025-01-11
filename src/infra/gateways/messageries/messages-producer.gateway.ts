@@ -14,7 +14,7 @@ export class InfraMessagesProducerGateway
   private readonly producer: Producer = this.kafkaProducer.producer()
 
   async onModuleInit() {
-    // await this.producer.connect()
+    //await this.producer.connect()
   }
 
   async produce(topic: string, messages) {

@@ -1,15 +1,5 @@
-import { StoreProfile } from "src/domain/portal/enterprise/profile/store/store-profile"
-import { CreateStoreProfilePayload } from "../../../use-cases/profile/store/create-store-profile"
-import { EditStoreProfilePayload } from "../../../use-cases/profile/store/edit-store-profile"
+import { BaseDomainRepository } from "@/core/domain/base.repository.interface"
+import { StoreProfile } from "@/domain/portal/enterprise/profile/store/store-profile"
 
-export abstract class StoreProfileRepository {
-  abstract fetchById(profileId: number): Promise<StoreProfile | void>
-  abstract fetchByUserId(userId: number): Promise<StoreProfile | void>
-  abstract deleteProfileById(userId: number): Promise<void>
-  abstract createProfile(
-    createProfilePayload: CreateStoreProfilePayload,
-  ): Promise<void>
-  abstract editProfile(
-    editProfilePayload: EditStoreProfilePayload,
-  ): Promise<void>
-}
+export interface IStoreProfileRepository
+  extends BaseDomainRepository<StoreProfile> {}

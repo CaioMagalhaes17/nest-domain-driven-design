@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
-import { SolicitationsModule } from "./solicitations/solicitations.module"
+import { SolicitationsConsumerModule } from "./solicitations/solicitations.module"
 
 @Module({
-  imports: [SolicitationsModule],
+  imports: [SolicitationsConsumerModule],
 })
 export class ConsumersModule {}

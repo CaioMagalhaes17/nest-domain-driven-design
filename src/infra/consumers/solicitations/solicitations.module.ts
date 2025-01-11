@@ -8,4 +8,4 @@ import { QueueModule } from "src/infra/queue/queue.module"
   imports: [MessagesStreamingModule, StoreProfileModule, QueueModule],
   providers: [SolicitationCreatedConsumer],
 })
-export class SolicitationsModule {}
+export class SolicitationsConsumerModule {}

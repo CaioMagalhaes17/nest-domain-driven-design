@@ -1,11 +1,19 @@
-import { left } from "@/core/Either"
+import { Either, left, right } from "@/core/Either"
 import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
+import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
+
+type FetchStoresInsideClientRadiusResponse = Either<
+  GeolocationNotFound,
+  Geolocation[]
+>
 
 export class FetchStoresInsideClientRadiusUseCase {
   constructor(private geolocationRepository: IGeolocationRepository) {}
 
-  async execute(userId: string) {
+  async execute(
+    userId: string,
+  ): Promise<FetchStoresInsideClientRadiusResponse> {
     const result = await this.geolocationRepository.findByParam<{
       userId: string
     }>({ userId })
@@ -15,6 +23,8 @@ export class FetchStoresInsideClientRadiusUseCase {
       result[0].longitude,
       result[0].radius,
     )
-    return stores.filter((item: { userId: string }) => item.userId !== userId)
+    return right(
+      stores.filter((item: { userId: string }) => item.userId !== userId),
+    )
   }
 }
