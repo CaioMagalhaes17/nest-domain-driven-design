@@ -12,7 +12,7 @@ export interface MapRadiusPayload {
   latitude: number
   longitude: number
   radius?: number
-  userId: string
+  profileId: string
 }
 
 export class CreateGeolocationUseCase {
@@ -20,7 +20,7 @@ export class CreateGeolocationUseCase {
 
   async execute(
     mapRadiusPayload: MapRadiusPayload,
-    userId: string,
+    profileId: string,
   ): Promise<CreateGeolocationUseCaseResponse> {
     if (
       mapRadiusPayload.longitude < -180 ||
@@ -33,7 +33,7 @@ export class CreateGeolocationUseCase {
     const newGeoLocation = await this.geoLocationRepository.create({
       latitude: mapRadiusPayload.latitude,
       longitude: mapRadiusPayload.longitude,
-      userId: userId,
+      profileId: profileId,
       radius: mapRadiusPayload.radius ? mapRadiusPayload.radius : 0,
     })
 

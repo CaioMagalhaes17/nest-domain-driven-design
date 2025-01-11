@@ -17,8 +17,10 @@ export class FetchGeolocationUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/geolocation")
-  async handle(@Req() req: { user: { id: string } }) {
-    const response = await this.fetchGeolocationUseCase.execute(req.user.id)
+  async handle(@Req() req: { user: { profileId: string } }) {
+    const response = await this.fetchGeolocationUseCase.execute(
+      req.user.profileId,
+    )
 
     if (response.isLeft()) {
       switch (response.value.constructor) {

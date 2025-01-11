@@ -7,7 +7,7 @@ import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-fo
 
 type FetchSolicitationsUseCaseResponse = Either<
   SolicitationNotFoundError | GeolocationNotFound,
-  { clientProfile: string; solicitations: Solicitation[] }[]
+  { clientProfileId: string; solicitations: Solicitation[] }[]
 >
 
 export class FetchAvaliableSolicitationsToStoreUseCase {
@@ -24,11 +24,11 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
       const solicitations = await Promise.all(
         clientsProfile.value.map(async (item) => {
           const solicitations = await this.solicitationRepository.findByParam<{
-            clientProfile: string
+            clientProfileId: string
           }>({
-            clientProfile: item._id,
+            clientProfileId: item.profileId,
           })
-          return { clientProfile: item._id, solicitations }
+          return { clientProfileId: item.profileId, solicitations }
         }),
       )
       return right(solicitations)

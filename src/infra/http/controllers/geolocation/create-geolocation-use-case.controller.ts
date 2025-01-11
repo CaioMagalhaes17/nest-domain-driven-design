@@ -17,12 +17,12 @@ export class CreateGeolocationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/geolocation")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { profileId: string } },
     @Body() createGeolocation,
   ) {
     const response = await this.createGeolocationUseCase.execute(
       createGeolocation,
-      req.user.id,
+      req.user.profileId,
     )
 
     if (response.isLeft()) {

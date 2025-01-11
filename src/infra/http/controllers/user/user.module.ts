@@ -11,6 +11,8 @@ import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/u
 import { IClientProfileRepository } from "@/domain/portal/application/repositories/profile/client/client-profile.repository"
 import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
+import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositories/profiles/store.repository"
+import { IStoreProfileRepository } from "@/domain/portal/application/repositories/profile/store/store-profile.repository"
 
 @Module({
   imports: [
@@ -27,17 +29,20 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
         userRepository: IUserRepository,
         encrypterGateway: EncrypterGateway,
         clientProfile: IClientProfileRepository,
+        storeProfileRepository: IStoreProfileRepository,
       ) => {
         return new UserAuthLoginUseCase(
           userRepository,
           encrypterGateway,
           clientProfile,
+          storeProfileRepository,
         )
       },
       inject: [
         InfraUserRepository,
         EncrypterGateway,
         InfraClientProfileRepository,
+        InfraStoreProfileRepository,
       ],
     },
     {

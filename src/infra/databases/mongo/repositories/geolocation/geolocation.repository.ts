@@ -22,7 +22,7 @@ export class InfraGeolocationRepository extends BaseInfraRepository<
         coordinates: [data.longitude, data.latitude],
       },
       radius: data.radius,
-      userId: data.userId,
+      profileId: data.profileId,
     }
 
     return { id: (await this.model.create(dataToInsert)).id }

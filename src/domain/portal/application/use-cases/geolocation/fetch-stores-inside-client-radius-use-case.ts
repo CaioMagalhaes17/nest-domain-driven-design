@@ -12,11 +12,11 @@ export class FetchStoresInsideClientRadiusUseCase {
   constructor(private geolocationRepository: IGeolocationRepository) {}
 
   async execute(
-    userId: string,
+    clientProfileId: string,
   ): Promise<FetchStoresInsideClientRadiusResponse> {
     const result = await this.geolocationRepository.findByParam<{
-      userId: string
-    }>({ userId })
+      profileId: string
+    }>({ profileId: clientProfileId })
     if (!result) return left(new GeolocationNotFound())
     const stores = await this.geolocationRepository.findWithinRadius(
       result[0].latitude,
@@ -24,7 +24,9 @@ export class FetchStoresInsideClientRadiusUseCase {
       result[0].radius,
     )
     return right(
-      stores.filter((item: { userId: string }) => item.userId !== userId),
+      stores.filter(
+        (item: { profileId: string }) => item.profileId !== clientProfileId,
+      ),
     )
   }
 }

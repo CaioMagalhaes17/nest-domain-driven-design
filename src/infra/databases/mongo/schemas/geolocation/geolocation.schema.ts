@@ -23,7 +23,7 @@ export class Geolocation extends Document {
   radius: number
 
   @Prop({ required: true })
-  userId: string
+  profileId: string
 }
 
 export const GeolocationSchema = SchemaFactory.createForClass(Geolocation)

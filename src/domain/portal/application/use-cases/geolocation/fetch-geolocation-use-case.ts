@@ -11,11 +11,10 @@ type FetchGeolocationUseCaseResponse = Either<
 export class FetchGeolocationUseCase {
   constructor(private geolocationRepository: IGeolocationRepository) {}
 
-  async execute(userId: string): Promise<FetchGeolocationUseCaseResponse> {
+  async execute(profileId: string): Promise<FetchGeolocationUseCaseResponse> {
     const result = await this.geolocationRepository.findByParam<{
-      userId: string
-    }>({ userId })
-    console.log(userId)
+      profileId: string
+    }>({ profileId })
     if (!result) return left(new GeolocationNotFound())
     return right({ geolocation: result })
   }

@@ -4,7 +4,7 @@ interface GeolocationProps {
   latitude: number
   longitude: number
   radius: number
-  userId: string
+  profileId: string
 }
 
 export class Geolocation extends BaseEntity<GeolocationProps> {
@@ -24,7 +24,7 @@ export class Geolocation extends BaseEntity<GeolocationProps> {
     return this.props.radius
   }
 
-  get userId(): string {
-    return this.props.userId
+  get profileId(): string {
+    return this.props.profileId
   }
 }

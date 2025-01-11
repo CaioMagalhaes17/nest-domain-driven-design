@@ -12,7 +12,7 @@ export class GeolocationMapper
         latitude: row.location.coordinates[1],
         longitude: row.location.coordinates[0],
         radius: row.radius,
-        userId: row.userId,
+        profileId: row.profileId,
       },
       _id,
     )
