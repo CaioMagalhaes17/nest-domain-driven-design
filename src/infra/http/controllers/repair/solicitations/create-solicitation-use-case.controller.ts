@@ -19,12 +19,12 @@ export class CreateSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/repair/solicitation")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { profileId: string } },
     @Body() solicitationForm: SolicitationFormProps,
   ) {
     const response = await this.createSolicitationsUseCase.execute({
       status: "PENDENTE",
-      userId: req.user.id,
+      profileId: req.user.profileId,
       solicitationForm,
     })
 

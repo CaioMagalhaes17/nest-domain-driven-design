@@ -8,9 +8,17 @@ import { UserAuthSignUpUseCase } from "src/domain/portal/application/use-cases/u
 import { UserMongoModule } from "@/infra/databases/mongo/user.module"
 import { IUserRepository } from "@/domain/portal/application/repositories/user/user-repository.interface"
 import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/user.repository"
+import { IClientProfileRepository } from "@/domain/portal/application/repositories/profile/client/client-profile.repository"
+import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
+import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 
 @Module({
-  imports: [CryptographyModule, UserMongoModule, AuthModule],
+  imports: [
+    CryptographyModule,
+    UserMongoModule,
+    AuthModule,
+    ProfilesMongoModule,
+  ],
   controllers: [UserController],
   providers: [
     {
@@ -18,10 +26,19 @@ import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/u
       useFactory: (
         userRepository: IUserRepository,
         encrypterGateway: EncrypterGateway,
+        clientProfile: IClientProfileRepository,
       ) => {
-        return new UserAuthLoginUseCase(userRepository, encrypterGateway)
+        return new UserAuthLoginUseCase(
+          userRepository,
+          encrypterGateway,
+          clientProfile,
+        )
       },
-      inject: [InfraUserRepository, EncrypterGateway],
+      inject: [
+        InfraUserRepository,
+        EncrypterGateway,
+        InfraClientProfileRepository,
+      ],
     },
     {
       provide: UserAuthSignUpUseCase,

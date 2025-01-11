@@ -21,12 +21,12 @@ export class FetchSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Get("/repair/solicitation/:solicitationId")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { profileId: string } },
     @Param("solicitationId") solicitationId: string,
   ) {
     const response = await this.fetchSolicitationUseCase.execute(
       solicitationId,
-      req.user.id,
+      req.user.profileId,
     )
 
     if (response.isLeft()) {

@@ -69,72 +69,51 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
         onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
-        clientProfileRepository: IClientProfileRepository,
       ) => {
         return new CreateSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
           onSolicitationCreatedUseCase,
-          clientProfileRepository,
         )
       },
       inject: [
         InfraSolicitationRepository,
         InfraSolicitationFormRepository,
         OnSolicitationCreatedUseCase,
-        InfraClientProfileRepository,
       ],
     },
     {
       provide: FetchUserSolicitationsUseCase,
-      useFactory: (
-        solicitationRepository: ISolicitationRepository,
-        clientProfileRepository: IClientProfileRepository,
-      ) => {
-        return new FetchUserSolicitationsUseCase(
-          solicitationRepository,
-          clientProfileRepository,
-        )
+      useFactory: (solicitationRepository: ISolicitationRepository) => {
+        return new FetchUserSolicitationsUseCase(solicitationRepository)
       },
-      inject: [InfraSolicitationRepository, InfraClientProfileRepository],
+      inject: [InfraSolicitationRepository],
     },
     {
       provide: EditSolicitationFormUseCase,
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
-        clientProfileRepository: IClientProfileRepository,
       ) => {
         return new EditSolicitationFormUseCase(
           solicitationRepository,
           solicitationFormRepository,
-          clientProfileRepository,
         )
       },
-      inject: [
-        InfraSolicitationRepository,
-        InfraSolicitationFormRepository,
-        InfraClientProfileRepository,
-      ],
+      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
     },
     {
       provide: DeleteSolicitationUseCase,
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
-        clientProfileRepository: IClientProfileRepository,
       ) => {
         return new DeleteSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
-          clientProfileRepository,
         )
       },
-      inject: [
-        InfraSolicitationRepository,
-        InfraSolicitationFormRepository,
-        InfraClientProfileRepository,
-      ],
+      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
     },
     {
       provide: FetchSolicitationUseCase,

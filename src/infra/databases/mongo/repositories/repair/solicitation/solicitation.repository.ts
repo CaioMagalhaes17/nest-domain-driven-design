@@ -19,17 +19,17 @@ export class InfraSolicitationRepository
     return this.mapper.toDomainArray(
       await this.model
         .find(param)
-        .populate(["solicitationForm", "clientProfile"])
+        .populate(["solicitationFormId", "clientProfileId"])
         .exec(),
     )
   }
 
   async findById(id: string): Promise<any> {
     try {
-      return this.mapper.toDomainWithSolicitationForm(
+      return this.mapper.toDomain(
         await this.model
           .findById(id)
-          .populate(["solicitationForm", "clientProfile"])
+          .populate(["solicitationFormId", "clientProfileId"])
           .exec(),
       )
     } catch (error) {
@@ -39,8 +39,8 @@ export class InfraSolicitationRepository
 
   async create(data: Partial<Solicitation>): Promise<{ id: string }> {
     const datatoinsert = {
-      solicitationForm: data.solicitationForm,
-      clientProfile: data.clientProfile,
+      solicitationFormId: data.solicitationFormId,
+      clientProfileId: data.clientProfileId,
       ...data,
     }
 

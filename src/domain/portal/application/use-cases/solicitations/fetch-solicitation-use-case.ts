@@ -20,16 +20,14 @@ export class FetchSolicitationUseCase {
 
   async execute(
     solicitationId: string,
-    userId: string,
+    profileId: string,
   ): Promise<FetchSolicitationUseCaseResponse> {
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
 
-    const profile = await this.clientProfileRepository.findByParam<{
-      userId: string
-    }>({ userId })
-    if (profile[0].userId !== userId)
+    console.log(solicitation.clientProfile)
+    if (profileId !== solicitation.clientProfile.id.toString())
       return left(new UnauthorizedSolicitationActionError())
 
     return right({ solicitation })

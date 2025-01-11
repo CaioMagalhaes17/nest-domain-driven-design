@@ -3,6 +3,7 @@ import { EncrypterGateway } from "../../gateway/user/encrypter.gateway"
 import { Either, left, right } from "src/core/Either"
 import { User } from "src/domain/portal/enterprise/user/user"
 import { IUserRepository } from "../../repositories/user/user-repository.interface"
+import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
 
 type UserAuthLoginUseCaseResponse = Either<
   InvalidCredentilsError,
@@ -16,6 +17,7 @@ export class UserAuthLoginUseCase {
   constructor(
     private userRepository: IUserRepository,
     private encrypterGateway: EncrypterGateway,
+    private clientProfileRepository: IClientProfileRepository,
   ) {}
 
   async execute(
@@ -27,6 +29,24 @@ export class UserAuthLoginUseCase {
     const isPasswordValid: boolean =
       await this.encrypterGateway.comparePassword(password, user.password)
     if (!isPasswordValid) return left(new InvalidCredentilsError())
+
+    if (!user.isStore) {
+      const profile = await this.clientProfileRepository.findByParam<{
+        userId: string
+      }>({ userId: user.id })
+      if (profile.length > 0) {
+        return right({
+          token: this.encrypterGateway.encryptToken({
+            id: user.id,
+            name: user.name,
+            isStore: user.isStore,
+            permission: user.permission,
+            profileId: profile[0].id,
+          }),
+          user,
+        })
+      }
+    }
     return right({
       token: this.encrypterGateway.encryptToken({
         id: user.id,

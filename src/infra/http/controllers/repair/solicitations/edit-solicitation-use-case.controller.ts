@@ -21,14 +21,14 @@ export class EditSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Put("/repair/solicitation/:solicitationId")
   async handle(
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { profileId: string } },
     @Body() editBody: any,
     @Param("solicitationId") solicitationId: string,
   ) {
     const response = await this.editSolicitationUseCase.execute({
       solicitationFormPayload: editBody.form,
       status: editBody.status,
-      userId: req.user.id,
+      profileId: req.user.profileId,
       solicitationId,
     })
     if (response && response.isLeft()) {

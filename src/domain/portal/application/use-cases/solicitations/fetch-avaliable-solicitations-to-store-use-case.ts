@@ -16,9 +16,9 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
     private fetchClientsInsideStoreLocationUseCase: FetchClientsInsideStoreLocationUseCase,
   ) {}
 
-  async execute(userId: string): Promise<FetchSolicitationsUseCaseResponse> {
+  async execute(profileId: string): Promise<FetchSolicitationsUseCaseResponse> {
     const clientsProfile =
-      await this.fetchClientsInsideStoreLocationUseCase.execute(userId)
+      await this.fetchClientsInsideStoreLocationUseCase.execute(profileId)
     if (clientsProfile.isLeft()) return left(new GeolocationNotFound())
     if (clientsProfile.isRight) {
       const solicitations = await Promise.all(

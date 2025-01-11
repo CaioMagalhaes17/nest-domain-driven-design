@@ -18,9 +18,11 @@ export class FetchAvaliableSolicitationsToStoreUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/repair/avaliable/solicitations")
-  async handle(@Req() req: { user: { id: string } }) {
+  async handle(@Req() req: { user: { profileId: string } }) {
     const response =
-      await this.fetchAvaliableSolicitationsToStoreUseCase.execute(req.user.id)
+      await this.fetchAvaliableSolicitationsToStoreUseCase.execute(
+        req.user.profileId,
+      )
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case SolicitationNotFoundError:

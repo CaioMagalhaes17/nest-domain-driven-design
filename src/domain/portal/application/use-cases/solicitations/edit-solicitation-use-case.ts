@@ -5,7 +5,6 @@ import { ISolicitationRepository } from "../../repositories/repair/solicitation-
 import { ISolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository.interface"
 import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation.form"
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
-import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
 
 type EditSolicitationFormUseCaseResponse = Either<
   SolicitationNotFoundError | UnauthorizedSolicitationActionError,
@@ -15,30 +14,26 @@ type EditSolicitationFormUseCaseResponse = Either<
 interface EditSolicitationUseCaseI {
   solicitationFormPayload: Partial<SolicitationForm>
   status: string
-  userId: string
+  profileId: string
   solicitationId: string
 }
 export class EditSolicitationFormUseCase {
   constructor(
     private solicitationRepository: ISolicitationRepository,
     private solicitationFormRepository: ISolicitationFormRepository,
-    private clientProfileRepository: IClientProfileRepository,
   ) {}
 
   async execute({
     solicitationFormPayload,
     status,
-    userId,
+    profileId,
     solicitationId,
   }: EditSolicitationUseCaseI): Promise<EditSolicitationFormUseCaseResponse> {
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
-
-    const profile = await this.clientProfileRepository.findByParam<{
-      userId: string
-    }>({ userId })
-    if (userId !== profile[0].userId)
+    console.log(profileId, solicitation.clientProfile.id)
+    if (profileId !== solicitation.clientProfile.id.toString())
       return left(new UnauthorizedSolicitationActionError())
     if (status) {
       await this.solicitationRepository.updateById(solicitation.id, {
