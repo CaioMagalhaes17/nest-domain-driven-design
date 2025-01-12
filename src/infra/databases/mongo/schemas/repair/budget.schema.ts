@@ -3,14 +3,14 @@ import { Document, Schema as MangooseSchema } from "mongoose"
 
 @Schema({ timestamps: true })
 export class Budget extends Document {
-  @Prop({ required: true })
-  userId: string
+  @Prop({ type: MangooseSchema.Types.ObjectId, ref: "StoreProfile" })
+  storeProfileId: MangooseSchema.Types.ObjectId
 
   @Prop({ required: true })
   estimatedPrice: string
 
   @Prop({ type: MangooseSchema.Types.ObjectId, ref: "Solicitation" })
-  solicitation: MangooseSchema.Types.ObjectId
+  solicitationId: MangooseSchema.Types.ObjectId
 }
 
 export const BudgetSchema = SchemaFactory.createForClass(Budget)

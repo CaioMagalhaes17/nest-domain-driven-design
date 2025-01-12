@@ -19,12 +19,12 @@ export class DeleteBudgetUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Delete("/repair/budget/:budgetId")
   async handle(
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { profileId: string } },
     @Param("budgetId") budgetId: string,
   ) {
     const response = await this.deleteBudgetUseCase.execute(
       budgetId,
-      req.user.id,
+      req.user.profileId,
     )
 
     if (response && response.isLeft()) {

@@ -16,8 +16,8 @@ export class FetchBudgetsUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/repair/budget")
-  async handle(@Req() req: { user: { id: number } }) {
-    const response = await this.fetchBudgetsUseCase.execute(req.user.id)
+  async handle(@Req() req: { user: { profileId: string } }) {
+    const response = await this.fetchBudgetsUseCase.execute(req.user.profileId)
 
     if (response.isLeft()) {
       switch (response.value.constructor) {

@@ -17,14 +17,20 @@ export class InfraBudgetRepository extends BaseInfraRepository<
 
   async findByParam<ParamType>(param: ParamType) {
     return this.mapper.toDomainArray(
-      await this.model.find(param).populate("solicitation").exec(),
+      await this.model
+        .find(param)
+        .populate(["solicitationId", "storeProfileId"])
+        .exec(),
     )
   }
 
   async findById(id: string): Promise<any> {
     try {
-      return this.mapper.toDomainWithSolicitation(
-        await this.model.findById(id).populate("solicitation").exec(),
+      return this.mapper.toDomain(
+        await this.model
+          .findById(id)
+          .populate(["solicitationId", "storeProfileId"])
+          .exec(),
       )
     } catch (error) {
       return
@@ -33,7 +39,8 @@ export class InfraBudgetRepository extends BaseInfraRepository<
 
   async create(data: Partial<Budget>): Promise<{ id: string }> {
     const datatoinsert = {
-      solicitation: data.solicitationId,
+      solicitationId: data.solicitationId,
+      storeProfileId: data.storeProfileId,
       ...data,
     }
 

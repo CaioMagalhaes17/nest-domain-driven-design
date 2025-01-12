@@ -15,13 +15,13 @@ export class FetchBudgetUseCase {
 
   async execute(
     budgetId: string,
-    userId: number,
+    storeProfileId: string,
   ): Promise<FetchBudgetUseCaseResponse> {
     const budget = await this.budgetRepository.findById(budgetId)
 
     if (!budget) return left(new BudgetNotFound())
-
-    if (budget.userId !== userId) return left(new BudgetActionNotAllowed())
+    if (budget.storeProfile.id.toString() !== storeProfileId)
+      return left(new BudgetActionNotAllowed())
     return right({ budget })
   }
 }

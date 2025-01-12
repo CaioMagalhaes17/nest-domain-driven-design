@@ -21,7 +21,7 @@ export class CreateBudgetUseCase {
 
   async execute(
     createBudgetPayload: BudgetDTO,
-    userId: number,
+    storeProfileId: string,
   ): Promise<CreateBudgetUseCaseResponse> {
     const solicitation = await this.solicitationRepository.findById(
       createBudgetPayload.solicitationId,
@@ -30,11 +30,11 @@ export class CreateBudgetUseCase {
     if (!solicitation) return left(new SolicitationNotFoundError())
 
     const budget = await this.budgetRepository.findByParam<{
-      userId: number
-      solicitation: string
+      storeProfileId: string
+      solicitationId: string
     }>({
-      userId,
-      solicitation: solicitation.id,
+      storeProfileId,
+      solicitationId: solicitation.id,
     })
 
     if (budget.length > 0) return left(new BudgetAlreadySent())
@@ -43,7 +43,7 @@ export class CreateBudgetUseCase {
       estimatedPrice: createBudgetPayload.estimatedPrice,
       status: FetchInitialBudgetStatusUseCase.execute(),
       solicitationId: createBudgetPayload.solicitationId,
-      userId,
+      storeProfileId: storeProfileId,
     })
     return right({ id: result.id })
   }

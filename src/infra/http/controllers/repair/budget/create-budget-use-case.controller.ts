@@ -19,12 +19,12 @@ export class CreateBudgetUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/repair/budget")
   async handle(
-    @Req() req: { user: { id: number } },
+    @Req() req: { user: { profileId: string } },
     @Body() createBudgetPayload: BudgetDTO,
   ) {
     const response = await this.createBudgetUseCase.execute(
       createBudgetPayload,
-      req.user.id,
+      req.user.profileId,
     )
     if (response.isLeft()) {
       switch (response.value.constructor) {

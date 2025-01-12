@@ -1,6 +1,7 @@
 import { BaseEntity } from "src/core/entities/base-entity"
 import { BudgetStatusType } from "../../application/types/repair/budget/status"
 import { Solicitation } from "./solicitation"
+import { StoreProfile } from "../profile/store/store-profile"
 
 type BudgetProps = {
   userId: number
@@ -10,6 +11,8 @@ type BudgetProps = {
   createdAt: string
   updatedAt: string
   solicitation: Solicitation
+  storeProfileId: string
+  storeProfile: StoreProfile
 }
 
 export class Budget extends BaseEntity<BudgetProps> {
@@ -43,5 +46,13 @@ export class Budget extends BaseEntity<BudgetProps> {
 
   get updatedAt(): string {
     return this.props.updatedAt
+  }
+
+  get storeProfileId(): string {
+    return this.props.storeProfileId
+  }
+
+  get storeProfile(): StoreProfile {
+    return this.props.storeProfile
   }
 }

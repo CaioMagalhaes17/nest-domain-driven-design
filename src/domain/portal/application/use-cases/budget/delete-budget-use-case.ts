@@ -12,13 +12,14 @@ export class DeleteBudgetUseCase {
 
   async execute(
     budgetId: string,
-    userId: number,
+    storeProfile: string,
   ): Promise<DeleteBudgetUseCaseResponse> {
     const budget = await this.budgetRepository.findById(budgetId)
 
     if (!budget) return left(new BudgetNotFound())
 
-    if (budget.userId !== userId) return left(new BudgetActionNotAllowed())
+    if (budget.storeProfile.id.toString() !== storeProfile)
+      return left(new BudgetActionNotAllowed())
 
     await this.budgetRepository.deleteById(budgetId)
   }
