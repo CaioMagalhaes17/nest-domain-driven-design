@@ -22,6 +22,6 @@ export class DeleteStorreProfileUseCase {
 
     if (profile.length === 0) return left(new ProfileNotFound())
 
-    await this.storeProfileRepository.deleteById(userId)
+    await this.storeProfileRepository.deleteById(profile[0].id)
   }
 }

@@ -1,9 +1,15 @@
+import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/user-update-use-case"
+import { User } from "@/domain/portal/enterprise/user/user"
+import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
 import {
   BadRequestException,
   Body,
   Controller,
   Post,
+  Put,
+  Req,
   UnauthorizedException,
+  UseGuards,
 } from "@nestjs/common"
 import { UserSignUpDTO } from "src/domain/portal/application/dto/user-signup.dto"
 import { InvalidCredentilsError } from "src/domain/portal/application/errors/user/invalid-credentials.error"
@@ -16,8 +22,9 @@ export class UserController {
   constructor(
     private userAuthLogin: UserAuthLoginUseCase,
     private userAuthSignUp: UserAuthSignUpUseCase,
+    private updateUserUseCase: UpdateUserUseCase,
   ) {}
-  @Post("/login")
+  @Post("/user/login")
   async login(@Body() loginData: Partial<{ login: string; password: string }>) {
     const response = await this.userAuthLogin.execute(
       loginData.login,
@@ -74,5 +81,16 @@ export class UserController {
       token,
       userInfos,
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put("/user")
+  async editUser(
+    @Body() editBody: Partial<User>,
+    @Req() req: { user: { id: string } },
+  ) {
+    const response = await this.updateUserUseCase.execute(editBody, req.user.id)
+
+    return response.value
   }
 }

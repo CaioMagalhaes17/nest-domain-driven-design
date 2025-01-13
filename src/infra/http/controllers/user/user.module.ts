@@ -13,6 +13,7 @@ import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositori
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositories/profiles/store.repository"
 import { IStoreProfileRepository } from "@/domain/portal/application/repositories/profile/store/store-profile.repository"
+import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/user-update-use-case"
 
 @Module({
   imports: [
@@ -32,6 +33,28 @@ import { IStoreProfileRepository } from "@/domain/portal/application/repositorie
         storeProfileRepository: IStoreProfileRepository,
       ) => {
         return new UserAuthLoginUseCase(
+          userRepository,
+          encrypterGateway,
+          clientProfile,
+          storeProfileRepository,
+        )
+      },
+      inject: [
+        InfraUserRepository,
+        EncrypterGateway,
+        InfraClientProfileRepository,
+        InfraStoreProfileRepository,
+      ],
+    },
+    {
+      provide: UpdateUserUseCase,
+      useFactory: (
+        userRepository: IUserRepository,
+        encrypterGateway: EncrypterGateway,
+        clientProfile: IClientProfileRepository,
+        storeProfileRepository: IStoreProfileRepository,
+      ) => {
+        return new UpdateUserUseCase(
           userRepository,
           encrypterGateway,
           clientProfile,

@@ -1,7 +1,7 @@
 import { Prop, SchemaFactory } from "@nestjs/mongoose"
 import { Document } from "mongoose"
 
-export class SubscriptionPlans extends Document {
+export class SubscriptionPlan extends Document {
   @Prop({ required: true })
   planName: string
 
@@ -9,5 +9,5 @@ export class SubscriptionPlans extends Document {
   price: number
 }
 
-export const SubscriptionPlansSchema =
-  SchemaFactory.createForClass(SubscriptionPlans)
+export const SubscriptionPlanSchema =
+  SchemaFactory.createForClass(SubscriptionPlan)

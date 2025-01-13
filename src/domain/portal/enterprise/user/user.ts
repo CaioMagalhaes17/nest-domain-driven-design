@@ -8,6 +8,7 @@ type UserProps = {
   name: string
   isStore: boolean
   permission: string
+  subscriptionPlanId?: string
 }
 
 export class User extends BaseEntity<UserProps> {
@@ -41,5 +42,9 @@ export class User extends BaseEntity<UserProps> {
 
   get permission(): string {
     return this.props.permission
+  }
+
+  get subscriptionPlanId(): string {
+    return this.props.subscriptionPlanId
   }
 }

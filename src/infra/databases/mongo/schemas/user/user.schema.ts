@@ -17,6 +17,9 @@ export class User extends Document {
 
   @Prop({ required: true })
   permission: string
+
+  @Prop()
+  subscriptionPlanId: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)

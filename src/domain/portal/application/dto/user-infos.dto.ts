@@ -4,4 +4,5 @@ export class UserInfosDTO {
   isStore: boolean
   permission: string
   profileId?: string
+  subscriptionPlanId?: string
 }
