@@ -11,6 +11,9 @@ export class Solicitation extends Document {
 
   @Prop({ type: MangooseSchema.Types.ObjectId, ref: "SolicitationForm" })
   solicitationFormId: MangooseSchema.Types.ObjectId
+
+  @Prop()
+  storeProfileId: string
 }
 
 export const SolicitationSchema = SchemaFactory.createForClass(Solicitation)

@@ -1,7 +1,6 @@
 import { Either, left, right } from "src/core/Either"
 import { BudgetDTO } from "../../dto/budget/http/budget-create"
 import { IBudgetRepository } from "../../repositories/repair/budget-repository"
-import { FetchInitialBudgetStatusUseCase } from "./status/fetch-initial-budget-status-use-case"
 import { SolicitationNotFoundError } from "../../errors/repair/solicitations/SolicitationNotFoundError"
 import { BudgetAlreadySent } from "../../errors/repair/budget/BudgetAlreadySent"
 import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
@@ -41,7 +40,6 @@ export class CreateBudgetUseCase {
 
     const result = await this.budgetRepository.create({
       estimatedPrice: createBudgetPayload.estimatedPrice,
-      status: FetchInitialBudgetStatusUseCase.execute(),
       solicitationId: createBudgetPayload.solicitationId,
       storeProfileId: storeProfileId,
     })

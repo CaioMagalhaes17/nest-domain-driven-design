@@ -1,6 +1,6 @@
-import { CLOSED_TO_BUDGETS_SOLICITATION_STATUS } from "@/domain/portal/application/constants/solicitation-status"
+import { OPEN_TO_BUDGETS_SOLICITATION_STATUS } from "@/domain/portal/application/constants/solicitation-status"
 import { ProfileNotFound } from "@/domain/portal/application/errors/profile/ProfileNotFound"
-import { CreateSolicitationUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-use-case"
+import { CreateSolicitationToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-to-store-use-case"
 import { SolicitationFormProps } from "@/domain/portal/enterprise/repair/solicitation.form"
 import {
   BadRequestException,
@@ -14,17 +14,20 @@ import {
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
 
 @Controller()
-export class CreateSolicitationUseCaseController {
-  constructor(private createSolicitationsUseCase: CreateSolicitationUseCase) {}
+export class CreateSolicitationToStoreUseCaseController {
+  constructor(
+    private createSolicitationsUseCase: CreateSolicitationToStoreUseCase,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/repair/solicitation")
+  @Post("/repair/solicitation/to-store")
   async handle(
     @Req() req: { user: { profileId: string } },
-    @Body() solicitationForm: SolicitationFormProps,
+    @Body()
+    solicitationForm: SolicitationFormProps & { storeProfileId: string },
   ) {
     const response = await this.createSolicitationsUseCase.execute({
-      status: CLOSED_TO_BUDGETS_SOLICITATION_STATUS,
+      status: OPEN_TO_BUDGETS_SOLICITATION_STATUS,
       profileId: req.user.profileId,
       solicitationForm,
     })

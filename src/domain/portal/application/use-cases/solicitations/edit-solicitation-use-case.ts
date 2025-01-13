@@ -5,6 +5,8 @@ import { ISolicitationRepository } from "../../repositories/repair/solicitation-
 import { ISolicitationFormRepository } from "../../repositories/repair/solicitation-form.repository.interface"
 import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation.form"
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
+import { IBudgetRepository } from "../../repositories/repair/budget-repository"
+import { ActionNotAllowedError } from "../../errors/repair/solicitations/ActionNotAllowed"
 
 type EditSolicitationFormUseCaseResponse = Either<
   SolicitationNotFoundError | UnauthorizedSolicitationActionError,
@@ -21,6 +23,7 @@ export class EditSolicitationFormUseCase {
   constructor(
     private solicitationRepository: ISolicitationRepository,
     private solicitationFormRepository: ISolicitationFormRepository,
+    private budgetRepository: IBudgetRepository,
   ) {}
 
   async execute({
@@ -32,7 +35,10 @@ export class EditSolicitationFormUseCase {
     const solicitation =
       await this.solicitationRepository.findById(solicitationId)
     if (!solicitation) return left(new SolicitationNotFoundError())
-    console.log(profileId, solicitation.clientProfile.id)
+    const budget = await this.budgetRepository.findByParam<{
+      solicitationId: string
+    }>({ solicitationId: solicitation.id.toString() })
+    if (budget.length > 0) return left(new ActionNotAllowedError())
     if (profileId !== solicitation.clientProfile.id.toString())
       return left(new UnauthorizedSolicitationActionError())
     if (status) {

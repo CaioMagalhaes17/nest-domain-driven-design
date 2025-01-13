@@ -11,6 +11,7 @@ type SolicitationProps = {
   solicitationFormId: string
   clientProfile: ClientProfile
   clientProfileId: string
+  storeProfileId?: string
 }
 
 export class Solicitation extends BaseEntity<SolicitationProps> {
@@ -48,5 +49,9 @@ export class Solicitation extends BaseEntity<SolicitationProps> {
 
   get clientProfileId(): string {
     return this.props.clientProfileId
+  }
+
+  get storeProfileId(): string {
+    return this.props.storeProfileId
   }
 }

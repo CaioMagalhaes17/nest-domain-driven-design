@@ -29,6 +29,11 @@ import { FetchAvaliableSolicitationsToStoreUseCase } from "@/domain/portal/appli
 import { IClientProfileRepository } from "@/domain/portal/application/repositories/profile/client/client-profile.repository"
 import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
+import { CreateSolicitationToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-to-store-use-case"
+import { CreateSolicitationToStoreUseCaseController } from "./create-solicitation-to-store-use-case.controller"
+import { IBudgetRepository } from "@/domain/portal/application/repositories/repair/budget-repository"
+import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repair/budget/budget.repository"
+import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
 
 @Module({
   imports: [
@@ -36,6 +41,7 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
     SolicitationMongoModule,
     GeolocationModule,
     ProfilesMongoModule,
+    BudgetMongoModule,
   ],
   controllers: [
     FetchSolicitationUseCaseController,
@@ -46,6 +52,7 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
     AdminSolicitationUseCaseController,
     AdminSolicitationFormUseCaseController,
     FetchAvaliableSolicitationsToStoreUseCaseController,
+    CreateSolicitationToStoreUseCaseController,
   ],
   providers: [
     {
@@ -83,6 +90,19 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
       ],
     },
     {
+      provide: CreateSolicitationToStoreUseCase,
+      useFactory: (
+        solicitationRepository: ISolicitationRepository,
+        solicitationFormRepository: ISolicitationFormRepository,
+      ) => {
+        return new CreateSolicitationToStoreUseCase(
+          solicitationRepository,
+          solicitationFormRepository,
+        )
+      },
+      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+    },
+    {
       provide: FetchUserSolicitationsUseCase,
       useFactory: (solicitationRepository: ISolicitationRepository) => {
         return new FetchUserSolicitationsUseCase(solicitationRepository)
@@ -94,26 +114,38 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
+        budgetRepository: IBudgetRepository,
       ) => {
         return new EditSolicitationFormUseCase(
           solicitationRepository,
           solicitationFormRepository,
+          budgetRepository,
         )
       },
-      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+      inject: [
+        InfraSolicitationRepository,
+        InfraSolicitationFormRepository,
+        InfraBudgetRepository,
+      ],
     },
     {
       provide: DeleteSolicitationUseCase,
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
+        budgetRepository: IBudgetRepository,
       ) => {
         return new DeleteSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
+          budgetRepository,
         )
       },
-      inject: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+      inject: [
+        InfraSolicitationRepository,
+        InfraSolicitationFormRepository,
+        InfraBudgetRepository,
+      ],
     },
     {
       provide: FetchSolicitationUseCase,

@@ -41,6 +41,7 @@ export class InfraSolicitationRepository
     const datatoinsert = {
       solicitationFormId: data.solicitationFormId,
       clientProfileId: data.clientProfileId,
+      storeProfileId: data?.storeProfileId,
       ...data,
     }
 

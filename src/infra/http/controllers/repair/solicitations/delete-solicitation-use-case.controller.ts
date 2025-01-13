@@ -1,3 +1,4 @@
+import { ActionNotAllowedError } from "@/domain/portal/application/errors/repair/solicitations/ActionNotAllowed"
 import {
   BadRequestException,
   Controller,
@@ -33,6 +34,8 @@ export class DeleteSolicitationUseCaseController {
           throw new NotFoundException(response.value.message)
         case UnauthorizedSolicitationActionError:
           throw new UnauthorizedException(response.value.message)
+        case ActionNotAllowedError:
+          throw new BadRequestException(response.value.message)
         default:
           throw new BadRequestException()
       }

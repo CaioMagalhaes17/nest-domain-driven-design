@@ -5,7 +5,6 @@ export class BudgetsPresenter {
     return {
       id: budget.id,
       estimatedPrice: budget.estimatedPrice,
-      status: budget.status,
       userId: budget.userId,
       solicitationId: budget.solicitationId,
       createdAt: budget.createdAt,

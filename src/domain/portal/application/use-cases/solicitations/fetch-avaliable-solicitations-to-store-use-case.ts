@@ -4,6 +4,7 @@ import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
 import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
 import { FetchClientsInsideStoreLocationUseCase } from "../geolocation/fetch-clients-inside-store-location-use-case"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
+import { OPEN_TO_BUDGETS_SOLICITATION_STATUS } from "../../constants/solicitation-status"
 
 type FetchSolicitationsUseCaseResponse = Either<
   SolicitationNotFoundError | GeolocationNotFound,
@@ -28,7 +29,12 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
           }>({
             clientProfileId: item.profileId,
           })
-          return { clientProfileId: item.profileId, solicitations }
+          return {
+            clientProfileId: item.profileId,
+            solicitations: solicitations.filter(
+              (item) => item.status === OPEN_TO_BUDGETS_SOLICITATION_STATUS,
+            ),
+          }
         }),
       )
       return right(solicitations)

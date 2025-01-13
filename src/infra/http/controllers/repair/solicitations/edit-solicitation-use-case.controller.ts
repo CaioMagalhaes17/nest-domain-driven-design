@@ -13,6 +13,7 @@ import { SolicitationNotFoundError } from "src/domain/portal/application/errors/
 import { UnauthorizedSolicitationActionError } from "src/domain/portal/application/errors/repair/solicitations/UnauthorizedSolicitationAction"
 import { EditSolicitationFormUseCase } from "@/domain/portal/application/use-cases/solicitations/edit-solicitation-use-case"
 import { JwtAuthGuard } from "src/infra/auth/guards/jwt.guard"
+import { ActionNotAllowedError } from "@/domain/portal/application/errors/repair/solicitations/ActionNotAllowed"
 
 @Controller()
 export class EditSolicitationUseCaseController {
@@ -37,6 +38,8 @@ export class EditSolicitationUseCaseController {
           throw new NotFoundException(response.value.message)
         case UnauthorizedSolicitationActionError:
           throw new UnauthorizedException(response.value.message)
+        case ActionNotAllowedError:
+          throw new BadRequestException(response.value.message)
         default:
           throw new BadRequestException()
       }
