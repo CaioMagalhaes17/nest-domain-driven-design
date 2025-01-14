@@ -60,7 +60,7 @@ export class UserAuthLoginUseCase {
             isStore: user.isStore,
             permission: user.permission,
             profileId: storeProfile[0].id,
-            subscriptionPlanId: user?.subscriptionPlanId,
+            subscriptionPlanId: user.subscriptionPlanId,
           }),
           user,
         })

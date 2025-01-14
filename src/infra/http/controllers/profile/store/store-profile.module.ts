@@ -10,14 +10,22 @@ import { FetchStoreProfileUseCase } from "src/domain/portal/application/use-case
 import { FetchStoreProfileUseCaseController } from "./fetch-store-profile-use-case.controller"
 import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositories/profiles/store.repository"
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
+import { SelectProfileUseCase } from "@/domain/portal/application/use-cases/profile/store/select-profile-use-case"
+import { SelectProfileUseCaseController } from "./select-profile-use-case.controller"
+import { IUserRepository } from "@/domain/portal/application/repositories/user/user-repository.interface"
+import { EncrypterGateway } from "@/domain/portal/application/gateway/user/encrypter.gateway"
+import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/user.repository"
+import { CryptographyModule } from "@/infra/auth/cryptography/cryptography.module"
+import { UserMongoModule } from "@/infra/databases/mongo/user.module"
 
 @Module({
-  imports: [ProfilesMongoModule],
+  imports: [ProfilesMongoModule, CryptographyModule, UserMongoModule],
   controllers: [
     CreateStoreProfileUseCaseController,
     EditStoreProfileUseCaseController,
     DeleteStoreProfileUseCaseController,
     FetchStoreProfileUseCaseController,
+    SelectProfileUseCaseController,
   ],
   exports: [FetchStoreProfileUseCase],
   providers: [
@@ -27,6 +35,16 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
         return new CreateStoreProfileUseCase(storeProfileRepository)
       },
       inject: [InfraStoreProfileRepository],
+    },
+    {
+      provide: SelectProfileUseCase,
+      useFactory: (
+        userRepository: IUserRepository,
+        encrypterGateway: EncrypterGateway,
+      ) => {
+        return new SelectProfileUseCase(userRepository, encrypterGateway)
+      },
+      inject: [InfraUserRepository, EncrypterGateway],
     },
     {
       provide: EditStoreProfileUseCase,

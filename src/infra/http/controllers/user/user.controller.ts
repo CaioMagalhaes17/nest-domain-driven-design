@@ -87,9 +87,15 @@ export class UserController {
   @Put("/user")
   async editUser(
     @Body() editBody: Partial<User>,
-    @Req() req: { user: { id: string } },
+    @Req() req: { user: { id: string; profileId: string } },
   ) {
-    const response = await this.updateUserUseCase.execute(editBody, req.user.id)
+    const response = await this.updateUserUseCase.execute(
+      editBody,
+      req.user.id,
+      req.user.profileId,
+    )
+
+    console.log(req.user.profileId)
 
     return response.value
   }

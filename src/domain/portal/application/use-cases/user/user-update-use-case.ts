@@ -24,6 +24,7 @@ export class UpdateUserUseCase {
   async execute(
     data: Partial<User>,
     userId: string,
+    storeProfile?: string,
   ): Promise<UpdateUserUseCaseResponse> {
     const newUser = await this.userRepository.updateById(userId, data)
     if (!newUser) return left(new NotFoundException("Usuário não encontrado"))
@@ -42,9 +43,6 @@ export class UpdateUserUseCase {
         user: newUser,
       })
     } else {
-      const storeProfile = await this.storeProfileRepository.findByParam<{
-        userId
-      }>({ userId })
       return right({
         token: this.encrypterGateway.encryptToken({
           id: newUser.id,
@@ -52,7 +50,7 @@ export class UpdateUserUseCase {
           isStore: newUser.isStore,
           permission: newUser.permission,
           subscriptionPlanId: newUser.subscriptionPlanId,
-          profileId: storeProfile[0].id,
+          profileId: storeProfile,
         }),
         user: newUser,
       })
