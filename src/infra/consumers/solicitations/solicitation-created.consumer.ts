@@ -19,7 +19,6 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
         stores.value.map(async (item) => {
           const fetchedUser = await this.fetchStoreProfileUseCase.execute(
             item.props.userId,
-            true,
           )
           if (fetchedUser.isRight()) {
             const storeProfile = fetchedUser.value.profile

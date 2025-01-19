@@ -14,17 +14,10 @@ type FetchStoreProfileResponse = Either<
 export class FetchStoreProfileUseCase {
   constructor(private storeProfileRepository: IStoreProfileRepository) {}
 
-  async execute(
-    userId: string,
-    isStore: boolean,
-  ): Promise<FetchStoreProfileResponse> {
-    if (!isStore) return left(new ProfileActionNotAllowed())
-    const profile = await this.storeProfileRepository.findByParam<{
-      userId: string
-    }>({ userId })
-
+  async execute(profileId: string): Promise<FetchStoreProfileResponse> {
+    const profile = await this.storeProfileRepository.findById(profileId)
     if (!profile) return left(new ProfileNotFound())
 
-    return right({ profile: profile[0] })
+    return right({ profile: profile })
   }
 }

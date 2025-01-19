@@ -2,10 +2,11 @@ import { Either, left, right } from "src/core/Either"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
 import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { ProfileActionNotAllowed } from "../../errors/profile/ProfileActionNotAllowed"
+import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
 
 type FetchGeolocationUseCaseResponse = Either<
   GeolocationNotFound | ProfileActionNotAllowed,
-  any
+  Geolocation[]
 >
 
 export class FetchGeolocationUseCase {
@@ -16,6 +17,6 @@ export class FetchGeolocationUseCase {
       profileId: string
     }>({ profileId })
     if (!result) return left(new GeolocationNotFound())
-    return right({ geolocation: result })
+    return right(result)
   }
 }

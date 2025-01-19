@@ -14,6 +14,11 @@ async function bootstrap() {
       },
     }),
   )
+  app.enableCors({
+    origin: "http://localhost:5173", // Origem permitida (URL do seu frontend)
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Métodos HTTP permitidos
+    credentials: true, // Permitir cookies ou headers com credenciais
+  })
   await app.listen(3001)
 }
 bootstrap()

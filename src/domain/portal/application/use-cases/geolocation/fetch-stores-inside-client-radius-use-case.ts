@@ -2,14 +2,15 @@ import { Either, left, right } from "@/core/Either"
 import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
 import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
+import { FetchStoreProfileUseCase } from "../profile/store/fetch-store-profile"
 
-type FetchStoresInsideClientRadiusResponse = Either<
-  GeolocationNotFound,
-  Geolocation[]
->
+type FetchStoresInsideClientRadiusResponse = Either<GeolocationNotFound, any>
 
 export class FetchStoresInsideClientRadiusUseCase {
-  constructor(private geolocationRepository: IGeolocationRepository) {}
+  constructor(
+    private geolocationRepository: IGeolocationRepository,
+    private fetchStoreUseCase: FetchStoreProfileUseCase,
+  ) {}
 
   async execute(
     clientProfileId: string,
@@ -23,10 +24,24 @@ export class FetchStoresInsideClientRadiusUseCase {
       result[0].longitude,
       result[0].radius,
     )
-    return right(
-      stores.filter(
+
+    if (stores.length > 0) {
+      const filtered = stores.filter(
         (item: { profileId: string }) => item.profileId !== clientProfileId,
-      ),
-    )
+      )
+
+      const transformedArray = await Promise.all(
+        filtered.map(async (item) => {
+          const profile = await this.fetchStoreUseCase.execute(item.profileId)
+          if (profile.isRight()) {
+            return {
+              GeoLocation: item,
+              Profile: profile.value.profile,
+            }
+          }
+        }),
+      )
+      return right(transformedArray)
+    }
   }
 }

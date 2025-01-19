@@ -33,7 +33,7 @@ export class FetchGeolocationUseCaseController {
       }
     }
 
-    const { geolocation } = response.value
+    const geolocation = response.value
     return geolocation
   }
 }

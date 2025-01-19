@@ -10,9 +10,11 @@ import { DeleteClientProfileUseCase } from "src/domain/portal/application/use-ca
 import { DeleteClientProfileUseCaseController } from "./delete-client-profile-use-case.controller"
 import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
+import { FetchGeolocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
+import { GeolocationModule } from "../../geolocation/geolocation.module"
 
 @Module({
-  imports: [ProfilesMongoModule],
+  imports: [ProfilesMongoModule, GeolocationModule],
   controllers: [
     FetchClientProfileUseCaseController,
     CreateClientProfileUseCaseController,
@@ -22,10 +24,16 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
   providers: [
     {
       provide: FetchClientProfileUseCase,
-      useFactory: (clientProfileRepository: IClientProfileRepository) => {
-        return new FetchClientProfileUseCase(clientProfileRepository)
+      useFactory: (
+        clientProfileRepository: IClientProfileRepository,
+        fetchGeoLocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new FetchClientProfileUseCase(
+          clientProfileRepository,
+          fetchGeoLocationUseCase,
+        )
       },
-      inject: [InfraClientProfileRepository],
+      inject: [InfraClientProfileRepository, FetchGeolocationUseCase],
     },
     {
       provide: CreateClientProfileUseCase,

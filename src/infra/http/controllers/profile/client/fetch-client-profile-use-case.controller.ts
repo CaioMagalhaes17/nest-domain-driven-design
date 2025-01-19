@@ -28,10 +28,10 @@ export class FetchClientProfileUseCaseController {
       }
     }
 
-    const { profile } = response.value
+    const { profile, location } = response.value
 
     return {
-      data: ClientProfilePresenter.toHttp(profile),
+      data: ClientProfilePresenter.toHttp(profile, location),
     }
   }
 }

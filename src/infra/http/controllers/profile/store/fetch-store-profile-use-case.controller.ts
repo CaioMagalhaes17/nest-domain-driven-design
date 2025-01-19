@@ -17,10 +17,9 @@ export class FetchStoreProfileUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/profile/store")
-  async handle(@Req() req: { user: { id: string; isStore: boolean } }) {
+  async handle(@Req() req: { user: { profileId: string } }) {
     const response = await this.fetchStoreProfileUseCase.execute(
-      req.user.id,
-      req.user.isStore,
+      req.user.profileId,
     )
 
     if (response.isLeft()) {

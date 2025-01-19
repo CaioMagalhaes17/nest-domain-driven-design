@@ -5,10 +5,10 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Post,
   Put,
   Req,
-  UnauthorizedException,
   UseGuards,
 } from "@nestjs/common"
 import { UserSignUpDTO } from "src/domain/portal/application/dto/user-signup.dto"
@@ -33,7 +33,7 @@ export class UserController {
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case InvalidCredentilsError:
-          throw new UnauthorizedException(response.value.message)
+          throw new BadRequestException(response.value.message)
         default:
           throw new BadRequestException()
       }
@@ -98,5 +98,10 @@ export class UserController {
     console.log(req.user.profileId)
 
     return response.value
+  }
+
+  @Get("ping")
+  async ping() {
+    return { response: "pong" }
   }
 }
