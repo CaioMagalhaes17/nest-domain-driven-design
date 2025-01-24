@@ -13,8 +13,8 @@ export class EditGeolocationUseCase {
   constructor(private mapRadiusRepository: IGeolocationRepository) {}
 
   async execute(
-    mapRadiusId: string,
-    mapRadiusPayload,
+    profileId: string,
+    mapRadiusPayload: { longitude: number; latitude: number; radius?: number },
   ): Promise<EditGeolocationUseCaseResponse> {
     if (
       mapRadiusPayload.longitude < -180 ||
@@ -24,8 +24,10 @@ export class EditGeolocationUseCase {
     ) {
       return left(new GeolocationIncorrectValues())
     }
-    const mapRadius = await this.mapRadiusRepository.findById(mapRadiusId)
+    const mapRadius = await this.mapRadiusRepository.findByParam<{
+      profileId
+    }>({ profileId })
     if (!mapRadius) return left(new GeolocationNotFound())
-    await this.mapRadiusRepository.updateById(mapRadiusId, mapRadiusPayload)
+    await this.mapRadiusRepository.updateById(mapRadius[0].id, mapRadiusPayload)
   }
 }

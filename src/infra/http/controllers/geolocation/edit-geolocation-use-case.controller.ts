@@ -4,8 +4,8 @@ import {
   Body,
   Controller,
   NotFoundException,
-  Param,
   Put,
+  Req,
   UseGuards,
 } from "@nestjs/common"
 import { GeolocationNotFound } from "src/domain/portal/application/errors/geolocation/geolocation-not-found"
@@ -18,10 +18,14 @@ export class EditGeolocationUseCaseController {
   constructor(private editGeolocationUseCase: EditGeolocationUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Put("/geolocation/:id")
-  async handle(@Param("id") id: string, @Body() createGeolocation) {
+  @Put("/geolocation")
+  async handle(
+    @Req() req: { user: { profileId: string } },
+    @Body()
+    createGeolocation: { longitude: number; latitude: number; radius?: number },
+  ) {
     const response = await this.editGeolocationUseCase.execute(
-      id,
+      req.user.profileId,
       createGeolocation,
     )
 

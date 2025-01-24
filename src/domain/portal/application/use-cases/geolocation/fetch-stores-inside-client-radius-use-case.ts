@@ -1,7 +1,6 @@
 import { Either, left, right } from "@/core/Either"
 import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
-import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
 import { FetchStoreProfileUseCase } from "../profile/store/fetch-store-profile"
 
 type FetchStoresInsideClientRadiusResponse = Either<GeolocationNotFound, any>
@@ -24,10 +23,10 @@ export class FetchStoresInsideClientRadiusUseCase {
       result[0].longitude,
       result[0].radius,
     )
-
     if (stores.length > 0) {
       const filtered = stores.filter(
-        (item: { profileId: string }) => item.profileId !== clientProfileId,
+        (item: { profileId: string; radius: number }) =>
+          item.profileId !== clientProfileId && item.radius === 0,
       )
 
       const transformedArray = await Promise.all(
@@ -41,6 +40,7 @@ export class FetchStoresInsideClientRadiusUseCase {
           }
         }),
       )
+      console.log(filtered)
       return right(transformedArray)
     }
   }
