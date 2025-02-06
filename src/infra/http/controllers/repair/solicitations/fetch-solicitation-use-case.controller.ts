@@ -4,7 +4,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  Req,
   UnauthorizedException,
   UseGuards,
 } from "@nestjs/common"
@@ -20,14 +19,8 @@ export class FetchSolicitationUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/repair/solicitation/:solicitationId")
-  async handle(
-    @Req() req: { user: { profileId: string } },
-    @Param("solicitationId") solicitationId: string,
-  ) {
-    const response = await this.fetchSolicitationUseCase.execute(
-      solicitationId,
-      req.user.profileId,
-    )
+  async handle(@Param("solicitationId") solicitationId: string) {
+    const response = await this.fetchSolicitationUseCase.execute(solicitationId)
 
     if (response.isLeft()) {
       switch (response.value.constructor) {

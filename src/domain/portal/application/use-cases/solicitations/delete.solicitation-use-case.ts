@@ -31,7 +31,7 @@ export class DeleteSolicitationUseCase {
     if (!solicitation) return left(new SolicitationNotFoundError())
     const budget = await this.budgetRepository.findByParam<{
       solicitationId: string
-    }>({ solicitationId: solicitation.id.toString() })
+    }>({ solicitationId: solicitationId })
     if (budget.length > 0) return left(new ActionNotAllowedError())
     if (solicitation.clientProfile.id.toString() !== profileId)
       return left(new UnauthorizedSolicitationActionError())

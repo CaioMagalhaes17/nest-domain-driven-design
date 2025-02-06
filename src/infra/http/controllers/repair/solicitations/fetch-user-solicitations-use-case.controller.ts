@@ -19,7 +19,6 @@ export class FetchUserSolicitationsUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Get("/repair/solicitation")
   async handle(@Req() req: { user: { profileId: string } }) {
-    console.log()
     const response = await this.fetchUserSolicitationsUseCase.execute(
       req.user.profileId,
     )

@@ -27,21 +27,19 @@ export class CreateBudgetUseCase {
     )
 
     if (!solicitation) return left(new SolicitationNotFoundError())
-
     const budget = await this.budgetRepository.findByParam<{
-      storeProfileId: string
       solicitationId: string
     }>({
-      storeProfileId,
-      solicitationId: solicitation.id,
+      solicitationId: createBudgetPayload.solicitationId,
     })
-
     if (budget.length > 0) return left(new BudgetAlreadySent())
 
     const result = await this.budgetRepository.create({
-      estimatedPrice: createBudgetPayload.estimatedPrice,
-      solicitationId: createBudgetPayload.solicitationId,
+      startValue: createBudgetPayload.startValue,
+      endValue: createBudgetPayload.endValue,
       storeProfileId: storeProfileId,
+      solicitationId: createBudgetPayload.solicitationId,
+      details: createBudgetPayload.details,
     })
     return right({ id: result.id })
   }

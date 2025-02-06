@@ -40,7 +40,6 @@ export class FetchStoresInsideClientRadiusUseCase {
           }
         }),
       )
-      console.log(filtered)
       return right(transformedArray)
     }
   }

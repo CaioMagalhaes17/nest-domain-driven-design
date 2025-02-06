@@ -4,7 +4,9 @@ import { StoreProfile } from "../profile/store/store-profile"
 
 type BudgetProps = {
   userId: number
-  estimatedPrice: string
+  startValue: string
+  endValue: string
+  details: string
   solicitationId: string
   createdAt: string
   updatedAt: string
@@ -22,8 +24,16 @@ export class Budget extends BaseEntity<BudgetProps> {
     return this.props.userId
   }
 
-  get estimatedPrice(): string {
-    return this.props.estimatedPrice
+  get startValue(): string {
+    return this.props.startValue
+  }
+
+  get endValue(): string {
+    return this.props.endValue
+  }
+
+  get details(): string {
+    return this.props.details
   }
 
   get solicitationId(): string {

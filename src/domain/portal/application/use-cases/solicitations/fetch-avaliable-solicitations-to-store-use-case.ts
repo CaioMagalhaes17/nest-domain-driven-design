@@ -5,23 +5,26 @@ import { ISolicitationRepository } from "../../repositories/repair/solicitation-
 import { FetchClientsInsideStoreLocationUseCase } from "../geolocation/fetch-clients-inside-store-location-use-case"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
 import { OPEN_TO_BUDGETS_SOLICITATION_STATUS } from "../../constants/solicitation-status"
+import { IBudgetRepository } from "../../repositories/repair/budget-repository"
 
 type FetchSolicitationsUseCaseResponse = Either<
   SolicitationNotFoundError | GeolocationNotFound,
-  { clientProfileId: string; solicitations: Solicitation[] }[]
+  Solicitation[]
 >
 
 export class FetchAvaliableSolicitationsToStoreUseCase {
   constructor(
     private solicitationRepository: ISolicitationRepository,
     private fetchClientsInsideStoreLocationUseCase: FetchClientsInsideStoreLocationUseCase,
+    private budgetRepository: IBudgetRepository,
   ) {}
 
   async execute(profileId: string): Promise<FetchSolicitationsUseCaseResponse> {
     const clientsProfile =
       await this.fetchClientsInsideStoreLocationUseCase.execute(profileId)
+
     if (clientsProfile.isLeft()) return left(new GeolocationNotFound())
-    if (clientsProfile.isRight) {
+    if (clientsProfile.isRight()) {
       const solicitations = await Promise.all(
         clientsProfile.value.map(async (item) => {
           const solicitations = await this.solicitationRepository.findByParam<{
@@ -29,15 +32,33 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
           }>({
             clientProfileId: item.profileId,
           })
-          return {
-            clientProfileId: item.profileId,
-            solicitations: solicitations.filter(
-              (item) => item.status === OPEN_TO_BUDGETS_SOLICITATION_STATUS,
-            ),
-          }
+          const solicitationsWithoutBudget = await Promise.all(
+            solicitations.map(async (solicitation) => {
+              const budget = await this.budgetRepository.findByParam<{
+                solicitationId: string
+              }>({
+                solicitationId: solicitation.id,
+              })
+
+              if (budget.length === 0) {
+                return solicitation
+              }
+              return null
+            }),
+          )
+          const filteredSolicitations =
+            solicitationsWithoutBudget.filter(Boolean)
+
+          return filteredSolicitations.filter(
+            (item) => item.status === OPEN_TO_BUDGETS_SOLICITATION_STATUS,
+          )
+          // return solicitations.filter((item) => {
+          //   return item.status === OPEN_TO_BUDGETS_SOLICITATION_STATUS
+          // })
         }),
       )
-      return right(solicitations)
+
+      return right(solicitations.flat())
     }
   }
 }

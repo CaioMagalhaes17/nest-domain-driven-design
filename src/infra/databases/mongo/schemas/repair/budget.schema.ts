@@ -7,7 +7,13 @@ export class Budget extends Document {
   storeProfileId: MangooseSchema.Types.ObjectId
 
   @Prop({ required: true })
-  estimatedPrice: string
+  startValue: string
+
+  @Prop({ required: true })
+  endValue: string
+
+  @Prop()
+  details: string
 
   @Prop({ type: MangooseSchema.Types.ObjectId, ref: "Solicitation" })
   solicitationId: MangooseSchema.Types.ObjectId

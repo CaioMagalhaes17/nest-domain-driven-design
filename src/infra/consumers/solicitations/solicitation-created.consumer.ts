@@ -22,7 +22,6 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
           )
           if (fetchedUser.isRight()) {
             const storeProfile = fetchedUser.value.profile
-            console.log(storeProfile)
             await this.emailQueue.add({ email: storeProfile.email })
           }
         })

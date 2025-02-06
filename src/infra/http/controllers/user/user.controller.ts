@@ -95,8 +95,6 @@ export class UserController {
       req.user.profileId,
     )
 
-    console.log(req.user.profileId)
-
     return response.value
   }
 

@@ -4,7 +4,9 @@ export class BudgetsPresenter {
   static toHttp(budget: Budget) {
     return {
       id: budget.id,
-      estimatedPrice: budget.estimatedPrice,
+      startValue: budget.startValue,
+      endValue: budget.endValue,
+      details: budget.details,
       userId: budget.userId,
       solicitationId: budget.solicitationId,
       createdAt: budget.createdAt,

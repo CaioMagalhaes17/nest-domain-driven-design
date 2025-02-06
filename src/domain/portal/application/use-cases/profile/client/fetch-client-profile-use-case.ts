@@ -31,7 +31,6 @@ export class FetchClientProfileUseCase {
 
     if (geoLocation.isRight()) {
       const geoInfos = geoLocation.value[0]
-      console.log(geoInfos)
       const retorno = {
         profile: profile[0],
         location: geoInfos,

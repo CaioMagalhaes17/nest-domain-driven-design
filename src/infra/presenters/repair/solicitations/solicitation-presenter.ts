@@ -4,18 +4,25 @@ export class SolicitationPresenter {
   static toHttp(solicitation: Solicitation) {
     return {
       id: solicitation.id,
-      userId: solicitation.userId,
       createdAt: solicitation.createdAt,
       status: solicitation.status,
+      profileId: solicitation.clientProfileId,
+      clientProfile: {
+        id: solicitation.clientProfile.id,
+        name: solicitation.clientProfile.name,
+        email: solicitation.clientProfile.email,
+        profileImg: solicitation.clientProfile.profileImg,
+        telNumber: solicitation.clientProfile.telNumber,
+        userId: solicitation.clientProfile.userId,
+        rating: solicitation.clientProfile.rating,
+      },
       form: {
-        brand: solicitation.form.brand,
-        modelo: solicitation.form.modelo,
-        imeiNumber: solicitation.form.imeiNumber,
-        usageTime: solicitation.form.usageTime,
-        problemDescription: solicitation.form.problemDescription,
-        problemCause: solicitation.form.problemCause,
-        previousRepair: solicitation.form.previousRepair,
-        originalHardware: solicitation.form.originalHardware,
+        problemTopic: solicitation.form.problemTopic,
+        problemForm: solicitation.form.problemForm,
+        phoneForm: solicitation.form.phoneForm,
+        deliveryPreference: solicitation.form.deliveryPreference,
+        timePreference: solicitation.form.timePreference,
+        details: solicitation.form.details,
       },
     }
   }

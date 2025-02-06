@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common"
+import { forwardRef, Module } from "@nestjs/common"
 import { CreateStoreProfileUseCase } from "src/domain/portal/application/use-cases/profile/store/create-store-profile"
 import { CreateStoreProfileUseCaseController } from "./create-store-profile-use-case.controller"
 import { IStoreProfileRepository } from "src/domain/portal/application/repositories/profile/store/store-profile.repository"
@@ -17,9 +17,16 @@ import { EncrypterGateway } from "@/domain/portal/application/gateway/user/encry
 import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/user.repository"
 import { CryptographyModule } from "@/infra/auth/cryptography/cryptography.module"
 import { UserMongoModule } from "@/infra/databases/mongo/user.module"
+import { FetchGeolocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
+import { GeolocationModule } from "../../geolocation/geolocation.module"
 
 @Module({
-  imports: [ProfilesMongoModule, CryptographyModule, UserMongoModule],
+  imports: [
+    ProfilesMongoModule,
+    CryptographyModule,
+    forwardRef(() => GeolocationModule),
+    UserMongoModule,
+  ],
   controllers: [
     CreateStoreProfileUseCaseController,
     EditStoreProfileUseCaseController,
@@ -62,10 +69,16 @@ import { UserMongoModule } from "@/infra/databases/mongo/user.module"
     },
     {
       provide: FetchStoreProfileUseCase,
-      useFactory: (storeProfileRepository: IStoreProfileRepository) => {
-        return new FetchStoreProfileUseCase(storeProfileRepository)
+      useFactory: (
+        storeProfileRepository: IStoreProfileRepository,
+        fetchGeoLocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new FetchStoreProfileUseCase(
+          storeProfileRepository,
+          fetchGeoLocationUseCase,
+        )
       },
-      inject: [InfraStoreProfileRepository],
+      inject: [InfraStoreProfileRepository, FetchGeolocationUseCase],
     },
   ],
 })

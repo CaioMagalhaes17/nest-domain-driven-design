@@ -26,14 +26,14 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
 import { FetchAvaliableSolicitationsToStoreUseCaseController } from "./fetch-avaliable-solicitations-to-store-use-case.controller"
 import { FetchClientsInsideStoreLocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-clients-inside-store-location-use-case"
 import { FetchAvaliableSolicitationsToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/fetch-avaliable-solicitations-to-store-use-case"
-import { IClientProfileRepository } from "@/domain/portal/application/repositories/profile/client/client-profile.repository"
-import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 import { CreateSolicitationToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-to-store-use-case"
 import { CreateSolicitationToStoreUseCaseController } from "./create-solicitation-to-store-use-case.controller"
 import { IBudgetRepository } from "@/domain/portal/application/repositories/repair/budget-repository"
 import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repair/budget/budget.repository"
 import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
+import { DeleteFlaggedSolicitationsUseCase } from "@/domain/portal/application/use-cases/solicitations/delete-flagged-solicitations-use-case"
+import { DeleteFlaggedSolicitationsUseCaseController } from "./delete-flagged-solicitations.use-case.controller"
 
 @Module({
   imports: [
@@ -44,6 +44,7 @@ import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
     BudgetMongoModule,
   ],
   controllers: [
+    DeleteFlaggedSolicitationsUseCaseController,
     FetchSolicitationUseCaseController,
     FetchUserSolicitationsUseCaseController,
     EditSolicitationUseCaseController,
@@ -55,6 +56,25 @@ import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
     CreateSolicitationToStoreUseCaseController,
   ],
   providers: [
+    {
+      provide: DeleteFlaggedSolicitationsUseCase,
+      useFactory: (
+        solicitationRepository: ISolicitationRepository,
+        solicitationFormRepository: ISolicitationFormRepository,
+        budgetRepository: IBudgetRepository,
+      ) => {
+        return new DeleteFlaggedSolicitationsUseCase(
+          solicitationRepository,
+          solicitationFormRepository,
+          budgetRepository,
+        )
+      },
+      inject: [
+        InfraSolicitationRepository,
+        InfraSolicitationFormRepository,
+        InfraBudgetRepository,
+      ],
+    },
     {
       provide: AdminSolicitationUseCase,
       useFactory: (solicitationRepository: ISolicitationRepository) => {
@@ -149,16 +169,10 @@ import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
     },
     {
       provide: FetchSolicitationUseCase,
-      useFactory: (
-        solicitationRepository: ISolicitationRepository,
-        clientProfileRepository: IClientProfileRepository,
-      ) => {
-        return new FetchSolicitationUseCase(
-          solicitationRepository,
-          clientProfileRepository,
-        )
+      useFactory: (solicitationRepository: ISolicitationRepository) => {
+        return new FetchSolicitationUseCase(solicitationRepository)
       },
-      inject: [InfraSolicitationRepository, InfraClientProfileRepository],
+      inject: [InfraSolicitationRepository],
     },
     {
       provide: OnSolicitationCreatedUseCase,
@@ -178,15 +192,18 @@ import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         fetchClientsInsideStoreLocationUseCase: FetchClientsInsideStoreLocationUseCase,
+        budgetRepository: IBudgetRepository,
       ) => {
         return new FetchAvaliableSolicitationsToStoreUseCase(
           solicitationRepository,
           fetchClientsInsideStoreLocationUseCase,
+          budgetRepository,
         )
       },
       inject: [
         InfraSolicitationRepository,
         FetchClientsInsideStoreLocationUseCase,
+        InfraBudgetRepository,
       ],
     },
   ],

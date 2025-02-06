@@ -1,3 +1,4 @@
+import { StoreProfilePresenter } from "@/infra/presenters/profile/store/store-profile.presenter"
 import {
   BadRequestException,
   Controller,
@@ -33,7 +34,9 @@ export class FetchStoreProfileUseCaseController {
       }
     }
 
-    const { profile } = response.value
-    return profile
+    return StoreProfilePresenter.toHttp(
+      response.value.profile,
+      response.value.location,
+    )
   }
 }
