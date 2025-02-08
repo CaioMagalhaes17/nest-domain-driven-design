@@ -51,6 +51,10 @@ import { SolicitationFormMapper } from "./mappers/repair/solicitation-form.mappe
       inject: [getModelToken(SolicitationForm.name), SolicitationFormMapper],
     },
   ],
-  exports: [InfraSolicitationRepository, InfraSolicitationFormRepository],
+  exports: [
+    InfraSolicitationRepository,
+    InfraSolicitationFormRepository,
+    SolicitationMapper,
+  ],
 })
 export class SolicitationMongoModule {}

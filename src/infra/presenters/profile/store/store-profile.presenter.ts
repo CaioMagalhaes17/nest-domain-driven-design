@@ -9,8 +9,9 @@ export class StoreProfilePresenter {
       name: profile.name,
       profileImg: profile.profileImg,
       email: profile.email,
-      telNum: profile.telNumber,
+      telNum: profile.telNum,
       address: profile.address,
+      rating: profile.rating,
       description: profile.description,
       location: {
         latitude: location.latitude,

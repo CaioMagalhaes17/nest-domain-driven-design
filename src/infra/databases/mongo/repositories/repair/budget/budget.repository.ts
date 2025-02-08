@@ -19,7 +19,13 @@ export class InfraBudgetRepository extends BaseInfraRepository<
     return this.mapper.toDomainArray(
       await this.model
         .find(param)
-        .populate(["solicitationId", "storeProfileId"])
+        .populate([
+          {
+            path: "solicitationId",
+            populate: { path: "solicitationFormId" }, // Populando a SolicitationForm dentro da Solicitation
+          },
+          { path: "storeProfileId" },
+        ])
         .exec(),
     )
   }
@@ -29,7 +35,13 @@ export class InfraBudgetRepository extends BaseInfraRepository<
       return this.mapper.toDomain(
         await this.model
           .findById(id)
-          .populate(["solicitationId", "storeProfileId"])
+          .populate([
+            {
+              path: "solicitationId",
+              populate: { path: "solicitationFormId" }, // Populando a SolicitationForm dentro da Solicitation
+            },
+            { path: "storeProfileId" },
+          ])
           .exec(),
       )
     } catch (error) {

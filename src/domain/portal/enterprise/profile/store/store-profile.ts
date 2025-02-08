@@ -4,11 +4,11 @@ type StoreProfileProps = {
   name: string
   address: string
   profileImg: string
-  rating?: string
+  rating?: number
   description: string
   userId: string
   email: string
-  telNumber: string
+  telNum: string
 }
 
 export class StoreProfile extends BaseEntity<StoreProfileProps> {
@@ -28,7 +28,7 @@ export class StoreProfile extends BaseEntity<StoreProfileProps> {
     return this.props.profileImg
   }
 
-  get rating(): string {
+  get rating(): number {
     return this.props.rating
   }
 
@@ -44,7 +44,7 @@ export class StoreProfile extends BaseEntity<StoreProfileProps> {
     return this.props.email
   }
 
-  get telNumber(): string {
-    return this.props.telNumber
+  get telNum(): string {
+    return this.props.telNum
   }
 }

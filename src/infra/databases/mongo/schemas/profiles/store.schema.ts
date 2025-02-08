@@ -13,7 +13,7 @@ export class StoreProfile extends Document {
   profileImg: string
 
   @Prop()
-  rating: string
+  rating: number
 
   @Prop({ required: true })
   email: string

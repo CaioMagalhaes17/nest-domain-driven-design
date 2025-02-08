@@ -7,8 +7,10 @@ export type EditStoreProfilePayload = {
   name?: string
   address?: string
   profileImg?: string
-  rating?: string
+  rating?: number
   description?: string
+  telNum?: string
+  email?: string
 }
 
 type EditStoreProfileReturn = Either<
@@ -27,7 +29,7 @@ export class EditStoreProfileUseCase {
     const profile = await this.storeProfileRepository.findByParam<{
       userId: string
     }>({ userId })
-
+    console.log(profile)
     if (!profile) return left(new ProfileNotFound())
 
     await this.storeProfileRepository.updateById(

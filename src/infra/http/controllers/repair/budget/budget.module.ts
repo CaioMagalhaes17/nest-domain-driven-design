@@ -13,6 +13,10 @@ import { ISolicitationRepository } from "@/domain/portal/application/repositorie
 import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
 import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repair/budget/budget.repository"
 import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositories/repair/solicitation/solicitation.repository"
+import { FetchStoreBudgetBySolicitationUseCase } from "@/domain/portal/application/use-cases/budget/fetch-store-budgets-by-solicitation"
+import { FetchBudgetsBySolicitationUseCase } from "@/domain/portal/application/use-cases/budget/fetch-budgets-by-solicitation"
+import { FetchBudgetsBySolicitationUseCaseController } from "./fetch-budgets-by-solicitation-use-case.controller"
+import { FetchStoreBudgetBySolicitationUseCaseController } from "./fetch-store-budgets-by-solicitation-use-case.controller"
 
 @Module({
   imports: [SolicitationMongoModule, BudgetMongoModule],
@@ -21,6 +25,8 @@ import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositorie
     FetchBudgetsUseCaseController,
     FetchBudgetUseCaseController,
     DeleteBudgetUseCaseController,
+    FetchBudgetsBySolicitationUseCaseController,
+    FetchStoreBudgetBySolicitationUseCaseController,
   ],
   providers: [
     {
@@ -37,6 +43,20 @@ import { InfraSolicitationRepository } from "@/infra/databases/mongo/repositorie
       provide: FetchBudgetsUseCase,
       useFactory: (budgetRepository: IBudgetRepository) => {
         return new FetchBudgetsUseCase(budgetRepository)
+      },
+      inject: [InfraBudgetRepository],
+    },
+    {
+      provide: FetchStoreBudgetBySolicitationUseCase,
+      useFactory: (budgetRepository: IBudgetRepository) => {
+        return new FetchStoreBudgetBySolicitationUseCase(budgetRepository)
+      },
+      inject: [InfraBudgetRepository],
+    },
+    {
+      provide: FetchBudgetsBySolicitationUseCase,
+      useFactory: (budgetRepository: IBudgetRepository) => {
+        return new FetchBudgetsBySolicitationUseCase(budgetRepository)
       },
       inject: [InfraBudgetRepository],
     },

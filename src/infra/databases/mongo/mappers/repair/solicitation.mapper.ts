@@ -3,7 +3,9 @@ import { Solicitation as MongoSolicitation } from "../../schemas/repair/solicita
 import { BaseMapper } from "@/core/infra/base.mapper"
 import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation.form"
 import { ClientProfile } from "@/domain/portal/enterprise/profile/client/client-profile"
+import { Injectable } from "@nestjs/common"
 
+@Injectable()
 export class SolicitationMapper
   implements BaseMapper<MongoSolicitation, Solicitation> {
   toDomainArray(rows: MongoSolicitation[]): Solicitation[] {
@@ -11,7 +13,7 @@ export class SolicitationMapper
     return rows.map((row) => this.toDomain(row)).filter((item) => item !== null)
   }
 
-  toDomain(row: MongoSolicitation): Solicitation {
+  toDomain(row: any): Solicitation {
     const { _id, solicitationFormId, clientProfileId, ...rest } = row.toObject()
     const tentativa = Solicitation.create(
       {
