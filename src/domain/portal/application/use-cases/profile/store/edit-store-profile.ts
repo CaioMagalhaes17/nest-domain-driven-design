@@ -29,7 +29,6 @@ export class EditStoreProfileUseCase {
     const profile = await this.storeProfileRepository.findByParam<{
       userId: string
     }>({ userId })
-    console.log(profile)
     if (!profile) return left(new ProfileNotFound())
 
     await this.storeProfileRepository.updateById(

@@ -15,7 +15,18 @@ export class InfraBudgetRepository extends BaseInfraRepository<
     super(model, mapper)
   }
 
-  async findByParam<ParamType>(param: ParamType) {
+  async findByParam<ParamType>(
+    param: ParamType,
+    paginateObj?: { page: number; limit: number },
+  ) {
+    if (paginateObj) {
+      const teste = await this.findAllPaginated<ParamType>(
+        paginateObj.page,
+        paginateObj.limit,
+        param,
+      )
+      return this.mapper.toDomainArray(teste.data)
+    }
     return this.mapper.toDomainArray(
       await this.model
         .find(param)

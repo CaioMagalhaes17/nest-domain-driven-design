@@ -8,7 +8,7 @@ import { MongooseModule } from "@nestjs/mongoose"
       isGlobal: true, // Torna o ConfigModule acessível globalmente
     }),
     MongooseModule.forRoot(
-      "mongodb+srv://dbcell:bbEuhmnzOgmMawYf@cluster0.pqmup.mongodb.net/db_cell",
+      "mongodb+srv://dbcell:B5HpXQTZgeMEkWeZ@cluster0.pqmup.mongodb.net/db_cell",
     ),
   ],
 })

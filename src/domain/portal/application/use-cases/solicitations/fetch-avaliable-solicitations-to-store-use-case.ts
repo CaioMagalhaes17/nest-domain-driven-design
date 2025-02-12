@@ -22,7 +22,15 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
   async execute(profileId: string): Promise<FetchSolicitationsUseCaseResponse> {
     const clientsProfile =
       await this.fetchClientsInsideStoreLocationUseCase.execute(profileId)
-
+    const budgets = await this.budgetRepository.findByParam<{
+      storeProfileId: string
+    }>({
+      storeProfileId: profileId,
+    })
+    const IdsProibidos = budgets.map((budget) =>
+      budget.solicitation.id.toString(),
+    )
+    console.log(IdsProibidos)
     if (clientsProfile.isLeft()) return left(new GeolocationNotFound())
     if (clientsProfile.isRight()) {
       const solicitations = await Promise.all(
@@ -34,13 +42,7 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
           })
           const solicitationsWithoutBudget = await Promise.all(
             solicitations.map(async (solicitation) => {
-              const budget = await this.budgetRepository.findByParam<{
-                solicitationId: string
-              }>({
-                solicitationId: solicitation.id,
-              })
-
-              if (budget.length === 0) {
+              if (!IdsProibidos.includes(solicitation.id.toString())) {
                 return solicitation
               }
               return null

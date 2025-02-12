@@ -12,14 +12,19 @@ type FetchBudgetUseCaseResponse = Either<
 export class FetchBudgetsUseCase {
   constructor(private budgetRepository: IBudgetRepository) {}
 
-  async execute(profileId: string): Promise<FetchBudgetUseCaseResponse> {
+  async execute(
+    profileId: string,
+    paginationObj?: { page: number; limit: number },
+  ): Promise<FetchBudgetUseCaseResponse> {
     const budget = await this.budgetRepository.findByParam<{
       storeProfileId: string
-    }>({
-      storeProfileId: profileId,
-    })
+    }>(
+      {
+        storeProfileId: profileId,
+      },
+      paginationObj,
+    )
     if (!budget) return left(new BudgetNotFound())
-
     return right({ budget })
   }
 }

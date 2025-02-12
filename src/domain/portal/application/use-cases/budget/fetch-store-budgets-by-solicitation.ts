@@ -23,7 +23,6 @@ export class FetchStoreBudgetBySolicitationUseCase {
       solicitationId,
       storeProfileId: profileId,
     })
-    console.log(budget)
     if (!budget) return left(new BudgetNotFound())
 
     return right({ budget })

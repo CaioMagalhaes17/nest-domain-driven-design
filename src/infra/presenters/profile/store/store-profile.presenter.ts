@@ -14,8 +14,8 @@ export class StoreProfilePresenter {
       rating: profile.rating,
       description: profile.description,
       location: {
-        latitude: location.latitude,
-        longitude: location.longitude,
+        latitude: location?.latitude,
+        longitude: location?.longitude,
       },
     }
   }

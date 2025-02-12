@@ -38,7 +38,33 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
     await this.model.deleteMany({})
   }
 
-  async findByParam<ParamType>(param: ParamType) {
+  async findByParam<ParamType>(param: ParamType, paginateObj?: { page: number, limit: number }) {
+    if (paginateObj) {
+      const items = await this.findAllPaginated<ParamType>(paginateObj.page, paginateObj.limit, param)
+      return this.mapper.toDomainArray(items.data)
+    }
     return this.mapper.toDomainArray(await this.model.find(param).exec())
+  }
+
+  async findAllPaginated<T = unknown>(page: number, limit: number, param?: T) {
+    const skip = (page - 1) * limit
+
+    const [data, total] = await Promise.all([
+      this.model.find(param).skip(skip).limit(limit).populate([
+        {
+          path: "solicitationId",
+          populate: { path: "solicitationFormId" }, // Populando a SolicitationForm dentro da Solicitation
+        },
+        { path: "storeProfileId" },
+      ]).exec(),
+      this.model.countDocuments().exec(),
+    ])
+
+    return {
+      data,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    }
   }
 }

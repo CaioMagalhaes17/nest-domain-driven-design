@@ -8,5 +8,8 @@ export interface BaseDomainRepository<DomainModel> {
   ): Promise<DomainModel | null>
   deleteById(id: string): Promise<void>
   deleteAll(): Promise<void>
-  findByParam<ParamType>(param: Partial<ParamType>): Promise<DomainModel[]>
+  findByParam<ParamType>(
+    param: Partial<ParamType>,
+    paginateObj?: { page: number; limit: number },
+  ): Promise<DomainModel[]>
 }

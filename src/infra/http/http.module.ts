@@ -5,6 +5,7 @@ import { BudgetModule } from "./controllers/repair/budget/budget.module"
 import { ClientProfileModule } from "./controllers/profile/client/client-profile.module"
 import { GeolocationModule } from "./controllers/geolocation/geolocation.module"
 import { StoreProfileModule } from "./controllers/profile/store/store-profile.module"
+import { FeedbackModule } from "./controllers/feedback/feedback.module"
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { StoreProfileModule } from "./controllers/profile/store/store-profile.mo
     ClientProfileModule,
     GeolocationModule,
     StoreProfileModule,
+    FeedbackModule,
   ],
 })
 export class HttpModule {}

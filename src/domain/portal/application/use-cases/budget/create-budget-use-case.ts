@@ -29,7 +29,9 @@ export class CreateBudgetUseCase {
     if (!solicitation) return left(new SolicitationNotFoundError())
     const budget = await this.budgetRepository.findByParam<{
       solicitationId: string
+      storeProfileId: string
     }>({
+      storeProfileId,
       solicitationId: createBudgetPayload.solicitationId,
     })
     if (budget.length > 0) return left(new BudgetAlreadySent())
