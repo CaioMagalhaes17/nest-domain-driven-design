@@ -31,6 +31,7 @@ export class InfraFeedbackRepository extends BaseInfraRepository<
       await this.model
         .find(param)
         .populate(["storeProfileId", "clientProfileId"])
+        .sort({ createdAt: -1 })
         .exec(),
     )
   }
@@ -40,11 +41,33 @@ export class InfraFeedbackRepository extends BaseInfraRepository<
       return this.mapper.toDomain(
         await this.model
           .findById(id)
-          .populate(["storeProfile", "clientProfile"])
+          .populate(["storeProfileId", "clientProfileId"])
           .exec(),
       )
     } catch (error) {
       return
+    }
+  }
+
+  async findAllPaginated<T = unknown>(page: number, limit: number, param?: T) {
+    const skip = (page - 1) * limit
+
+    const [data, total] = await Promise.all([
+      this.model
+        .find(param)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .populate(["storeProfileId", "clientProfileId"])
+        .exec(),
+      this.model.countDocuments().exec(),
+    ])
+
+    return {
+      data,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
     }
   }
 }

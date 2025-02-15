@@ -8,10 +8,11 @@ export class FetchFeedbacksByStoreUseCase {
 
   async execute(
     storeProfileId: string,
+    paginationObj?: { page: number; limit: number },
   ): Promise<FetchFeedbacksByStoreUseCaseResponse> {
     const feedback = await this.feedBackRepository.findByParam<{
       storeProfileId: string
-    }>({ storeProfileId })
+    }>({ storeProfileId }, paginationObj)
     if (feedback.length === 0) return left(new FeedbackNotFound())
     return right(feedback)
   }

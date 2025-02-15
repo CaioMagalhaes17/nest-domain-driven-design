@@ -7,6 +7,7 @@ import {
   Body,
   Controller,
   NotFoundException,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -20,17 +21,21 @@ export class CreateSolicitationToStoreUseCaseController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/repair/solicitation/to-store")
+  @Post("/repair/solicitation/:storeProfileId")
   async handle(
     @Req() req: { user: { profileId: string } },
+    @Param("storeProfileId") storeProfileId: string,
     @Body()
-    solicitationForm: SolicitationFormProps & { storeProfileId: string },
+    solicitationForm: SolicitationFormProps,
   ) {
-    const response = await this.createSolicitationsUseCase.execute({
-      status: OPEN_TO_BUDGETS_SOLICITATION_STATUS,
-      profileId: req.user.profileId,
-      solicitationForm,
-    })
+    const response = await this.createSolicitationsUseCase.execute(
+      {
+        status: OPEN_TO_BUDGETS_SOLICITATION_STATUS,
+        profileId: req.user.profileId,
+        solicitationForm,
+      },
+      storeProfileId,
+    )
 
     if (response && response.isLeft()) {
       switch (response.value.constructor) {

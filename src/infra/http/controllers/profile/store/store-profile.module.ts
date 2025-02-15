@@ -19,6 +19,8 @@ import { CryptographyModule } from "@/infra/auth/cryptography/cryptography.modul
 import { UserMongoModule } from "@/infra/databases/mongo/user.module"
 import { FetchGeolocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
 import { GeolocationModule } from "../../geolocation/geolocation.module"
+import { FetchStoreProfileByIdUseCaseController } from "./fetch-store-by-id-use-case.controller"
+import { FetchStoreProfileByIdUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-by-id"
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
     DeleteStoreProfileUseCaseController,
     FetchStoreProfileUseCaseController,
     SelectProfileUseCaseController,
+    FetchStoreProfileByIdUseCaseController,
   ],
   exports: [FetchStoreProfileUseCase],
   providers: [
@@ -74,6 +77,19 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
         fetchGeoLocationUseCase: FetchGeolocationUseCase,
       ) => {
         return new FetchStoreProfileUseCase(
+          storeProfileRepository,
+          fetchGeoLocationUseCase,
+        )
+      },
+      inject: [InfraStoreProfileRepository, FetchGeolocationUseCase],
+    },
+    {
+      provide: FetchStoreProfileByIdUseCase,
+      useFactory: (
+        storeProfileRepository: IStoreProfileRepository,
+        fetchGeoLocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new FetchStoreProfileByIdUseCase(
           storeProfileRepository,
           fetchGeoLocationUseCase,
         )

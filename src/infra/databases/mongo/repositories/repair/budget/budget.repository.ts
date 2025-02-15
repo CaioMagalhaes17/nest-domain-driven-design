@@ -30,6 +30,7 @@ export class InfraBudgetRepository extends BaseInfraRepository<
     return this.mapper.toDomainArray(
       await this.model
         .find(param)
+        .sort({ createdAt: -1 })
         .populate([
           {
             path: "solicitationId",
@@ -68,5 +69,33 @@ export class InfraBudgetRepository extends BaseInfraRepository<
     }
 
     return { id: (await this.model.create(datatoinsert)).id }
+  }
+
+  async findAllPaginated<T = unknown>(page: number, limit: number, param?: T) {
+    const skip = (page - 1) * limit
+
+    const [data, total] = await Promise.all([
+      this.model
+        .find(param)
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .populate([
+          {
+            path: "solicitationId",
+            populate: { path: "solicitationFormId" }, // Populando a SolicitationForm dentro da Solicitation
+          },
+          { path: "storeProfileId" },
+        ])
+        .exec(),
+      this.model.countDocuments().exec(),
+    ])
+
+    return {
+      data,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    }
   }
 }

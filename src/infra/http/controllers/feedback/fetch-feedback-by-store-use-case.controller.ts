@@ -5,6 +5,7 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Req,
   UseGuards,
 } from "@nestjs/common"
@@ -21,9 +22,15 @@ export class FetchFeedbacksByStoreUseCaseController {
   async handle(
     @Req() req: { user: { profileId: string } },
     @Param("id") id: string,
+    @Query("limit") limit: string,
+    @Query("page") page: string,
   ) {
-    const response = await this.fetchFeedbacksByStoreUseCase.execute(id)
-    console.log(response)
+    const response = await this.fetchFeedbacksByStoreUseCase.execute(
+      id,
+      page !== "undefined" && limit !== "undefined"
+        ? { page: Number(page), limit: Number(limit) }
+        : null,
+    )
     if (response && response.isLeft()) {
       switch (response.value.constructor) {
         case FeedbackNotFound:

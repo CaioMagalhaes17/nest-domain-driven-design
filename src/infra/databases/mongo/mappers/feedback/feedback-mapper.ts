@@ -8,7 +8,6 @@ import { Feedback } from "@/domain/portal/enterprise/feedback/feedback"
 @Injectable()
 export class FeedbackMapper implements BaseMapper<MongoFeedback, Feedback> {
   toDomainArray(rows: MongoFeedback[]): Feedback[] {
-    console.log(rows)
     if (!rows || rows.length === 0) return []
     return rows.map((row) => this.toDomain(row)).filter((item) => item !== null)
   }

@@ -11,11 +11,14 @@ export class CreateSolicitationToStoreUseCase {
     private readonly solicitationFormRepository: ISolicitationFormRepository,
   ) {}
 
-  async execute(data: {
-    status: string
-    profileId: string
-    solicitationForm: SolicitationFormProps & { storeProfileId: string }
-  }): Promise<CreateSolicitationUseCaseResponse> {
+  async execute(
+    data: {
+      status: string
+      profileId: string
+      solicitationForm: SolicitationFormProps
+    },
+    storeProfileId: string,
+  ): Promise<CreateSolicitationUseCaseResponse> {
     const resultForm = await this.solicitationFormRepository.create(
       data.solicitationForm,
     )
@@ -24,7 +27,7 @@ export class CreateSolicitationToStoreUseCase {
       status: data.status,
       clientProfileId: data.profileId,
       solicitationFormId: resultForm.id,
-      storeProfileId: data.solicitationForm.storeProfileId,
+      storeProfileId,
     })
 
     return right(result.id)

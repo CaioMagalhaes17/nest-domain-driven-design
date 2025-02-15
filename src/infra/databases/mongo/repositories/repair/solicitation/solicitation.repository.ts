@@ -19,6 +19,7 @@ export class InfraSolicitationRepository
     return this.mapper.toDomainArray(
       await this.model
         .find(param)
+        .sort({ createdAt: -1 })
         .populate(["solicitationFormId", "clientProfileId"])
         .exec(),
     )

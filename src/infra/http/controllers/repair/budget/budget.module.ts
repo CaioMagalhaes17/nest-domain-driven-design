@@ -19,6 +19,8 @@ import { FetchBudgetsBySolicitationUseCaseController } from "./fetch-budgets-by-
 import { FetchStoreBudgetBySolicitationUseCaseController } from "./fetch-store-budgets-by-solicitation-use-case.controller"
 import { FetchBudgetsToClientUseCase } from "@/domain/portal/application/use-cases/budget/fetch-budgets-to-client-use-case"
 import { FetchBudgetsToClientUseCaseController } from "./fetch-budgets-to-client-use-case.controller"
+import { FetchBudgetsByStoreIdUseCase } from "@/domain/portal/application/use-cases/budget/fetch-budgets-by-store-id"
+import { FetchBudgetsByStoreIdUseCaseController } from "./fetch-budgets-by-store-id.controller"
 
 @Module({
   imports: [SolicitationMongoModule, BudgetMongoModule],
@@ -30,6 +32,7 @@ import { FetchBudgetsToClientUseCaseController } from "./fetch-budgets-to-client
     DeleteBudgetUseCaseController,
     FetchBudgetsBySolicitationUseCaseController,
     FetchStoreBudgetBySolicitationUseCaseController,
+    FetchBudgetsByStoreIdUseCaseController,
   ],
   providers: [
     {
@@ -88,6 +91,13 @@ import { FetchBudgetsToClientUseCaseController } from "./fetch-budgets-to-client
       provide: DeleteBudgetUseCase,
       useFactory: (budgetRepository: IBudgetRepository) => {
         return new DeleteBudgetUseCase(budgetRepository)
+      },
+      inject: [InfraBudgetRepository],
+    },
+    {
+      provide: FetchBudgetsByStoreIdUseCase,
+      useFactory: (budgetRepository: IBudgetRepository) => {
+        return new FetchBudgetsByStoreIdUseCase(budgetRepository)
       },
       inject: [InfraBudgetRepository],
     },

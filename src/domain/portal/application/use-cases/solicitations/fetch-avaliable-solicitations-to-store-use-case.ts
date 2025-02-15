@@ -30,7 +30,6 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
     const IdsProibidos = budgets.map((budget) =>
       budget.solicitation.id.toString(),
     )
-    console.log(IdsProibidos)
     if (clientsProfile.isLeft()) return left(new GeolocationNotFound())
     if (clientsProfile.isRight()) {
       const solicitations = await Promise.all(

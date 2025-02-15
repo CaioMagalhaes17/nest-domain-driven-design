@@ -50,13 +50,7 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
     const skip = (page - 1) * limit
 
     const [data, total] = await Promise.all([
-      this.model.find(param).skip(skip).limit(limit).populate([
-        {
-          path: "solicitationId",
-          populate: { path: "solicitationFormId" }, // Populando a SolicitationForm dentro da Solicitation
-        },
-        { path: "storeProfileId" },
-      ]).exec(),
+      this.model.find(param).skip(skip).limit(limit).exec(),
       this.model.countDocuments().exec(),
     ])
 
