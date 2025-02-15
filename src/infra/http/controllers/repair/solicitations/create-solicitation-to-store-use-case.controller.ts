@@ -1,4 +1,4 @@
-import { OPEN_TO_BUDGETS_SOLICITATION_STATUS } from "@/domain/portal/application/constants/solicitation-status"
+import { DIRECT_SOLICITATION } from "@/domain/portal/application/constants/solicitation-status"
 import { ProfileNotFound } from "@/domain/portal/application/errors/profile/ProfileNotFound"
 import { CreateSolicitationToStoreUseCase } from "@/domain/portal/application/use-cases/solicitations/create-solicitation-to-store-use-case"
 import { SolicitationFormProps } from "@/domain/portal/enterprise/repair/solicitation.form"
@@ -30,7 +30,7 @@ export class CreateSolicitationToStoreUseCaseController {
   ) {
     const response = await this.createSolicitationsUseCase.execute(
       {
-        status: OPEN_TO_BUDGETS_SOLICITATION_STATUS,
+        status: DIRECT_SOLICITATION,
         profileId: req.user.profileId,
         solicitationForm,
       },

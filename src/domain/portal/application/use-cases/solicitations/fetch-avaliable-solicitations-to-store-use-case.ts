@@ -4,7 +4,10 @@ import { Solicitation } from "src/domain/portal/enterprise/repair/solicitation"
 import { ISolicitationRepository } from "../../repositories/repair/solicitation-repository.interface"
 import { FetchClientsInsideStoreLocationUseCase } from "../geolocation/fetch-clients-inside-store-location-use-case"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
-import { OPEN_TO_BUDGETS_SOLICITATION_STATUS } from "../../constants/solicitation-status"
+import {
+  DIRECT_SOLICITATION,
+  OPEN_TO_BUDGETS_SOLICITATION_STATUS,
+} from "../../constants/solicitation-status"
 import { IBudgetRepository } from "../../repositories/repair/budget-repository"
 
 type FetchSolicitationsUseCaseResponse = Either<
@@ -27,6 +30,10 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
     }>({
       storeProfileId: profileId,
     })
+    const directSolicitations = await this.solicitationRepository.findByParam<{
+      storeProfileId: string
+      status: string
+    }>({ storeProfileId: profileId, status: DIRECT_SOLICITATION })
     const IdsProibidos = budgets.map((budget) =>
       budget.solicitation.id.toString(),
     )
@@ -59,7 +66,8 @@ export class FetchAvaliableSolicitationsToStoreUseCase {
         }),
       )
 
-      return right(solicitations.flat())
+      if (directSolicitations.length === 0) return right(solicitations.flat())
+      return right(solicitations.flat().concat(directSolicitations))
     }
   }
 }
