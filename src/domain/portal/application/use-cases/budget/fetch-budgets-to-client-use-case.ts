@@ -10,21 +10,28 @@ export class FetchBudgetsToClientUseCase {
     private budgetRepository: IBudgetRepository,
   ) {}
 
-  async execute(clientProfileId: string): Promise<FetchBudgetUseCaseResponse> {
+  async execute(
+    clientProfileId: string,
+    paginationObj?: { page: number; limit: number },
+  ): Promise<FetchBudgetUseCaseResponse> {
     const solicitations = await this.solicitationRepository.findByParam<{
       clientProfileId: string
     }>({ clientProfileId })
-
     const budgets = await Promise.all(
       solicitations.map(async (solicitation) => {
         const budget = await this.budgetRepository.findByParam<{
           solicitationId: string
-        }>({
-          solicitationId: solicitation.id,
-        })
+        }>(
+          {
+            solicitationId: solicitation.id,
+          },
+          paginationObj,
+        )
         if (budget.length > 0) return budget
       }),
     )
-    return right(budgets.filter(Boolean).flat())
+    const teste = budgets.filter(Boolean).flat()
+
+    return right(teste)
   }
 }

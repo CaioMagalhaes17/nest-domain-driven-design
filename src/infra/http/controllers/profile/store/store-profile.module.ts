@@ -21,6 +21,26 @@ import { FetchGeolocationUseCase } from "@/domain/portal/application/use-cases/g
 import { GeolocationModule } from "../../geolocation/geolocation.module"
 import { FetchStoreProfileByIdUseCaseController } from "./fetch-store-by-id-use-case.controller"
 import { FetchStoreProfileByIdUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-by-id"
+import { CreateStoreSocialsUseCaseController } from "./socials/create-store-socials.controller"
+import { CreateStoreSocialsUseCase } from "@/domain/portal/application/use-cases/profile/store/socials/create-store-socials"
+import { IStoreSocialsRepository } from "@/domain/portal/application/repositories/profile/store/store-socials.repository"
+import { InfraStoreSocialsRepository } from "@/infra/databases/mongo/repositories/profiles/store-socials.repository"
+import { FetchStoreSocialsUseCaseController } from "./socials/fetch-store-socials.controller"
+import { FetchStoreSocialsUseCase } from "@/domain/portal/application/use-cases/profile/store/socials/fetch-store-socials"
+import { UpdateStoreSocialsUseCaseController } from "./socials/update-store-socials.controller"
+import { UpdateStoreSocialsUseCase } from "@/domain/portal/application/use-cases/profile/store/socials/update-store-socials"
+import { DeleteStoreSocialsUseCase } from "@/domain/portal/application/use-cases/profile/store/socials/delete-store-socials"
+import { DeleteStoreSocialsUseCaseController } from "./socials/delete-store-socials.controller"
+import { CreateStoreContactsUseCase } from "@/domain/portal/application/use-cases/profile/store/contacts/create-store-contacts"
+import { CreateStoreContactsUseCaseController } from "./contacts/create-store-contacts.controller"
+import { FetchStoreContactsUseCase } from "@/domain/portal/application/use-cases/profile/store/contacts/fetch-store-contacts"
+import { FetchStoreContactsUseCaseController } from "./contacts/fetch-store-contacts.controller"
+import { UpdateStoreContactsUseCase } from "@/domain/portal/application/use-cases/profile/store/contacts/update-store-contacts"
+import { UpdateStoreContactsUseCaseController } from "./contacts/update-store-contacts.controller"
+import { DeleteStoreContactsUseCase } from "@/domain/portal/application/use-cases/profile/store/contacts/delete-store-contacts"
+import { DeleteStoreContactsUseCaseController } from "./contacts/delete-store-contacts.controller"
+import { IStoreContactsRepository } from "@/domain/portal/application/repositories/profile/store/store-contacts.repository"
+import { InfraStoreContactsRepository } from "@/infra/databases/mongo/repositories/profiles/store-contacts.repository"
 
 @Module({
   imports: [
@@ -36,6 +56,14 @@ import { FetchStoreProfileByIdUseCase } from "@/domain/portal/application/use-ca
     FetchStoreProfileUseCaseController,
     SelectProfileUseCaseController,
     FetchStoreProfileByIdUseCaseController,
+    CreateStoreSocialsUseCaseController,
+    FetchStoreSocialsUseCaseController,
+    UpdateStoreSocialsUseCaseController,
+    DeleteStoreSocialsUseCaseController,
+    CreateStoreContactsUseCaseController,
+    FetchStoreContactsUseCaseController,
+    UpdateStoreContactsUseCaseController,
+    DeleteStoreContactsUseCaseController,
   ],
   exports: [FetchStoreProfileUseCase],
   providers: [
@@ -95,6 +123,62 @@ import { FetchStoreProfileByIdUseCase } from "@/domain/portal/application/use-ca
         )
       },
       inject: [InfraStoreProfileRepository, FetchGeolocationUseCase],
+    },
+    {
+      provide: CreateStoreSocialsUseCase,
+      useFactory: (storeSocialsRepository: IStoreSocialsRepository) => {
+        return new CreateStoreSocialsUseCase(storeSocialsRepository)
+      },
+      inject: [InfraStoreSocialsRepository],
+    },
+    {
+      provide: FetchStoreSocialsUseCase,
+      useFactory: (storeSocialsRepository: IStoreSocialsRepository) => {
+        return new FetchStoreSocialsUseCase(storeSocialsRepository)
+      },
+      inject: [InfraStoreSocialsRepository],
+    },
+    {
+      provide: UpdateStoreSocialsUseCase,
+      useFactory: (storeSocialsRepository: IStoreSocialsRepository) => {
+        return new UpdateStoreSocialsUseCase(storeSocialsRepository)
+      },
+      inject: [InfraStoreSocialsRepository],
+    },
+    {
+      provide: DeleteStoreSocialsUseCase,
+      useFactory: (storeSocialsRepository: IStoreSocialsRepository) => {
+        return new DeleteStoreSocialsUseCase(storeSocialsRepository)
+      },
+      inject: [InfraStoreSocialsRepository],
+    },
+    {
+      provide: DeleteStoreContactsUseCase,
+      useFactory: (storeContactsRepository: IStoreContactsRepository) => {
+        return new DeleteStoreContactsUseCase(storeContactsRepository)
+      },
+      inject: [InfraStoreContactsRepository],
+    },
+    {
+      provide: FetchStoreContactsUseCase,
+      useFactory: (storeContactsRepository: IStoreContactsRepository) => {
+        return new FetchStoreContactsUseCase(storeContactsRepository)
+      },
+      inject: [InfraStoreContactsRepository],
+    },
+    {
+      provide: CreateStoreContactsUseCase,
+      useFactory: (storeContactsRepository: IStoreContactsRepository) => {
+        return new CreateStoreContactsUseCase(storeContactsRepository)
+      },
+      inject: [InfraStoreContactsRepository],
+    },
+    {
+      provide: UpdateStoreContactsUseCase,
+      useFactory: (storeContactsRepository: IStoreContactsRepository) => {
+        return new UpdateStoreContactsUseCase(storeContactsRepository)
+      },
+      inject: [InfraStoreContactsRepository],
     },
   ],
 })

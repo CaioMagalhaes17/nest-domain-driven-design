@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   NotFoundException,
+  Query,
   Req,
   UseGuards,
 } from "@nestjs/common"
@@ -18,9 +19,16 @@ export class FetchBudgetsToClientUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/repair/budget/to-client")
-  async handle(@Req() req: { user: { profileId: string } }) {
+  async handle(
+    @Req() req: { user: { profileId: string } },
+    @Query("limit") limit: string,
+    @Query("page") page: string,
+  ) {
     const response = await this.fetchBudgetsToClientUseCase.execute(
       req.user.profileId,
+      page !== "undefined" && limit !== "undefined"
+        ? { page: Number(page), limit: Number(limit) }
+        : null,
     )
 
     if (response.isLeft()) {

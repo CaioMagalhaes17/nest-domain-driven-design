@@ -13,6 +13,18 @@ import {
   StoreProfile,
   StoreProfileSchema,
 } from "./schemas/profiles/store.schema"
+import { StoreContactsMapper } from "./mappers/profiles/store-contacts"
+import { StoreSocialsMapper } from "./mappers/profiles/store-socials.mapper"
+import {
+  StoreContacts,
+  StoreContactsSchema,
+} from "./schemas/profiles/store-contacts.schema"
+import {
+  StoreSocials,
+  StoreSocialsSchema,
+} from "./schemas/profiles/store-socials.schema"
+import { InfraStoreSocialsRepository } from "./repositories/profiles/store-socials.repository"
+import { InfraStoreContactsRepository } from "./repositories/profiles/store-contacts.repository"
 
 @Module({
   imports: [
@@ -22,10 +34,18 @@ import {
     MongooseModule.forFeature([
       { name: StoreProfile.name, schema: StoreProfileSchema },
     ]),
+    MongooseModule.forFeature([
+      { name: StoreContacts.name, schema: StoreContactsSchema },
+    ]),
+    MongooseModule.forFeature([
+      { name: StoreSocials.name, schema: StoreSocialsSchema },
+    ]),
   ],
   providers: [
     ClientProfileMapper,
     StoreProfileMapper,
+    StoreContactsMapper,
+    StoreSocialsMapper,
     {
       provide: InfraClientProfileRepository,
       useFactory: (
@@ -43,7 +63,29 @@ import {
       },
       inject: [getModelToken(StoreProfile.name), StoreProfileMapper],
     },
+    {
+      provide: InfraStoreSocialsRepository,
+      useFactory: (model: Model<StoreSocials>, mapper: StoreSocialsMapper) => {
+        return new InfraStoreSocialsRepository(model, mapper)
+      },
+      inject: [getModelToken(StoreSocials.name), StoreSocialsMapper],
+    },
+    {
+      provide: InfraStoreContactsRepository,
+      useFactory: (
+        model: Model<StoreContacts>,
+        mapper: StoreContactsMapper,
+      ) => {
+        return new InfraStoreContactsRepository(model, mapper)
+      },
+      inject: [getModelToken(StoreContacts.name), StoreContactsMapper],
+    },
   ],
-  exports: [InfraClientProfileRepository, InfraStoreProfileRepository],
+  exports: [
+    InfraClientProfileRepository,
+    InfraStoreProfileRepository,
+    InfraStoreContactsRepository,
+    InfraStoreSocialsRepository,
+  ],
 })
 export class ProfilesMongoModule {}
