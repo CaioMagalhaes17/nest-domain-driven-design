@@ -1,5 +1,5 @@
 import { Kafka } from "kafkajs"
-import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/messageries/messages-consumer.gateway"
+import { MessagesConsumerGateway } from "@/domain/portal/application/gateways/messageries/messages-consumer.gateway"
 
 export class InfraMessagesConsumerGateway extends MessagesConsumerGateway {
   private brokers = ["localhost:9092"]

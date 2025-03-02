@@ -1,5 +1,5 @@
 import { User } from "@/domain/portal/enterprise/user/user"
-import { EncrypterGateway } from "../../gateway/user/encrypter.gateway"
+import { EncrypterGateway } from "../../gateways/user/encrypter.gateway"
 import { IUserRepository } from "../../repositories/user/user-repository.interface"
 import { Either, left, right } from "@/core/Either"
 import { NotFoundException } from "@nestjs/common"

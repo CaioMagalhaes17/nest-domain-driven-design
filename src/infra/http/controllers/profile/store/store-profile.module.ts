@@ -13,7 +13,7 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 import { SelectProfileUseCase } from "@/domain/portal/application/use-cases/profile/store/select-profile-use-case"
 import { SelectProfileUseCaseController } from "./select-profile-use-case.controller"
 import { IUserRepository } from "@/domain/portal/application/repositories/user/user-repository.interface"
-import { EncrypterGateway } from "@/domain/portal/application/gateway/user/encrypter.gateway"
+import { EncrypterGateway } from "@/domain/portal/application/gateways/user/encrypter.gateway"
 import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/user.repository"
 import { CryptographyModule } from "@/infra/auth/cryptography/cryptography.module"
 import { UserMongoModule } from "@/infra/databases/mongo/user.module"
@@ -41,6 +41,10 @@ import { DeleteStoreContactsUseCase } from "@/domain/portal/application/use-case
 import { DeleteStoreContactsUseCaseController } from "./contacts/delete-store-contacts.controller"
 import { IStoreContactsRepository } from "@/domain/portal/application/repositories/profile/store/store-contacts.repository"
 import { InfraStoreContactsRepository } from "@/infra/databases/mongo/repositories/profiles/store-contacts.repository"
+import { UpdateStoreProfileImgUseCaseController } from "./update-store-profile-img-use-case.controller"
+import { UpdateStoreProfileImgUseCase } from "@/domain/portal/application/use-cases/profile/store/update-store-profile-img-use-case"
+import { ImageResizerGateway } from "@/domain/portal/application/gateways/images/image-resizer.gateway"
+import { ImagesModule } from "@/infra/gateways/images/images.module"
 
 @Module({
   imports: [
@@ -48,6 +52,7 @@ import { InfraStoreContactsRepository } from "@/infra/databases/mongo/repositori
     CryptographyModule,
     forwardRef(() => GeolocationModule),
     UserMongoModule,
+    ImagesModule,
   ],
   controllers: [
     CreateStoreProfileUseCaseController,
@@ -64,8 +69,9 @@ import { InfraStoreContactsRepository } from "@/infra/databases/mongo/repositori
     FetchStoreContactsUseCaseController,
     UpdateStoreContactsUseCaseController,
     DeleteStoreContactsUseCaseController,
+    UpdateStoreProfileImgUseCaseController,
   ],
-  exports: [FetchStoreProfileUseCase],
+  exports: [FetchStoreProfileUseCase, FetchStoreContactsUseCase],
   providers: [
     {
       provide: CreateStoreProfileUseCase,
@@ -179,6 +185,19 @@ import { InfraStoreContactsRepository } from "@/infra/databases/mongo/repositori
         return new UpdateStoreContactsUseCase(storeContactsRepository)
       },
       inject: [InfraStoreContactsRepository],
+    },
+    {
+      provide: UpdateStoreProfileImgUseCase,
+      useFactory: (
+        imageResizerGateway: ImageResizerGateway,
+        storeProfileRepository: IStoreProfileRepository,
+      ) => {
+        return new UpdateStoreProfileImgUseCase(
+          imageResizerGateway,
+          storeProfileRepository,
+        )
+      },
+      inject: [ImageResizerGateway, InfraStoreProfileRepository],
     },
   ],
 })

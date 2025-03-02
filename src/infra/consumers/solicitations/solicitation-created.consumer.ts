@@ -1,7 +1,7 @@
 import { InjectQueue } from "@nestjs/bull"
 import { Injectable, OnModuleInit } from "@nestjs/common"
 import { Queue } from "bull"
-import { MessagesConsumerGateway } from "src/domain/portal/application/gateway/messageries/messages-consumer.gateway"
+import { MessagesConsumerGateway } from "@/domain/portal/application/gateways/messageries/messages-consumer.gateway"
 import { FetchStoreProfileUseCase } from "src/domain/portal/application/use-cases/profile/store/fetch-store-profile"
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { InvalidCredentilsError } from "../../errors/user/invalid-credentials.error"
-import { EncrypterGateway } from "../../gateway/user/encrypter.gateway"
+import { EncrypterGateway } from "../../gateways/user/encrypter.gateway"
 import { Either, left, right } from "src/core/Either"
 import { User } from "src/domain/portal/enterprise/user/user"
 import { IUserRepository } from "../../repositories/user/user-repository.interface"

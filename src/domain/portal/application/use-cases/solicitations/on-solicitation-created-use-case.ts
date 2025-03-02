@@ -1,4 +1,4 @@
-import { MessagesProducerGateway } from "../../gateway/messageries/messages-producer.gateway"
+import { MessagesProducerGateway } from "../../gateways/messageries/messages-producer.gateway"
 import { FetchStoresInsideClientRadiusUseCase } from "../geolocation/fetch-stores-inside-client-radius-use-case"
 
 export class OnSolicitationCreatedUseCase {

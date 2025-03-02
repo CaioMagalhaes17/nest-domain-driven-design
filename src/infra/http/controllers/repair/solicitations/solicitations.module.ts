@@ -11,7 +11,7 @@ import { FetchSolicitationUseCase } from "src/domain/portal/application/use-case
 import { OnSolicitationCreatedUseCase } from "src/domain/portal/application/use-cases/solicitations/on-solicitation-created-use-case"
 import { FetchStoresInsideClientRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-stores-inside-client-radius-use-case"
 import { MessagesStreamingModule } from "src/infra/gateways/messageries/messages-streaming.module"
-import { MessagesProducerGateway } from "src/domain/portal/application/gateway/messageries/messages-producer.gateway"
+import { MessagesProducerGateway } from "@/domain/portal/application/gateways/messageries/messages-producer.gateway"
 import { CreateSolicitationUseCaseController } from "./create-solicitation-use-case.controller"
 import { SolicitationMongoModule } from "@/infra/databases/mongo/solicitation.module"
 import { ISolicitationRepository } from "@/domain/portal/application/repositories/repair/solicitation-repository.interface"

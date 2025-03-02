@@ -1,6 +1,6 @@
 import { OnModuleInit } from "@nestjs/common"
 import { Kafka, Producer } from "kafkajs"
-import { MessagesProducerGateway } from "src/domain/portal/application/gateway/messageries/messages-producer.gateway"
+import { MessagesProducerGateway } from "@/domain/portal/application/gateways/messageries/messages-producer.gateway"
 
 export class InfraMessagesProducerGateway
   extends MessagesProducerGateway

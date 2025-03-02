@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
 import { UserInfosDTO } from "src/domain/portal/application/dto/user-infos.dto"
-import { EncrypterGateway } from "src/domain/portal/application/gateway/user/encrypter.gateway"
+import { EncrypterGateway } from "@/domain/portal/application/gateways/user/encrypter.gateway"
 import { compare, genSalt, hash } from "bcryptjs"
 
 @Injectable()

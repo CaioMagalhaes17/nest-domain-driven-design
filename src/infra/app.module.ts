@@ -7,6 +7,8 @@ import { MongoModule } from "./databases/mongo/mongo.module"
 import { ConsumersModule } from "./consumers/consumers.module"
 import { BullBoardModule } from "@bull-board/nestjs"
 import { ExpressAdapter } from "@bull-board/express"
+import { join } from "path"
+import { ServeStaticModule } from "@nestjs/serve-static"
 
 @Module({
   imports: [
@@ -14,6 +16,10 @@ import { ExpressAdapter } from "@bull-board/express"
     MongoModule,
     ConsumersModule,
     QueueModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "../..", "uploads/imgs"),
+      serveRoot: "/uploads/imgs",
+    }),
     BullModule.forRoot({
       redis: {
         host: "localhost", // ou a URL do seu Redis

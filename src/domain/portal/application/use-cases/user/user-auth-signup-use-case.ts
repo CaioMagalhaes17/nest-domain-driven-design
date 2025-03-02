@@ -1,5 +1,5 @@
 import { Either, left, right } from "src/core/Either"
-import { EncrypterGateway } from "../../gateway/user/encrypter.gateway"
+import { EncrypterGateway } from "../../gateways/user/encrypter.gateway"
 import { LoginInUseError } from "../../errors/user/login-in-use"
 import { User } from "src/domain/portal/enterprise/user/user"
 import { UserSignUpDTO } from "../../dto/user-signup.dto"
