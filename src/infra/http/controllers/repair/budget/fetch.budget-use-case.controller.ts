@@ -4,7 +4,6 @@ import {
   Get,
   NotFoundException,
   Param,
-  Req,
   UseGuards,
 } from "@nestjs/common"
 import { BudgetActionNotAllowed } from "src/domain/portal/application/errors/repair/budget/BudgetActionNotAllowed"
@@ -18,14 +17,8 @@ export class FetchBudgetUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/repair/budget/:budgetId")
-  async handle(
-    @Req() req: { user: { profileId: string } },
-    @Param("budgetId") budgetId: string,
-  ) {
-    const response = await this.fetchBudgetUseCase.execute(
-      budgetId,
-      req.user.profileId,
-    )
+  async handle(@Param("budgetId") budgetId: string) {
+    const response = await this.fetchBudgetUseCase.execute(budgetId)
 
     if (response.isLeft()) {
       switch (response.value.constructor) {

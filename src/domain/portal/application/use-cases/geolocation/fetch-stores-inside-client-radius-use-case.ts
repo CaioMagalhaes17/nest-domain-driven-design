@@ -36,6 +36,7 @@ export class FetchStoresInsideClientRadiusUseCase {
             return {
               GeoLocation: item,
               Profile: profile.value.profile,
+              contacts: profile.value.contacts,
             }
           }
         }),

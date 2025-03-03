@@ -109,13 +109,19 @@ import { ImagesModule } from "@/infra/gateways/images/images.module"
       useFactory: (
         storeProfileRepository: IStoreProfileRepository,
         fetchGeoLocationUseCase: FetchGeolocationUseCase,
+        fetchStoreContactsUseCase: FetchStoreContactsUseCase,
       ) => {
         return new FetchStoreProfileUseCase(
           storeProfileRepository,
           fetchGeoLocationUseCase,
+          fetchStoreContactsUseCase,
         )
       },
-      inject: [InfraStoreProfileRepository, FetchGeolocationUseCase],
+      inject: [
+        InfraStoreProfileRepository,
+        FetchGeolocationUseCase,
+        FetchStoreContactsUseCase,
+      ],
     },
     {
       provide: FetchStoreProfileByIdUseCase,

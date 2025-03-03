@@ -4,7 +4,7 @@ import { LoginInUseError } from "../../errors/user/login-in-use"
 import { User } from "src/domain/portal/enterprise/user/user"
 import { UserSignUpDTO } from "../../dto/user-signup.dto"
 import { IUserRepository } from "../../repositories/user/user-repository.interface"
-import { SUBCRIPTION_PLAN_LEVEL_1 } from "../../constants/subscription-plans"
+import { NO_SUBSCRIPTION_PLAN } from "../../constants/subscription-plans"
 
 type UserAuthSignUpUseCaseResponse = Either<
   LoginInUseError,
@@ -55,7 +55,7 @@ export class UserAuthSignUpUseCase {
         password: passwordHash,
         isStore: isStore,
         permission: permission,
-        subscriptionPlanId: SUBCRIPTION_PLAN_LEVEL_1,
+        subscriptionPlanId: NO_SUBSCRIPTION_PLAN,
       })
       const newUser = await this.userRepository.findById(idNewUser.id)
       return right({
@@ -64,7 +64,7 @@ export class UserAuthSignUpUseCase {
           name: newUser.name,
           isStore: newUser.isStore,
           permission: newUser.permission,
-          subscriptionPlanId: SUBCRIPTION_PLAN_LEVEL_1,
+          subscriptionPlanId: NO_SUBSCRIPTION_PLAN,
         }),
         user: newUser,
       })

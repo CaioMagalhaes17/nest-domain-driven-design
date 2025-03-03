@@ -1,11 +1,8 @@
 import { Either, left, right } from "src/core/Either"
 import { IStoreProfileRepository } from "../../../repositories/profile/store/store-profile.repository"
 import { ProfileActionNotAllowed } from "../../../errors/profile/ProfileActionNotAllowed"
-import {
-  SUBCRIPTION_PLAN_LEVEL_1,
-  SUBCRIPTION_PLAN_LEVEL_2,
-} from "../../../constants/subscription-plans"
 import { MaxProfilesExceed } from "../../../errors/profile/MaxProfilesExceed"
+import { PlanValidationQuantityProfilesFactory } from "../../../factories/plans/profiles/plan-validation-factory"
 
 export type CreateStoreProfilePayload = {
   name: string
@@ -34,11 +31,11 @@ export class CreateStoreProfileUseCase {
       userId: string
     }>({ userId: createProfilePayload.userId })
 
-    if (profile.length > 0 && subscriptionPlanId === SUBCRIPTION_PLAN_LEVEL_1)
-      return left(new MaxProfilesExceed())
+    const factory =
+      PlanValidationQuantityProfilesFactory.create(subscriptionPlanId)
 
-    if (profile.length > 2 && subscriptionPlanId === SUBCRIPTION_PLAN_LEVEL_2)
-      return left(new MaxProfilesExceed())
+    const validationResult = factory.validate(profile.length)
+    if (validationResult.isLeft()) return left(validationResult.value)
 
     const newProfile =
       await this.storeProfileRepository.create(createProfilePayload)
