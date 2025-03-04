@@ -8,7 +8,7 @@ export class CreateProductsRowUseCaseController {
   constructor(private createProductsRowUseCase: CreateProductsRowUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/products/row")
+  @Post("/product/row")
   async handle(
     @Req() req: { user: { profileId: string } },
     @Body() createGeolocation: Partial<ProductsRow>,

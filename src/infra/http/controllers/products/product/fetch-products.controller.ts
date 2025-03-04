@@ -11,6 +11,6 @@ export class FetchProductsUseCaseController {
   async handle(@Req() req: { user: { profileId: string } }) {
     const response = await this.fetchProductsUseCase.execute(req.user.profileId)
 
-    return response
+    return response.value
   }
 }

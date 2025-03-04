@@ -28,6 +28,7 @@ import { UpdateProductImgUseCaseController } from "./product/update-product-img.
 import { UpdateProductImgUseCase } from "@/domain/portal/application/use-cases/products/product/update-product-img"
 import { ImageResizerGateway } from "@/domain/portal/application/gateways/images/image-resizer.gateway"
 import { FetchProductsRowUseCaseController } from "./row/fetch-products-row.controller"
+import { FetchProductsByRowUseCase } from "@/domain/portal/application/use-cases/products/product/fetch-products-by-row"
 
 @Module({
   controllers: [
@@ -103,17 +104,36 @@ import { FetchProductsRowUseCaseController } from "./row/fetch-products-row.cont
     },
     {
       provide: FetchProductsRowUseCase,
-      useFactory: (productRepository: IProductsRowRepository) => {
-        return new FetchProductsRowUseCase(productRepository)
+      useFactory: (
+        productRepository: IProductsRowRepository,
+        fetchProductsByRowUseCase: FetchProductsByRowUseCase,
+      ) => {
+        return new FetchProductsRowUseCase(
+          productRepository,
+          fetchProductsByRowUseCase,
+        )
       },
-      inject: [InfraProductsRowRepository],
+      inject: [InfraProductsRowRepository, FetchProductsByRowUseCase],
     },
     {
       provide: FetchProductsRowsUseCase,
-      useFactory: (productRepository: IProductsRowRepository) => {
-        return new FetchProductsRowsUseCase(productRepository)
+      useFactory: (
+        productRepository: IProductsRowRepository,
+        fetchProductsByRowUseCase: FetchProductsByRowUseCase,
+      ) => {
+        return new FetchProductsRowsUseCase(
+          productRepository,
+          fetchProductsByRowUseCase,
+        )
       },
-      inject: [InfraProductsRowRepository],
+      inject: [InfraProductsRowRepository, FetchProductsByRowUseCase],
+    },
+    {
+      provide: FetchProductsByRowUseCase,
+      useFactory: (productRepository: IProductRepository) => {
+        return new FetchProductsByRowUseCase(productRepository)
+      },
+      inject: [InfraProductRepository],
     },
     {
       provide: UpdateProductImgUseCase,

@@ -27,6 +27,6 @@ export class FetchProductUseCaseController {
       }
     }
 
-    return response
+    return response.value
   }
 }

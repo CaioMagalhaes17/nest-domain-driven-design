@@ -14,7 +14,7 @@ export class FetchProductsRowUseCaseController {
   constructor(private fetchProductsRowUseCase: FetchProductsRowUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/products/row/:id")
+  @Get("/product/row/:id")
   async handle(@Param("id") id: string) {
     const response = await this.fetchProductsRowUseCase.execute(id)
 
@@ -27,6 +27,6 @@ export class FetchProductsRowUseCaseController {
       }
     }
 
-    return response
+    return response.value
   }
 }

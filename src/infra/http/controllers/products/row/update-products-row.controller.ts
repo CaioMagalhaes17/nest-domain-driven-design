@@ -18,7 +18,7 @@ export class UpdateProductsRowUseCaseController {
   constructor(private updateProductsRowUseCase: UpdateProductsRowUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Put("/products/row/:id")
+  @Put("/product/row/:id")
   async handle(
     @Req() req: { user: { profileId: string } },
     @Body() createGeolocation: Partial<ProductsRow>,

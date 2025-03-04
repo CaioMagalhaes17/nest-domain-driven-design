@@ -16,7 +16,7 @@ export class DeleteProductsRowUseCaseController {
   constructor(private deleteProductsRowUseCase: DeleteProductsRowUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Delete("/products/row/:id")
+  @Delete("/product/row/:id")
   async handle(
     @Req() req: { user: { profileId: string } },
     @Param("id") id: string,

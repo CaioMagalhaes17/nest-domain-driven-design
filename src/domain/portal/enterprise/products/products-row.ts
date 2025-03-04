@@ -4,6 +4,8 @@ interface ProductsRowProps {
   name: string
   storeProfileId: string
   isActive: boolean
+  updatedAt: string
+  createdAt: string
 }
 
 export class ProductsRow extends BaseEntity<ProductsRowProps> {
@@ -21,5 +23,13 @@ export class ProductsRow extends BaseEntity<ProductsRowProps> {
 
   get isActive(): boolean {
     return this.props.isActive
+  }
+
+  get createdAt(): string {
+    return this.props.createdAt
+  }
+
+  get updatedAt(): string {
+    return this.props.updatedAt
   }
 }
