@@ -1,8 +1,7 @@
-import { UpdateProductImgUseCase } from "@/domain/portal/application/use-cases/products/product/update-product-img"
+import { CreateProductImgUseCase } from "@/domain/portal/application/use-cases/products/product/create-product-img"
 import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
 import {
   Controller,
-  Param,
   Post,
   UploadedFile,
   UseGuards,
@@ -14,13 +13,14 @@ import { extname, join } from "path"
 import { v4 as uuid } from "uuid"
 
 @Controller()
-export class UpdateProductImgUseCaseController {
-  constructor(private updateProductImgUseCase: UpdateProductImgUseCase) {}
+export class CreateProductImgUseCaseController {
+  constructor(private createProductImgUseCase: CreateProductImgUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post("/product/img/:id")
+  @Post("/product/img")
   @UseInterceptors(
     FileInterceptor("file", {
+      // Configurações do Multer
       storage: diskStorage({
         destination: "./uploads/imgs", // Pasta onde o arquivo será armazenado
         filename: (req, file, callback) => {
@@ -30,14 +30,11 @@ export class UpdateProductImgUseCaseController {
       }),
     }),
   )
-  async handle(
-    @UploadedFile() file: Express.Multer.File,
-    @Param("id") id: string,
-  ) {
+  async handle(@UploadedFile() file: Express.Multer.File) {
     const imagePaths = join(
       __dirname,
       "../../../../../../uploads/imgs/" + file.filename,
     )
-    return this.updateProductImgUseCase.execute(id, imagePaths, file.filename)
+    return this.createProductImgUseCase.execute(imagePaths, file.filename)
   }
 }

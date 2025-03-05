@@ -13,10 +13,18 @@ export class FetchProductsRowsUseCase {
     storeProfileId: string,
     isOwner: boolean,
   ): Promise<Either<null, ProductsRow[] | any>> {
-    console.log(isOwner)
-    const productsRow = await this.productsRowRepository.findByParam<{
-      storeProfileId: string
-    }>({ storeProfileId })
+    let productsRow = []
+    if (isOwner) {
+      productsRow = await this.productsRowRepository.findByParam<{
+        storeProfileId: string
+      }>({ storeProfileId })
+    } else {
+      productsRow = await this.productsRowRepository.findByParam<{
+        storeProfileId: string
+        isActive: boolean
+      }>({ storeProfileId, isActive: true })
+    }
+
     if (productsRow.length > 0) {
       const products = await Promise.all(
         productsRow.map(async (row) => {

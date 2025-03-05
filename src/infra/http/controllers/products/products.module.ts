@@ -29,6 +29,8 @@ import { UpdateProductImgUseCase } from "@/domain/portal/application/use-cases/p
 import { ImageResizerGateway } from "@/domain/portal/application/gateways/images/image-resizer.gateway"
 import { FetchProductsRowUseCaseController } from "./row/fetch-products-row.controller"
 import { FetchProductsByRowUseCase } from "@/domain/portal/application/use-cases/products/product/fetch-products-by-row"
+import { CreateProductImgUseCase } from "@/domain/portal/application/use-cases/products/product/create-product-img"
+import { CreateProductImgUseCaseController } from "./product/create-product-img.controller"
 
 @Module({
   controllers: [
@@ -43,6 +45,7 @@ import { FetchProductsByRowUseCase } from "@/domain/portal/application/use-cases
     UpdateProductsRowUseCaseController,
     UpdateProductUseCaseController,
     UpdateProductImgUseCaseController,
+    CreateProductImgUseCaseController,
   ],
   imports: [ProductsMongoModule, ImagesModule],
   providers: [
@@ -147,6 +150,13 @@ import { FetchProductsByRowUseCase } from "@/domain/portal/application/use-cases
         )
       },
       inject: [ImageResizerGateway, InfraProductRepository],
+    },
+    {
+      provide: CreateProductImgUseCase,
+      useFactory: (imageResizerGateway: ImageResizerGateway) => {
+        return new CreateProductImgUseCase(imageResizerGateway)
+      },
+      inject: [ImageResizerGateway],
     },
   ],
 })
