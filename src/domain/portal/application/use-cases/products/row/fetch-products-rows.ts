@@ -24,7 +24,6 @@ export class FetchProductsRowsUseCase {
         isActive: boolean
       }>({ storeProfileId, isActive: true })
     }
-
     if (productsRow.length > 0) {
       const products = await Promise.all(
         productsRow.map(async (row) => {

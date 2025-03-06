@@ -7,7 +7,7 @@ export class FetchProductsRowsUseCaseController {
   constructor(private fetchProductsRowsUseCase: FetchProductsRowsUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get("/product/row/:id?")
+  @Get("/product/rows/:id?")
   async handle(
     @Req() req: { user: { profileId: string } },
     @Param("id") id?: string,

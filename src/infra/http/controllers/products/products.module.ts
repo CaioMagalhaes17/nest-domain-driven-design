@@ -31,6 +31,10 @@ import { FetchProductsRowUseCaseController } from "./row/fetch-products-row.cont
 import { FetchProductsByRowUseCase } from "@/domain/portal/application/use-cases/products/product/fetch-products-by-row"
 import { CreateProductImgUseCase } from "@/domain/portal/application/use-cases/products/product/create-product-img"
 import { CreateProductImgUseCaseController } from "./product/create-product-img.controller"
+import { FetchProductsByCategoryUseCaseController } from "./product/fetch-products-by-category.controller"
+import { GeolocationModule } from "../geolocation/geolocation.module"
+import { FetchStoresInsideClientRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-stores-inside-client-radius-use-case"
+import { FetchProductsByCategoryUseCase } from "@/domain/portal/application/use-cases/products/product/fetch-products-by-category"
 
 @Module({
   controllers: [
@@ -46,8 +50,9 @@ import { CreateProductImgUseCaseController } from "./product/create-product-img.
     UpdateProductUseCaseController,
     UpdateProductImgUseCaseController,
     CreateProductImgUseCaseController,
+    FetchProductsByCategoryUseCaseController,
   ],
-  imports: [ProductsMongoModule, ImagesModule],
+  imports: [ProductsMongoModule, ImagesModule, GeolocationModule],
   providers: [
     {
       provide: CreateProductUseCase,
@@ -157,6 +162,19 @@ import { CreateProductImgUseCaseController } from "./product/create-product-img.
         return new CreateProductImgUseCase(imageResizerGateway)
       },
       inject: [ImageResizerGateway],
+    },
+    {
+      provide: FetchProductsByCategoryUseCase,
+      useFactory: (
+        productRepository: IProductRepository,
+        fetchStoreInsideClientRadius: FetchStoresInsideClientRadiusUseCase,
+      ) => {
+        return new FetchProductsByCategoryUseCase(
+          productRepository,
+          fetchStoreInsideClientRadius,
+        )
+      },
+      inject: [InfraProductRepository, FetchStoresInsideClientRadiusUseCase],
     },
   ],
 })
