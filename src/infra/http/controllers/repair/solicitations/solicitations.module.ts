@@ -34,6 +34,7 @@ import { InfraBudgetRepository } from "@/infra/databases/mongo/repositories/repa
 import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
 import { DeleteFlaggedSolicitationsUseCase } from "@/domain/portal/application/use-cases/solicitations/delete-flagged-solicitations-use-case"
 import { DeleteFlaggedSolicitationsUseCaseController } from "./delete-flagged-solicitations.use-case.controller"
+import { CreateImagesToSolicitationUseCaseController } from "./create-images-to-solicitation-use-case.controller"
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { DeleteFlaggedSolicitationsUseCaseController } from "./delete-flagged-so
     AdminSolicitationFormUseCaseController,
     FetchAvaliableSolicitationsToStoreUseCaseController,
     CreateSolicitationToStoreUseCaseController,
+    CreateImagesToSolicitationUseCaseController,
   ],
   providers: [
     {
