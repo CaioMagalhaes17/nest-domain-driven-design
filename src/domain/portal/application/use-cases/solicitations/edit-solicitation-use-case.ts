@@ -7,6 +7,7 @@ import { SolicitationForm } from "@/domain/portal/enterprise/repair/solicitation
 import { Solicitation } from "@/domain/portal/enterprise/repair/solicitation"
 import { IBudgetRepository } from "../../repositories/repair/budget-repository"
 import { ActionNotAllowedError } from "../../errors/repair/solicitations/ActionNotAllowed"
+import { CANCELED_SOLICITATION_STATUS } from "../../constants/solicitation-status"
 
 type EditSolicitationFormUseCaseResponse = Either<
   SolicitationNotFoundError | UnauthorizedSolicitationActionError,
@@ -38,7 +39,8 @@ export class EditSolicitationFormUseCase {
     const budget = await this.budgetRepository.findByParam<{
       solicitationId: string
     }>({ solicitationId: solicitation.id.toString() })
-    if (budget.length > 0) return left(new ActionNotAllowedError())
+    if (budget.length > 0 && status !== CANCELED_SOLICITATION_STATUS)
+      return left(new ActionNotAllowedError())
     if (profileId !== solicitation.clientProfile.id.toString())
       return left(new UnauthorizedSolicitationActionError())
     if (status) {

@@ -12,6 +12,7 @@ export class FetchProductsRowUseCase {
 
   async execute(productRowId: string): Promise<Either<NotFoundError, any>> {
     const productsRow = await this.productsRowRepository.findById(productRowId)
+    if (!productsRow.isActive) return right(null)
     if (!productsRow)
       return left(new NotFoundException("Prateleira não encontrada"))
     const products = await this.fetchProductsByRowUseCase.execute(productRowId)

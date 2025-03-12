@@ -6,16 +6,13 @@ export class User extends Document {
   @Prop({ required: true })
   login: string
 
-  @Prop({ required: true })
+  @Prop()
   password: string
-
-  @Prop({ required: true })
-  name: string
 
   @Prop({ required: true })
   isStore: boolean
 
-  @Prop({ required: true })
+  @Prop()
   permission: string
 
   @Prop()

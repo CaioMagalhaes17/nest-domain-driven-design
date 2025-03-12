@@ -10,12 +10,6 @@ export class ClientProfile extends Document {
   name: string
 
   @Prop()
-  profileImg: string
-
-  @Prop()
-  rating: string
-
-  @Prop()
   email: string
 
   @Prop()

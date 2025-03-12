@@ -17,7 +17,7 @@ export class FetchStoresInsideClientRadiusUseCase {
     const result = await this.geolocationRepository.findByParam<{
       profileId: string
     }>({ profileId: clientProfileId })
-    if (!result) return left(new GeolocationNotFound())
+    if (!result || result.length === 0) return left(new GeolocationNotFound())
     const stores = await this.geolocationRepository.findWithinRadius(
       result[0].latitude,
       result[0].longitude,

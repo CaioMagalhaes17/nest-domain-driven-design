@@ -16,7 +16,7 @@ export class FetchGeolocationUseCase {
     const result = await this.geolocationRepository.findByParam<{
       profileId: string
     }>({ profileId })
-    if (!result) return left(new GeolocationNotFound())
+    if (!result || result.length === 0) return left(new GeolocationNotFound())
     return right(result)
   }
 }

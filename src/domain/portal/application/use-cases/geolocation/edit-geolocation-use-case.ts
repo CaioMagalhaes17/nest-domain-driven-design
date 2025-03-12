@@ -1,12 +1,11 @@
-import { Either, left } from "src/core/Either"
-import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
-import { ProfileActionNotAllowed } from "../../errors/profile/ProfileActionNotAllowed"
+import { Either, left, right } from "src/core/Either"
 import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { GeolocationIncorrectValues } from "../../errors/geolocation/incorrect-geolocation"
+import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
 
 type EditGeolocationUseCaseResponse = Either<
-  GeolocationNotFound | ProfileActionNotAllowed,
-  void
+  GeolocationIncorrectValues,
+  Geolocation
 >
 
 export class EditGeolocationUseCase {
@@ -16,6 +15,7 @@ export class EditGeolocationUseCase {
     profileId: string,
     mapRadiusPayload: { longitude: number; latitude: number; radius?: number },
   ): Promise<EditGeolocationUseCaseResponse> {
+    console.log(profileId)
     if (
       mapRadiusPayload.longitude < -180 ||
       mapRadiusPayload.longitude > 180 ||
@@ -27,7 +27,22 @@ export class EditGeolocationUseCase {
     const mapRadius = await this.mapRadiusRepository.findByParam<{
       profileId
     }>({ profileId })
-    if (!mapRadius) return left(new GeolocationNotFound())
-    await this.mapRadiusRepository.updateById(mapRadius[0].id, mapRadiusPayload)
+    if (!mapRadius || mapRadius.length === 0) {
+      const newId = await this.mapRadiusRepository.create({
+        latitude: mapRadiusPayload.latitude,
+        longitude: mapRadiusPayload.longitude,
+        radius: mapRadiusPayload.radius,
+        profileId,
+      })
+
+      const geolocation = await this.mapRadiusRepository.findById(newId.id)
+      return right(geolocation)
+    }
+    return right(
+      await this.mapRadiusRepository.updateById(
+        mapRadius[0].id,
+        mapRadiusPayload,
+      ),
+    )
   }
 }

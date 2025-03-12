@@ -7,6 +7,7 @@ export type SolicitationFormProps = {
   deliveryPreference: string
   timePreference: string
   details: string
+  solicitationImgs: string[]
 }
 
 export type PhoneFormType = {
@@ -64,5 +65,9 @@ export class SolicitationForm extends BaseEntity<SolicitationFormProps> {
 
   get details(): string {
     return this.props.details
+  }
+
+  get solicitationImgs(): string[] {
+    return this.props.solicitationImgs
   }
 }

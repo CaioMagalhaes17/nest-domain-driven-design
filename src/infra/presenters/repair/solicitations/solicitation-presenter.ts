@@ -11,10 +11,8 @@ export class SolicitationPresenter {
         id: solicitation.clientProfile.id,
         name: solicitation.clientProfile.name,
         email: solicitation.clientProfile.email,
-        profileImg: solicitation.clientProfile.profileImg,
         telNumber: solicitation.clientProfile.telNumber,
         userId: solicitation.clientProfile.userId,
-        rating: solicitation.clientProfile.rating,
       },
       form: {
         problemTopic: solicitation.form.problemTopic,
@@ -23,6 +21,7 @@ export class SolicitationPresenter {
         deliveryPreference: solicitation.form.deliveryPreference,
         timePreference: solicitation.form.timePreference,
         details: solicitation.form.details,
+        solicitationImgs: solicitation.form.solicitationImgs,
       },
     }
   }

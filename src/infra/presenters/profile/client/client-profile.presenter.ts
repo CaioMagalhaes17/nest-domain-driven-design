@@ -6,12 +6,11 @@ export class ClientProfilePresenter {
     return {
       id: profile.id,
       name: profile.name,
-      rating: profile.rating,
       userId: profile.userId,
       location: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-        radius: location.radius,
+        latitude: location?.latitude,
+        longitude: location?.longitude,
+        radius: location?.radius,
       },
     }
   }

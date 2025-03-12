@@ -19,7 +19,7 @@ export class Geolocation extends Document {
     coordinates: [number, number] // [longitude, latitude]
   }
 
-  @Prop({ required: true })
+  @Prop()
   radius: number
 
   @Prop({ required: true })

@@ -14,6 +14,9 @@ import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositories/profiles/store.repository"
 import { IStoreProfileRepository } from "@/domain/portal/application/repositories/profile/store/store-profile.repository"
 import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/user-update-use-case"
+import { IGeolocationRepository } from "@/domain/portal/application/repositories/geolocation/geolocation-repository"
+import { InfraGeolocationRepository } from "@/infra/databases/mongo/repositories/geolocation/geolocation.repository"
+import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.module"
 
 @Module({
   imports: [
@@ -21,6 +24,7 @@ import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/us
     UserMongoModule,
     AuthModule,
     ProfilesMongoModule,
+    GeolocationMongoModule,
   ],
   controllers: [UserController],
   providers: [
@@ -73,10 +77,25 @@ import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/us
       useFactory: (
         userRepository: IUserRepository,
         encrypterGateway: EncrypterGateway,
+        clientProfileRepository: IClientProfileRepository,
+        storeProfileRepository: IStoreProfileRepository,
+        geolocationRepository: IGeolocationRepository,
       ) => {
-        return new UserAuthSignUpUseCase(userRepository, encrypterGateway)
+        return new UserAuthSignUpUseCase(
+          userRepository,
+          encrypterGateway,
+          clientProfileRepository,
+          storeProfileRepository,
+          geolocationRepository,
+        )
       },
-      inject: [InfraUserRepository, EncrypterGateway],
+      inject: [
+        InfraUserRepository,
+        EncrypterGateway,
+        InfraClientProfileRepository,
+        InfraStoreProfileRepository,
+        InfraGeolocationRepository,
+      ],
     },
   ],
 })

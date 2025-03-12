@@ -1,3 +1,7 @@
+import {
+  UserClientSignUpDTO,
+  UserStoreSignupDTO,
+} from "@/domain/portal/application/dto/user-signup.dto"
 import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/user-update-use-case"
 import { User } from "@/domain/portal/enterprise/user/user"
 import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
@@ -11,7 +15,7 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common"
-import { UserSignUpDTO } from "src/domain/portal/application/dto/user-signup.dto"
+
 import { InvalidCredentilsError } from "src/domain/portal/application/errors/user/invalid-credentials.error"
 import { LoginInUseError } from "src/domain/portal/application/errors/user/login-in-use"
 import { UserAuthLoginUseCase } from "src/domain/portal/application/use-cases/user/user-auth-login-use-case"
@@ -53,14 +57,11 @@ export class UserController {
   }
 
   @Post("/user")
-  async signUp(@Body() signUpData: Partial<UserSignUpDTO>) {
-    const response = await this.userAuthSignUp.execute({
-      login: signUpData.login,
-      name: signUpData.name,
-      password: signUpData.password,
-      isStore: signUpData.isStore,
-      permission: signUpData.permission,
-    })
+  async signUp(
+    @Body()
+    signUpData: Partial<UserClientSignUpDTO> | Partial<UserStoreSignupDTO>,
+  ) {
+    const response = await this.userAuthSignUp.execute(signUpData)
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case LoginInUseError:

@@ -86,6 +86,9 @@ export class SolicitationForm extends Document {
 
   @Prop({ required: true })
   details: string
+
+  @Prop()
+  solicitationImgs: string[]
 }
 
 export const SolicitationFormSchema =
