@@ -22,6 +22,11 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
     return this.mapper.toDomain(await this.model.findById(id).exec())
   }
 
+  async search(field: any, query: string): Promise<DomainModel[]> {
+    const result = await this.model.find({ [field]: { $regex: query, $options: 'i' } }).exec()
+    return this.mapper.toDomainArray(result)
+  }
+
   async updateById(
     id: string,
     updateData: DomainModel,
@@ -61,4 +66,6 @@ export abstract class BaseInfraRepository<InfraModel, DomainModel>
       pages: Math.ceil(total / limit),
     }
   }
+
+
 }

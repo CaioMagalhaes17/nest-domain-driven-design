@@ -35,9 +35,12 @@ import { FetchProductsByCategoryUseCaseController } from "./product/fetch-produc
 import { GeolocationModule } from "../geolocation/geolocation.module"
 import { FetchStoresInsideClientRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-stores-inside-client-radius-use-case"
 import { FetchProductsByCategoryUseCase } from "@/domain/portal/application/use-cases/products/product/fetch-products-by-category"
+import { SearchProductsUseCase } from "@/domain/portal/application/use-cases/products/product/search-produtcs"
+import { SearchProductsUseCaseController } from "./product/search-products-use-case.controller"
 
 @Module({
   controllers: [
+    SearchProductsUseCaseController,
     CreateProductUseCaseController,
     CreateProductsRowUseCaseController,
     FetchProductsRowUseCaseController,
@@ -162,6 +165,13 @@ import { FetchProductsByCategoryUseCase } from "@/domain/portal/application/use-
         return new CreateProductImgUseCase(imageResizerGateway)
       },
       inject: [ImageResizerGateway],
+    },
+    {
+      provide: SearchProductsUseCase,
+      useFactory: (productRepository: IProductRepository) => {
+        return new SearchProductsUseCase(productRepository)
+      },
+      inject: [InfraProductRepository],
     },
     {
       provide: FetchProductsByCategoryUseCase,

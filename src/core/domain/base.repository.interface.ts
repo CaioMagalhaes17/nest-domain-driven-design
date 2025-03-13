@@ -12,4 +12,5 @@ export interface BaseDomainRepository<DomainModel> {
     param: Partial<ParamType>,
     paginateObj?: { page: number; limit: number },
   ): Promise<DomainModel[]>
+  search(field: string, query: string): Promise<DomainModel[]>
 }

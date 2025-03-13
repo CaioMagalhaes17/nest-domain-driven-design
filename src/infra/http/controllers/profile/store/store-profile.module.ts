@@ -45,6 +45,8 @@ import { UpdateStoreProfileImgUseCaseController } from "./update-store-profile-i
 import { UpdateStoreProfileImgUseCase } from "@/domain/portal/application/use-cases/profile/store/update-store-profile-img-use-case"
 import { ImageResizerGateway } from "@/domain/portal/application/gateways/images/image-resizer.gateway"
 import { ImagesModule } from "@/infra/gateways/images/images.module"
+import { SearchStoreProfilesUseCase } from "@/domain/portal/application/use-cases/profile/store/search-store-profiles"
+import { SearchStoreProfilesUseCaseController } from "./search-store-profile-use-case.controller"
 
 @Module({
   imports: [
@@ -55,6 +57,7 @@ import { ImagesModule } from "@/infra/gateways/images/images.module"
     ImagesModule,
   ],
   controllers: [
+    SearchStoreProfilesUseCaseController,
     CreateStoreProfileUseCaseController,
     EditStoreProfileUseCaseController,
     DeleteStoreProfileUseCaseController,
@@ -191,6 +194,19 @@ import { ImagesModule } from "@/infra/gateways/images/images.module"
         return new UpdateStoreContactsUseCase(storeContactsRepository)
       },
       inject: [InfraStoreContactsRepository],
+    },
+    {
+      provide: SearchStoreProfilesUseCase,
+      useFactory: (
+        storeProfileRepository: IStoreProfileRepository,
+        fetchGeolocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new SearchStoreProfilesUseCase(
+          storeProfileRepository,
+          fetchGeolocationUseCase,
+        )
+      },
+      inject: [InfraStoreProfileRepository, FetchGeolocationUseCase],
     },
     {
       provide: UpdateStoreProfileImgUseCase,
