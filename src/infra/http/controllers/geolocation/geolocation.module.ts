@@ -18,9 +18,11 @@ import { FetchGeolocationCoveringLocationUseCase } from "@/domain/portal/applica
 import { FetchGeolocationInsideRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocations-inside-radius"
 import { FetchStoreProfileUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-profile"
 import { StoreProfileModule } from "../profile/store/store-profile.module"
+import { WebsocketModule } from "@/infra/gateways/websocket/websocket.module"
+import { WebsocketGateway } from "@/domain/portal/application/gateways/websocket/websocket.gateway"
 
 @Module({
-  imports: [GeolocationMongoModule, StoreProfileModule],
+  imports: [GeolocationMongoModule, StoreProfileModule, WebsocketModule],
   controllers: [
     CreateGeolocationUseCaseController,
     EditGeolocationUseCaseController,
@@ -40,10 +42,13 @@ import { StoreProfileModule } from "../profile/store/store-profile.module"
     },
     {
       provide: EditGeolocationUseCase,
-      useFactory: (geolocationRepository: IGeolocationRepository) => {
-        return new EditGeolocationUseCase(geolocationRepository)
+      useFactory: (
+        geolocationRepository: IGeolocationRepository,
+        websocket: WebsocketGateway,
+      ) => {
+        return new EditGeolocationUseCase(geolocationRepository, websocket)
       },
-      inject: [InfraGeolocationRepository],
+      inject: [InfraGeolocationRepository, WebsocketGateway],
     },
     {
       provide: FetchGeolocationUseCase,

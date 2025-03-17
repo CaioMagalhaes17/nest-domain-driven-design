@@ -29,10 +29,18 @@ export class UserController {
     private updateUserUseCase: UpdateUserUseCase,
   ) {}
   @Post("/user/login")
-  async login(@Body() loginData: Partial<{ login: string; password: string }>) {
+  async login(
+    @Body()
+    loginData: {
+      login: string
+      password: string
+      isStore: boolean
+    },
+  ) {
     const response = await this.userAuthLogin.execute(
       loginData.login,
       loginData.password,
+      loginData.isStore,
     )
     if (response.isLeft()) {
       switch (response.value.constructor) {
@@ -99,8 +107,9 @@ export class UserController {
     return response.value
   }
 
-  @Get("ping")
-  async ping() {
-    return { response: "pong" }
+  @UseGuards(JwtAuthGuard)
+  @Get("checkAuth")
+  async execute(@Req() req: { user: { isStore: boolean } }) {
+    return { response: "ok", isStore: req.user.isStore }
   }
 }

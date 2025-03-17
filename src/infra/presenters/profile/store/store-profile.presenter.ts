@@ -2,7 +2,11 @@ import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
 import { StoreProfile } from "@/domain/portal/enterprise/profile/store/store-profile"
 
 export class StoreProfilePresenter {
-  static toHttp(profile: StoreProfile, location?: Geolocation) {
+  static toHttp(
+    profile: StoreProfile,
+    location?: Geolocation,
+    subscriptionPlanId?: number,
+  ) {
     return {
       id: profile.id,
       userId: profile.userId,
@@ -13,6 +17,7 @@ export class StoreProfilePresenter {
       address: profile.address,
       rating: profile.rating,
       description: profile.description,
+      subscriptionPlanId,
       location: {
         latitude: location?.latitude,
         longitude: location?.longitude,

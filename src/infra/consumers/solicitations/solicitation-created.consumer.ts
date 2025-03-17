@@ -10,6 +10,7 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
     private readonly messagesConsumerGateway: MessagesConsumerGateway,
     private readonly fetchStoreProfileUseCase: FetchStoreProfileUseCase,
     @InjectQueue("sendEmailToStore") private emailQueue: Queue,
+    @InjectQueue("sendNotificationToStore") private notificationQueue: Queue,
   ) {}
 
   async onModuleInit() {
@@ -23,6 +24,7 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
           if (fetchedUser.isRight()) {
             const storeProfile = fetchedUser.value.profile
             await this.emailQueue.add({ email: storeProfile.email })
+            await this.notificationQueue.add({ id: storeProfile.id })
           }
         })
       },

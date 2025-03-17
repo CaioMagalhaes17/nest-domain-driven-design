@@ -18,7 +18,9 @@ export class FetchStoreProfileUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/profile/store")
-  async handle(@Req() req: { user: { profileId: string } }) {
+  async handle(
+    @Req() req: { user: { profileId: string; subscriptionPlanId: number } },
+  ) {
     const response = await this.fetchStoreProfileUseCase.execute(
       req.user.profileId,
     )
@@ -37,6 +39,7 @@ export class FetchStoreProfileUseCaseController {
     return StoreProfilePresenter.toHttp(
       response.value.profile,
       response.value.location,
+      req.user.subscriptionPlanId,
     )
   }
 }

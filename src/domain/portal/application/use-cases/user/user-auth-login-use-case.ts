@@ -25,9 +25,12 @@ export class UserAuthLoginUseCase {
   async execute(
     login: string,
     password: string,
+    isStore: boolean,
   ): Promise<UserAuthLoginUseCaseResponse> {
     const user = await this.userRepository.fetchUserByLogin(login)
     if (!user) return left(new InvalidCredentilsError())
+    if (user.isStore && !isStore) return left(new InvalidCredentilsError())
+    if (!user.isStore && isStore) return left(new InvalidCredentilsError())
     const isPasswordValid: boolean =
       await this.encrypterGateway.comparePassword(password, user.password)
     if (!isPasswordValid) return left(new InvalidCredentilsError())

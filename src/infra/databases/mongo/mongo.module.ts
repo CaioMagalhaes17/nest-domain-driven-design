@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common"
 import { ConfigModule } from "@nestjs/config"
 import { MongooseModule } from "@nestjs/mongoose"
 
-console.log("aaaaaaa", process.env.MONGO_SRV)
 @Module({
   imports: [
     ConfigModule.forRoot({

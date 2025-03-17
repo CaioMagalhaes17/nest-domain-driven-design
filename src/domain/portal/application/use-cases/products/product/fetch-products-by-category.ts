@@ -24,7 +24,6 @@ export class FetchProductsByCategoryUseCase {
     }
     if (stores.value.length === 0)
       return left(new EmptyStoresInsideClientGeolocation())
-    console.log(category)
     const nearProducts = await Promise.all(
       stores.value.map(async (store) => {
         const products = await this.productRepository.findByParam<{

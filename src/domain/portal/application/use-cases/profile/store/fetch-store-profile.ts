@@ -36,6 +36,7 @@ export class FetchStoreProfileUseCase {
         location: geoInfos,
         contacts: contacts.isRight() && contacts.value,
       }
+
       return right(retorno)
     }
     return right({ profile })

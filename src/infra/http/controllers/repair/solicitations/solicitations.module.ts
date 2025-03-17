@@ -35,14 +35,20 @@ import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
 import { DeleteFlaggedSolicitationsUseCase } from "@/domain/portal/application/use-cases/solicitations/delete-flagged-solicitations-use-case"
 import { DeleteFlaggedSolicitationsUseCaseController } from "./delete-flagged-solicitations.use-case.controller"
 import { CreateImagesToSolicitationUseCaseController } from "./create-images-to-solicitation-use-case.controller"
+import { WebsocketGateway } from "@/domain/portal/application/gateways/websocket/websocket.gateway"
+import { WebsocketModule } from "@/infra/gateways/websocket/websocket.module"
+import { SaveNotificationUseCase } from "@/domain/portal/application/use-cases/notifications/save-notification"
+import { NotificationModule } from "../../notification/notification.module"
 
 @Module({
   imports: [
+    WebsocketModule,
     MessagesStreamingModule,
     SolicitationMongoModule,
     GeolocationModule,
     ProfilesMongoModule,
     BudgetMongoModule,
+    NotificationModule,
   ],
   controllers: [
     DeleteFlaggedSolicitationsUseCaseController,
@@ -98,17 +104,23 @@ import { CreateImagesToSolicitationUseCaseController } from "./create-images-to-
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
         onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
+        websocketGateway: WebsocketGateway,
+        saveNotificationUseCase: SaveNotificationUseCase,
       ) => {
         return new CreateSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
           onSolicitationCreatedUseCase,
+          websocketGateway,
+          saveNotificationUseCase,
         )
       },
       inject: [
         InfraSolicitationRepository,
         InfraSolicitationFormRepository,
         OnSolicitationCreatedUseCase,
+        WebsocketGateway,
+        SaveNotificationUseCase,
       ],
     },
     {

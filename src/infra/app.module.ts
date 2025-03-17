@@ -9,6 +9,7 @@ import { BullBoardModule } from "@bull-board/nestjs"
 import { ExpressAdapter } from "@bull-board/express"
 import { join } from "path"
 import { ServeStaticModule } from "@nestjs/serve-static"
+import { WebsocketModule } from "./gateways/websocket/websocket.module"
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ServeStaticModule } from "@nestjs/serve-static"
     MongoModule,
     ConsumersModule,
     QueueModule,
+    WebsocketModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "../..", "uploads/imgs"),
       serveRoot: "/uploads/imgs",
