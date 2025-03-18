@@ -13,7 +13,7 @@ export class Notification extends Document {
   senderName: string
 
   @Prop({ required: true })
-  sendedDate: string
+  profileId: string
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification)

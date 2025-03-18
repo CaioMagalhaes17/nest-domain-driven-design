@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotificationBody } from "@/domain/portal/enterprise/notification/notification.entity"
+import { NotificationPresenter } from "@/infra/presenters/notification/notification.presenter"
 import {
   WebSocketGateway as NestWebSocketGateway,
   SubscribeMessage,
@@ -45,9 +46,9 @@ export class WebsocketGateway {
   ) {
     const socketId = this.users.get(profileId)
     if (socketId) {
-      this.server
-        .to(socketId)
-        .emit("notification", { message: notificationBody })
+      this.server.to(socketId).emit("notification", {
+        message: NotificationPresenter.toHttp(notificationBody),
+      })
     }
   }
 }

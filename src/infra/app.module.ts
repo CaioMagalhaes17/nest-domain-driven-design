@@ -24,7 +24,7 @@ import { WebsocketModule } from "./gateways/websocket/websocket.module"
     }),
     BullModule.forRoot({
       redis: {
-        host: "localhost", // ou a URL do seu Redis
+        host: "redis-server", // ou a URL do seu Redis
         port: 6379,
       },
       defaultJobOptions: {

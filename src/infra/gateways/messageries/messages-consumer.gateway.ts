@@ -2,7 +2,7 @@ import { Kafka } from "kafkajs"
 import { MessagesConsumerGateway } from "@/domain/portal/application/gateways/messageries/messages-consumer.gateway"
 
 export class InfraMessagesConsumerGateway extends MessagesConsumerGateway {
-  private brokers = ["localhost:9092"]
+  private brokers = ["redpanda:29092"]
 
   private readonly kafkaConsumer = new Kafka({
     brokers: this.brokers,
@@ -14,8 +14,8 @@ export class InfraMessagesConsumerGateway extends MessagesConsumerGateway {
       heartbeatInterval: 10000, // should be lower than sessionTimeout
       sessionTimeout: 60000,
     })
-    // await consumer.connect()
-    // await consumer.subscribe({ topic })
-    // await consumer.run(config)
+    await consumer.connect()
+    await consumer.subscribe({ topic })
+    await consumer.run(config)
   }
 }

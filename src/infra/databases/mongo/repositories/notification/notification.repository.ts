@@ -14,4 +14,10 @@ export class InfraNotificationRepository extends BaseInfraRepository<
   ) {
     super(model, mapper)
   }
+
+  async findByParam<ParamType>(param: ParamType) {
+    return this.mapper.toDomainArray(
+      await this.model.find(param).sort({ createdAt: -1 }).exec(),
+    )
+  }
 }

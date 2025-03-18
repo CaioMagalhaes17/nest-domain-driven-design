@@ -4,8 +4,6 @@ import { ISolicitationFormRepository } from "../../repositories/repair/solicitat
 import { OnSolicitationCreatedUseCase } from "./on-solicitation-created-use-case"
 import { Either, right } from "@/core/Either"
 import { ProfileNotFound } from "../../errors/profile/ProfileNotFound"
-import { WebsocketGateway } from "../../gateways/websocket/websocket.gateway"
-import { SaveNotificationUseCase } from "../notifications/save-notification"
 
 type CreateSolicitationUseCaseResponse = Either<ProfileNotFound, string>
 export class CreateSolicitationUseCase {
@@ -13,8 +11,6 @@ export class CreateSolicitationUseCase {
     private readonly solicitationRepository: ISolicitationRepository,
     private readonly solicitationFormRepository: ISolicitationFormRepository,
     private readonly onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
-    private readonly websocketGateway: WebsocketGateway,
-    private readonly saveNotificationUseCase: SaveNotificationUseCase,
   ) {}
 
   async execute(data: {
@@ -32,15 +28,10 @@ export class CreateSolicitationUseCase {
       solicitationFormId: resultForm.id,
     })
 
-    const notification = await this.saveNotificationUseCase.execute({
-      message: "Defeito em " + data.solicitationForm.problemTopic,
-      sendedDate: "17/04/2025",
-      senderName: "Caio Magabunda",
-      type: "newSolicitation",
-    })
-    console.log(notification)
-
-    //await this.onSolicitationCreatedUseCase.execute(data.userId)
+    await this.onSolicitationCreatedUseCase.execute(
+      data.profileId,
+      data.solicitationForm.problemTopic,
+    )
     return right(result.id)
   }
 }

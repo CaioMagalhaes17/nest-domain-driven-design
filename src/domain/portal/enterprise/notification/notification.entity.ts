@@ -5,7 +5,8 @@ type NotificationBodyProps = {
   type: NotificationsType
   message: string
   senderName: string
-  sendedDate: string
+  profileId: string
+  createdAt: Date
 }
 
 export class NotificationBody extends BaseEntity<NotificationBodyProps> {
@@ -25,7 +26,11 @@ export class NotificationBody extends BaseEntity<NotificationBodyProps> {
     return this.props.senderName
   }
 
-  get sendedDate(): string {
-    return this.props.sendedDate
+  get profileId(): string {
+    return this.props.profileId
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt
   }
 }
