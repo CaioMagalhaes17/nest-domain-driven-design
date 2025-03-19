@@ -21,9 +21,20 @@ import { FetchBudgetsToClientUseCase } from "@/domain/portal/application/use-cas
 import { FetchBudgetsToClientUseCaseController } from "./fetch-budgets-to-client-use-case.controller"
 import { FetchBudgetsByStoreIdUseCase } from "@/domain/portal/application/use-cases/budget/fetch-budgets-by-store-id"
 import { FetchBudgetsByStoreIdUseCaseController } from "./fetch-budgets-by-store-id.controller"
+import { OnBudgetCreatedUseCase } from "@/domain/portal/application/use-cases/budget/on-budget-created"
+import { IStoreProfileRepository } from "@/domain/portal/application/repositories/profile/store/store-profile.repository"
+import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositories/profiles/store.repository"
+import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
+import { MessagesProducerGateway } from "@/domain/portal/application/gateways/messageries/messages-producer.gateway"
+import { MessagesStreamingModule } from "@/infra/gateways/messageries/messages-streaming.module"
 
 @Module({
-  imports: [SolicitationMongoModule, BudgetMongoModule],
+  imports: [
+    SolicitationMongoModule,
+    BudgetMongoModule,
+    ProfilesMongoModule,
+    MessagesStreamingModule,
+  ],
   controllers: [
     FetchBudgetsToClientUseCaseController,
     CreateBudgetUseCaseController,
@@ -35,6 +46,13 @@ import { FetchBudgetsByStoreIdUseCaseController } from "./fetch-budgets-by-store
     FetchBudgetsByStoreIdUseCaseController,
   ],
   providers: [
+    {
+      provide: OnBudgetCreatedUseCase,
+      useFactory: (messagesProducerGateway: MessagesProducerGateway) => {
+        return new OnBudgetCreatedUseCase(messagesProducerGateway)
+      },
+      inject: [MessagesProducerGateway],
+    },
     {
       provide: FetchBudgetsToClientUseCase,
       useFactory: (
@@ -53,10 +71,22 @@ import { FetchBudgetsByStoreIdUseCaseController } from "./fetch-budgets-by-store
       useFactory: (
         budgetRepository: IBudgetRepository,
         solicitationRepository: ISolicitationRepository,
+        onBudgetCreatedUseCase: OnBudgetCreatedUseCase,
+        storeProfileRepository: IStoreProfileRepository,
       ) => {
-        return new CreateBudgetUseCase(budgetRepository, solicitationRepository)
+        return new CreateBudgetUseCase(
+          budgetRepository,
+          solicitationRepository,
+          onBudgetCreatedUseCase,
+          storeProfileRepository,
+        )
       },
-      inject: [InfraBudgetRepository, InfraSolicitationRepository],
+      inject: [
+        InfraBudgetRepository,
+        InfraSolicitationRepository,
+        OnBudgetCreatedUseCase,
+        InfraStoreProfileRepository,
+      ],
     },
 
     {

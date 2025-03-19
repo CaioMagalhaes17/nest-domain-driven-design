@@ -3,7 +3,6 @@ import * as dayjs from "dayjs"
 
 export class NotificationPresenter {
   static toHttp(notification: NotificationBody) {
-    console.log(dayjs)
     return {
       id: notification.id,
       message: notification.message,
@@ -11,6 +10,7 @@ export class NotificationPresenter {
       senderName: notification.senderName,
       type: notification.type,
       createdAt: dayjs(notification.createdAt).format("DD/MM/YYYY"),
+      opts: notification.opts,
     }
   }
 }

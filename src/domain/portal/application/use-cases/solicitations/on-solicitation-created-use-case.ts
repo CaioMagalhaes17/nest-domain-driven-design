@@ -8,7 +8,7 @@ export class OnSolicitationCreatedUseCase {
     private fetchStoresInsideRadiusUseCase: FetchStoresInsideClientRadiusUseCase,
   ) {}
 
-  async execute(profileId: string, topic: string) {
+  async execute(profileId: string, topic: string, solicitationId: string) {
     const storesInsideUserLocation =
       await this.fetchStoresInsideRadiusUseCase.execute(profileId)
     if (storesInsideUserLocation.isRight()) {
@@ -17,6 +17,7 @@ export class OnSolicitationCreatedUseCase {
           value: JSON.stringify({
             topic: formatTopic(topic),
             nearStores: storesInsideUserLocation.value,
+            solicitationId,
           }),
         },
       ])

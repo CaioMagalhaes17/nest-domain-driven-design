@@ -11,12 +11,13 @@ export class SendSolicitationCreatedToStore {
   ) {}
   @Process()
   async handleNotification(job: Job) {
-    const { id, topic, name } = job.data
+    const { id, topic, name, solicitationId } = job.data
     const response = await this.saveNotificationUseCase.execute({
       message: "Defeito em " + topic,
       profileId: id,
       senderName: name,
       type: "newSolicitation",
+      opts: { solicitationId },
     })
     await this.websocketGateway.sendNotification({
       profileId: id,

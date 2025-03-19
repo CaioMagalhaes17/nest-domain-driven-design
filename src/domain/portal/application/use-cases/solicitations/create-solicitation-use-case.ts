@@ -31,6 +31,7 @@ export class CreateSolicitationUseCase {
     await this.onSolicitationCreatedUseCase.execute(
       data.profileId,
       data.solicitationForm.problemTopic,
+      result.id,
     )
     return right(result.id)
   }

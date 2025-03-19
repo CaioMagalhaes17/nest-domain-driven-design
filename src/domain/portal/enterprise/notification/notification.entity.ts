@@ -7,6 +7,11 @@ type NotificationBodyProps = {
   senderName: string
   profileId: string
   createdAt: Date
+  opts?: {
+    budgetId?: string
+    storeProfileImg?: string
+    solicitationId?: string
+  }
 }
 
 export class NotificationBody extends BaseEntity<NotificationBodyProps> {
@@ -32,5 +37,13 @@ export class NotificationBody extends BaseEntity<NotificationBodyProps> {
 
   get createdAt(): Date {
     return this.props.createdAt
+  }
+
+  get opts(): {
+    budgetId?: string
+    storeProfileImg?: string
+    solicitationId?: string
+  } {
+    return this.props.opts
   }
 }

@@ -1,7 +1,12 @@
 import { Module } from "@nestjs/common"
-import { SolicitationsConsumerModule } from "./solicitations/solicitations.module"
+import { MessagesStreamingModule } from "../gateways/messageries/messages-streaming.module"
+import { StoreProfileModule } from "../http/controllers/profile/store/store-profile.module"
+import { QueueModule } from "../queue/queue.module"
+import { SolicitationCreatedConsumer } from "./solicitation-created.consumer"
+import { BudgetCreatedConsumer } from "./budget-created.consumer"
 
 @Module({
-  imports: [SolicitationsConsumerModule],
+  imports: [MessagesStreamingModule, StoreProfileModule, QueueModule],
+  providers: [SolicitationCreatedConsumer, BudgetCreatedConsumer],
 })
 export class ConsumersModule {}

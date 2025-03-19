@@ -14,6 +14,13 @@ export class Notification extends Document {
 
   @Prop({ required: true })
   profileId: string
+
+  @Prop({ type: Object })
+  opts: {
+    budgetId?: string
+    storeProfileImg?: string
+    solicitationId?: string
+  }
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification)

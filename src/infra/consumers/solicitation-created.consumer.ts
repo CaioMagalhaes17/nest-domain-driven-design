@@ -15,7 +15,7 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
   async onModuleInit() {
     await this.messagesConsumerGateway.consume("stores", "storesInside", {
       eachMessage: async ({ message }) => {
-        const { topic, nearStores } = JSON.parse(message.value)
+        const { topic, nearStores, solicitationId } = JSON.parse(message.value)
         nearStores.map(async (store) => {
           const storeProfile = store.Profile
           await this.emailQueue.add({ email: storeProfile.props.email })
@@ -23,6 +23,7 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
             id: storeProfile._id,
             name: storeProfile.props.name,
             topic,
+            solicitationId,
           })
         })
       },
