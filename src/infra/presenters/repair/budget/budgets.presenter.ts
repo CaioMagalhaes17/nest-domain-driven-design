@@ -11,6 +11,7 @@ export class BudgetsPresenter {
       solicitationId: budget.solicitationId,
       createdAt: budget.createdAt,
       updatedAt: budget.updatedAt,
+      estimatedTime: budget.estimatedTime,
     }
   }
 }

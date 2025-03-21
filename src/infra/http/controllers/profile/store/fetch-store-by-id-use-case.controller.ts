@@ -6,6 +6,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Req,
   UseGuards,
 } from "@nestjs/common"
 import { ProfileNotFound } from "src/domain/portal/application/errors/profile/ProfileNotFound"
@@ -17,8 +18,11 @@ export class FetchStoreProfileByIdUseCaseController {
 
   @UseGuards(JwtAuthGuard)
   @Get("/profile/store/:id")
-  async handle(@Param("id") id: string) {
-    const response = await this.fetchStoreProfileUseCase.execute(id)
+  async handle(@Param("id") id: string, @Req() req: { user: { profileId } }) {
+    const response = await this.fetchStoreProfileUseCase.execute(
+      id,
+      req.user.profileId,
+    )
 
     if (response.isLeft()) {
       switch (response.value.constructor) {
@@ -29,9 +33,12 @@ export class FetchStoreProfileByIdUseCaseController {
       }
     }
 
-    return StoreProfilePresenter.toHttp(
-      response.value.profile,
-      response.value.location,
-    )
+    return {
+      storeProfile: StoreProfilePresenter.toHttp(
+        response.value.profile,
+        response.value.location,
+      ),
+      distance: response.value.distance,
+    }
   }
 }

@@ -29,15 +29,16 @@ export class InfraGeolocationRepository extends BaseInfraRepository<
   }
 
   async findWithinRadius(latitude: number, longitude: number, radius: number) {
-    const radiusInRadians = radius / 6378100
-
-    const result = await this.model.find({
-      location: {
-        $geoWithin: {
-          $centerSphere: [[longitude, latitude], radiusInRadians],
+    const result = await this.model.aggregate([
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [longitude, latitude] },
+          distanceField: "distance",
+          spherical: true,
+          maxDistance: radius, // Raio em metros
         },
       },
-    })
+    ])
     return this.mapper.toDomainArray(result)
   }
 

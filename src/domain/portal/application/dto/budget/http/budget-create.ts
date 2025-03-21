@@ -12,4 +12,7 @@ export class BudgetDTO {
 
   @IsString()
   readonly solicitationId: string
+
+  @IsString()
+  readonly estimatedTime: string
 }

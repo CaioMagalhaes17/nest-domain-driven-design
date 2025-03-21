@@ -18,6 +18,7 @@ import { FetchGeolocationCoveringLocationUseCase } from "@/domain/portal/applica
 import { FetchGeolocationInsideRadiusUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocations-inside-radius"
 import { FetchStoreProfileUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-profile"
 import { StoreProfileModule } from "../profile/store/store-profile.module"
+import { FetchStoreDistanceFromClientUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-store-distance-from-client"
 
 @Module({
   imports: [GeolocationMongoModule, StoreProfileModule],
@@ -95,11 +96,20 @@ import { StoreProfileModule } from "../profile/store/store-profile.module"
       },
       inject: [InfraGeolocationRepository],
     },
+    {
+      provide: FetchStoreDistanceFromClientUseCase,
+      useFactory: (geolocationRepository: IGeolocationRepository) => {
+        return new FetchStoreDistanceFromClientUseCase(geolocationRepository)
+      },
+      inject: [InfraGeolocationRepository],
+    },
   ],
   exports: [
     FetchClientsInsideStoreLocationUseCase,
     FetchGeolocationUseCase,
     FetchStoresInsideClientRadiusUseCase,
+    FetchStoreDistanceFromClientUseCase,
+    CreateGeolocationUseCase,
   ],
 })
 export class GeolocationModule {}

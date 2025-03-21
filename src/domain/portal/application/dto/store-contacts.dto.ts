@@ -14,4 +14,7 @@ export class StoreContactsDTO {
 
   @IsBoolean()
   readonly main: boolean
+
+  @IsString()
+  readonly wppNum: string
 }

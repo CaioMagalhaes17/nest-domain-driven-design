@@ -13,15 +13,15 @@ export class UpdateStoreContactsUseCase {
   constructor(private storeContactsRepository: IStoreContactsRepository) {}
 
   async execute(
-    contactId: string,
     storeProfileId: string,
     updateData: Partial<StoreContacts>,
   ): Promise<FetchStoreContactsResponse> {
-    const contact = await this.storeContactsRepository.findById(contactId)
+    const contact = await this.storeContactsRepository.findByParam<{
+      storeProfileId: string
+    }>({ storeProfileId })
     if (!contact) return left(new BadRequestException())
-    if (contact.storeProfileId !== storeProfileId)
-      return left(new ActionNotAllowedError())
-    await this.storeContactsRepository.updateById(contactId, updateData)
+
+    await this.storeContactsRepository.updateById(contact[0].id, updateData)
     return right(null)
   }
 }

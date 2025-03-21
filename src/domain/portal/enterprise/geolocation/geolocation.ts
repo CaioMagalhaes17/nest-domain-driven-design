@@ -5,6 +5,7 @@ interface GeolocationProps {
   longitude: number
   radius: number
   profileId: string
+  distance: number
 }
 
 export class Geolocation extends BaseEntity<GeolocationProps> {
@@ -26,5 +27,9 @@ export class Geolocation extends BaseEntity<GeolocationProps> {
 
   get profileId(): string {
     return this.props.profileId
+  }
+
+  get distance(): number {
+    return this.props.distance
   }
 }

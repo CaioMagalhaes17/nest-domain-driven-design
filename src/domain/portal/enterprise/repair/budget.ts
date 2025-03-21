@@ -13,6 +13,7 @@ type BudgetProps = {
   solicitation: Solicitation
   storeProfileId: string
   storeProfile: StoreProfile
+  estimatedTime: string
 }
 
 export class Budget extends BaseEntity<BudgetProps> {
@@ -58,5 +59,9 @@ export class Budget extends BaseEntity<BudgetProps> {
 
   get storeProfile(): StoreProfile {
     return this.props.storeProfile
+  }
+
+  get estimatedTime(): string {
+    return this.props.estimatedTime
   }
 }

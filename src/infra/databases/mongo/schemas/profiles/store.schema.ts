@@ -16,15 +16,9 @@ export class StoreProfile extends Document {
   rating: number
 
   @Prop({ required: true })
-  email: string
-
-  @Prop({ required: true })
-  telNum: string
-
-  @Prop({ required: true })
   address: string
 
-  @Prop({ required: true })
+  @Prop()
   description: string
 }
 

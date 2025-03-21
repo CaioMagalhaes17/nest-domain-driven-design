@@ -46,6 +46,7 @@ export class CreateBudgetUseCase {
       storeProfileId: storeProfileId,
       solicitationId: createBudgetPayload.solicitationId,
       details: createBudgetPayload.details,
+      estimatedTime: createBudgetPayload.estimatedTime,
     })
 
     const storeProfile =

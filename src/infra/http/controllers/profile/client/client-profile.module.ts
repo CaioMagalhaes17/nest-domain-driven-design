@@ -15,6 +15,7 @@ import { GeolocationModule } from "../../geolocation/geolocation.module"
 
 @Module({
   imports: [ProfilesMongoModule, GeolocationModule],
+  exports: [CreateClientProfileUseCase, FetchClientProfileUseCase],
   controllers: [
     FetchClientProfileUseCaseController,
     CreateClientProfileUseCaseController,

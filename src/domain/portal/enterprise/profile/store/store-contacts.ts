@@ -5,18 +5,14 @@ type StoreContactsProps = {
   email?: string
   telNum?: string
   description: string
-  main: boolean
   storeProfileId: string
   storeProfile: StoreProfile
+  wppNum: string
 }
 
 export class StoreContacts extends BaseEntity<StoreContactsProps> {
   static create(props: StoreContactsProps, id: string) {
     return new StoreContacts(props, id)
-  }
-
-  get main(): boolean {
-    return this.props.main
   }
 
   get storeProfileId(): string {
@@ -37,5 +33,9 @@ export class StoreContacts extends BaseEntity<StoreContactsProps> {
 
   get telNum(): string {
     return this.props.telNum
+  }
+
+  get wppNum(): string {
+    return this.props.wppNum
   }
 }

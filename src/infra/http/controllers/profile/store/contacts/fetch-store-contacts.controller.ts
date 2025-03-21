@@ -15,14 +15,10 @@ export class FetchStoreContactsUseCaseController {
     },
     @Param("id") id: string,
   ) {
-    if (id) {
-      const response = await this.createStoreContactsUseCase.execute(id)
-      return response.value
-    }
     const response = await this.createStoreContactsUseCase.execute(
-      req.user.profileId,
+      id ? id : req.user.profileId,
     )
 
-    return response.value
+    return response
   }
 }

@@ -47,6 +47,8 @@ import { ImageResizerGateway } from "@/domain/portal/application/gateways/images
 import { ImagesModule } from "@/infra/gateways/images/images.module"
 import { SearchStoreProfilesUseCase } from "@/domain/portal/application/use-cases/profile/store/search-store-profiles"
 import { SearchStoreProfilesUseCaseController } from "./search-store-profile-use-case.controller"
+import { FetchStoreDistanceFromClientUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-store-distance-from-client"
+import { FetchStoreProfileByUserIdUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-profile-by-user-id"
 
 @Module({
   imports: [
@@ -74,7 +76,13 @@ import { SearchStoreProfilesUseCaseController } from "./search-store-profile-use
     DeleteStoreContactsUseCaseController,
     UpdateStoreProfileImgUseCaseController,
   ],
-  exports: [FetchStoreProfileUseCase, FetchStoreContactsUseCase],
+  exports: [
+    FetchStoreProfileUseCase,
+    FetchStoreContactsUseCase,
+    CreateStoreContactsUseCase,
+    CreateStoreProfileUseCase,
+    FetchStoreProfileByUserIdUseCase,
+  ],
   providers: [
     {
       provide: CreateStoreProfileUseCase,
@@ -127,17 +135,42 @@ import { SearchStoreProfilesUseCaseController } from "./search-store-profile-use
       ],
     },
     {
+      provide: FetchStoreProfileByUserIdUseCase,
+      useFactory: (
+        storeProfileRepository: IStoreProfileRepository,
+        fetchGeoLocationUseCase: FetchGeolocationUseCase,
+        fetchStoreContactsUseCase: FetchStoreContactsUseCase,
+      ) => {
+        return new FetchStoreProfileByUserIdUseCase(
+          storeProfileRepository,
+          fetchGeoLocationUseCase,
+          fetchStoreContactsUseCase,
+        )
+      },
+      inject: [
+        InfraStoreProfileRepository,
+        FetchGeolocationUseCase,
+        FetchStoreContactsUseCase,
+      ],
+    },
+    {
       provide: FetchStoreProfileByIdUseCase,
       useFactory: (
         storeProfileRepository: IStoreProfileRepository,
         fetchGeoLocationUseCase: FetchGeolocationUseCase,
+        fetchDistance: FetchStoreDistanceFromClientUseCase,
       ) => {
         return new FetchStoreProfileByIdUseCase(
           storeProfileRepository,
           fetchGeoLocationUseCase,
+          fetchDistance,
         )
       },
-      inject: [InfraStoreProfileRepository, FetchGeolocationUseCase],
+      inject: [
+        InfraStoreProfileRepository,
+        FetchGeolocationUseCase,
+        FetchStoreDistanceFromClientUseCase,
+      ],
     },
     {
       provide: CreateStoreSocialsUseCase,

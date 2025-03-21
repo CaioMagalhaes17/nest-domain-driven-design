@@ -17,6 +17,9 @@ export class StoreContacts extends Document {
 
   @Prop({ required: true })
   storeProfileId: string
+
+  @Prop({ required: true })
+  wppNum: string
 }
 
 export const StoreContactsSchema = SchemaFactory.createForClass(StoreContacts)

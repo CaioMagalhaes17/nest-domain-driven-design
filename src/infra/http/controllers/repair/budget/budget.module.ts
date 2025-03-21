@@ -27,6 +27,9 @@ import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositorie
 import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
 import { MessagesProducerGateway } from "@/domain/portal/application/gateways/messageries/messages-producer.gateway"
 import { MessagesStreamingModule } from "@/infra/gateways/messageries/messages-streaming.module"
+import { FetchGeolocationUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-geolocation-use-case"
+import { FetchStoreDistanceFromClientUseCase } from "@/domain/portal/application/use-cases/geolocation/fetch-store-distance-from-client"
+import { GeolocationModule } from "../../geolocation/geolocation.module"
 
 @Module({
   imports: [
@@ -34,6 +37,7 @@ import { MessagesStreamingModule } from "@/infra/gateways/messageries/messages-s
     BudgetMongoModule,
     ProfilesMongoModule,
     MessagesStreamingModule,
+    GeolocationModule,
   ],
   controllers: [
     FetchBudgetsToClientUseCaseController,
@@ -58,13 +62,22 @@ import { MessagesStreamingModule } from "@/infra/gateways/messageries/messages-s
       useFactory: (
         solicitationRepository: ISolicitationRepository,
         budgetRepository: IBudgetRepository,
+        fetchStoreDistanceFromClientUseCase: FetchStoreDistanceFromClientUseCase,
+        fetchGeolocationUseCase: FetchGeolocationUseCase,
       ) => {
         return new FetchBudgetsToClientUseCase(
           solicitationRepository,
           budgetRepository,
+          fetchStoreDistanceFromClientUseCase,
+          fetchGeolocationUseCase,
         )
       },
-      inject: [InfraSolicitationRepository, InfraBudgetRepository],
+      inject: [
+        InfraSolicitationRepository,
+        InfraBudgetRepository,
+        FetchStoreDistanceFromClientUseCase,
+        FetchGeolocationUseCase,
+      ],
     },
     {
       provide: CreateBudgetUseCase,
@@ -112,10 +125,22 @@ import { MessagesStreamingModule } from "@/infra/gateways/messageries/messages-s
     },
     {
       provide: FetchBudgetUseCase,
-      useFactory: (budgetRepository: IBudgetRepository) => {
-        return new FetchBudgetUseCase(budgetRepository)
+      useFactory: (
+        budgetRepository: IBudgetRepository,
+        fetchStoreDistanceFromClientUseCase: FetchStoreDistanceFromClientUseCase,
+        fetchGeolocationUseCase: FetchGeolocationUseCase,
+      ) => {
+        return new FetchBudgetUseCase(
+          budgetRepository,
+          fetchStoreDistanceFromClientUseCase,
+          fetchGeolocationUseCase,
+        )
       },
-      inject: [InfraBudgetRepository],
+      inject: [
+        InfraBudgetRepository,
+        FetchStoreDistanceFromClientUseCase,
+        FetchGeolocationUseCase,
+      ],
     },
     {
       provide: DeleteBudgetUseCase,

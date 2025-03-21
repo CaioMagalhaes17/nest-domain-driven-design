@@ -7,8 +7,6 @@ type StoreProfileProps = {
   rating?: number
   description: string
   userId: string
-  email: string
-  telNum: string
 }
 
 export class StoreProfile extends BaseEntity<StoreProfileProps> {
@@ -38,13 +36,5 @@ export class StoreProfile extends BaseEntity<StoreProfileProps> {
 
   get userId(): string {
     return this.props.userId
-  }
-
-  get email(): string {
-    return this.props.email
-  }
-
-  get telNum(): string {
-    return this.props.telNum
   }
 }

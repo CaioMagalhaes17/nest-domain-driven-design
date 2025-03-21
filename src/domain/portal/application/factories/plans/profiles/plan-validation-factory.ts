@@ -21,6 +21,7 @@ export class PlanValidationQuantityProfilesFactory {
       case SUBCRIPTION_PLAN_PREMIUM:
         return new PremiumPlanQuantityProfilesStrategy()
       default:
+        console.log(planId)
         throw new Error("Plano inválido")
     }
   }

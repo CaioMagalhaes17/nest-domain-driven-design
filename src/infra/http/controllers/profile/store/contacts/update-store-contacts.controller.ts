@@ -17,15 +17,13 @@ export class UpdateStoreContactsUseCaseController {
   constructor(private updateStoreContactsUseCase: UpdateStoreContactsUseCase) {}
 
   @UseGuards(JwtAuthGuard)
-  @Put("/profile/contacts/:id")
+  @Put("/profile/contacts")
   async handle(
     @Req()
     req: { user: { profileId: string } },
-    @Param("id") id: string,
     @Body() updateStoreContacts: Partial<StoreContactsDTO>,
   ) {
     const response = await this.updateStoreContactsUseCase.execute(
-      id,
       req.user.profileId,
       updateStoreContacts,
     )

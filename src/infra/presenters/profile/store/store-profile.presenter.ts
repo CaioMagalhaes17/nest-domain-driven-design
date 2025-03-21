@@ -12,8 +12,6 @@ export class StoreProfilePresenter {
       userId: profile.userId,
       name: profile.name,
       profileImg: profile.profileImg,
-      email: profile.email,
-      telNum: profile.telNum,
       address: profile.address,
       rating: profile.rating,
       description: profile.description,

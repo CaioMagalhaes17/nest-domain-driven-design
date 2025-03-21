@@ -12,7 +12,6 @@ export interface MapRadiusPayload {
   latitude: number
   longitude: number
   radius?: number
-  profileId: string
 }
 
 export class CreateGeolocationUseCase {

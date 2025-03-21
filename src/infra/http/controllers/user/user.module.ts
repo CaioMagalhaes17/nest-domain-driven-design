@@ -8,23 +8,28 @@ import { UserAuthSignUpUseCase } from "src/domain/portal/application/use-cases/u
 import { UserMongoModule } from "@/infra/databases/mongo/user.module"
 import { IUserRepository } from "@/domain/portal/application/repositories/user/user-repository.interface"
 import { InfraUserRepository } from "@/infra/databases/mongo/repositories/user/user.repository"
-import { IClientProfileRepository } from "@/domain/portal/application/repositories/profile/client/client-profile.repository"
-import { InfraClientProfileRepository } from "@/infra/databases/mongo/repositories/profiles/client.repository"
-import { ProfilesMongoModule } from "@/infra/databases/mongo/profiles.module"
-import { InfraStoreProfileRepository } from "@/infra/databases/mongo/repositories/profiles/store.repository"
-import { IStoreProfileRepository } from "@/domain/portal/application/repositories/profile/store/store-profile.repository"
+
 import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/user-update-use-case"
-import { IGeolocationRepository } from "@/domain/portal/application/repositories/geolocation/geolocation-repository"
-import { InfraGeolocationRepository } from "@/infra/databases/mongo/repositories/geolocation/geolocation.repository"
-import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.module"
+
+import { CreateStoreContactsUseCase } from "@/domain/portal/application/use-cases/profile/store/contacts/create-store-contacts"
+import { CreateClientProfileUseCase } from "@/domain/portal/application/use-cases/profile/client/create-client-profile-use-case"
+import { CreateStoreProfileUseCase } from "@/domain/portal/application/use-cases/profile/store/create-store-profile"
+import { CreateGeolocationUseCase } from "@/domain/portal/application/use-cases/geolocation/create-geolocation-use-case"
+import { GeolocationModule } from "../geolocation/geolocation.module"
+import { StoreProfileModule } from "../profile/store/store-profile.module"
+import { ClientProfileModule } from "../profile/client/client-profile.module"
+import { FetchStoreProfileUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-profile"
+import { FetchClientProfileUseCase } from "@/domain/portal/application/use-cases/profile/client/fetch-client-profile-use-case"
+import { FetchStoreProfileByUserIdUseCase } from "@/domain/portal/application/use-cases/profile/store/fetch-store-profile-by-user-id"
 
 @Module({
   imports: [
     CryptographyModule,
     UserMongoModule,
     AuthModule,
-    ProfilesMongoModule,
-    GeolocationMongoModule,
+    GeolocationModule,
+    StoreProfileModule,
+    ClientProfileModule,
   ],
   controllers: [UserController],
   providers: [
@@ -33,21 +38,21 @@ import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.modu
       useFactory: (
         userRepository: IUserRepository,
         encrypterGateway: EncrypterGateway,
-        clientProfile: IClientProfileRepository,
-        storeProfileRepository: IStoreProfileRepository,
+        fetchClientProfile: FetchClientProfileUseCase,
+        fetchStoreProfile: FetchStoreProfileByUserIdUseCase,
       ) => {
         return new UserAuthLoginUseCase(
           userRepository,
           encrypterGateway,
-          clientProfile,
-          storeProfileRepository,
+          fetchClientProfile,
+          fetchStoreProfile,
         )
       },
       inject: [
         InfraUserRepository,
         EncrypterGateway,
-        InfraClientProfileRepository,
-        InfraStoreProfileRepository,
+        FetchClientProfileUseCase,
+        FetchStoreProfileByUserIdUseCase,
       ],
     },
     {
@@ -55,21 +60,18 @@ import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.modu
       useFactory: (
         userRepository: IUserRepository,
         encrypterGateway: EncrypterGateway,
-        clientProfile: IClientProfileRepository,
-        storeProfileRepository: IStoreProfileRepository,
+        fetchClientProfile: FetchClientProfileUseCase,
       ) => {
         return new UpdateUserUseCase(
           userRepository,
           encrypterGateway,
-          clientProfile,
-          storeProfileRepository,
+          fetchClientProfile,
         )
       },
       inject: [
         InfraUserRepository,
         EncrypterGateway,
-        InfraClientProfileRepository,
-        InfraStoreProfileRepository,
+        FetchClientProfileUseCase,
       ],
     },
     {
@@ -77,24 +79,27 @@ import { GeolocationMongoModule } from "@/infra/databases/mongo/geolocation.modu
       useFactory: (
         userRepository: IUserRepository,
         encrypterGateway: EncrypterGateway,
-        clientProfileRepository: IClientProfileRepository,
-        storeProfileRepository: IStoreProfileRepository,
-        geolocationRepository: IGeolocationRepository,
+        createStoreProfileContact: CreateStoreContactsUseCase,
+        createClientProfile: CreateClientProfileUseCase,
+        createStoreProfile: CreateStoreProfileUseCase,
+        createGeolocation: CreateGeolocationUseCase,
       ) => {
         return new UserAuthSignUpUseCase(
           userRepository,
           encrypterGateway,
-          clientProfileRepository,
-          storeProfileRepository,
-          geolocationRepository,
+          createStoreProfileContact,
+          createClientProfile,
+          createStoreProfile,
+          createGeolocation,
         )
       },
       inject: [
         InfraUserRepository,
         EncrypterGateway,
-        InfraClientProfileRepository,
-        InfraStoreProfileRepository,
-        InfraGeolocationRepository,
+        CreateStoreContactsUseCase,
+        CreateClientProfileUseCase,
+        CreateStoreProfileUseCase,
+        CreateGeolocationUseCase,
       ],
     },
   ],

@@ -20,6 +20,9 @@ export class Geolocation extends Document {
   }
 
   @Prop()
+  distance: number
+
+  @Prop()
   radius: number
 
   @Prop({ required: true })

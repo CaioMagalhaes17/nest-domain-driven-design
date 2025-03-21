@@ -6,15 +6,15 @@ export class GeolocationMapper
   implements BaseMapper<MongoGeolocation, Geolocation> {
   toDomain(row: MongoGeolocation): Geolocation {
     if (!row) return
-    const { _id } = row.toObject()
     return Geolocation.create(
       {
         latitude: row.location.coordinates[1],
         longitude: row.location.coordinates[0],
         radius: row.radius,
         profileId: row.profileId,
+        distance: row.distance,
       },
-      _id,
+      row.id,
     )
   }
 

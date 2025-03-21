@@ -28,7 +28,6 @@ export class CreateStoreProfileUseCaseController {
         userId: req.user.id,
         ...createClientProfile,
       },
-      req.user.isStore,
       req.user.subscriptionPlanId,
     )
 

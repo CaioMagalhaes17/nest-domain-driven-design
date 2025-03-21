@@ -3,11 +3,11 @@ import { EncrypterGateway } from "../../gateways/user/encrypter.gateway"
 import { IUserRepository } from "../../repositories/user/user-repository.interface"
 import { Either, left, right } from "@/core/Either"
 import { NotFoundException } from "@nestjs/common"
-import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
-import { IStoreProfileRepository } from "../../repositories/profile/store/store-profile.repository"
+import { FetchClientProfileUseCase } from "../profile/client/fetch-client-profile-use-case"
+import { ProfileNotFound } from "../../errors/profile/ProfileNotFound"
 
 type UpdateUserUseCaseResponse = Either<
-  NotFoundException,
+  NotFoundException | ProfileNotFound,
   {
     token: string
     user: User
@@ -17,8 +17,7 @@ export class UpdateUserUseCase {
   constructor(
     private userRepository: IUserRepository,
     private encrypterGateway: EncrypterGateway,
-    private clientProfileRepository: IClientProfileRepository,
-    private storeProfileRepository: IStoreProfileRepository,
+    private fetchClientProfile: FetchClientProfileUseCase,
   ) {}
 
   async execute(
@@ -29,16 +28,15 @@ export class UpdateUserUseCase {
     const newUser = await this.userRepository.updateById(userId, data)
     if (!newUser) return left(new NotFoundException("Usuário não encontrado"))
     if (newUser.isStore === false) {
-      const profile = await this.clientProfileRepository.findByParam<{
-        userId: string
-      }>({ userId })
+      const profile = await this.fetchClientProfile.execute(userId)
+      if (profile.isLeft()) return left(profile.value)
       return right({
         token: this.encrypterGateway.encryptToken({
           id: newUser.id,
           name: newUser.name,
           isStore: newUser.isStore,
           permission: newUser.permission,
-          profileId: profile[0].id,
+          profileId: profile.value.profile.id,
         }),
         user: newUser,
       })

@@ -12,7 +12,7 @@ type FetchStoreProfileResponse = Either<
   {
     profile: StoreProfile
     location?: Geolocation
-    contacts?: StoreContacts[]
+    contacts?: StoreContacts
   }
 >
 
@@ -25,6 +25,7 @@ export class FetchStoreProfileUseCase {
 
   async execute(profileId: string): Promise<FetchStoreProfileResponse> {
     const profile = await this.storeProfileRepository.findById(profileId)
+
     if (!profile) return left(new ProfileNotFound())
 
     const geoLocation = await this.fetchGeoLocationUseCase.execute(profile.id)
@@ -34,7 +35,7 @@ export class FetchStoreProfileUseCase {
       const retorno = {
         profile: profile,
         location: geoInfos,
-        contacts: contacts.isRight() && contacts.value,
+        contacts: contacts,
       }
 
       return right(retorno)

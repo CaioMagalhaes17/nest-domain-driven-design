@@ -33,6 +33,7 @@ export class FetchGeolocationInsideRadiusUseCase {
       return left(new GeolocationNotFound())
 
     const filtered = geolocations.filter((item) => item.radius === 0)
+    console.log(filtered)
     return right(filtered)
   }
 }

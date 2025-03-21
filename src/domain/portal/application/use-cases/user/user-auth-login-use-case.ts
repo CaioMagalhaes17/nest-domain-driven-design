@@ -3,8 +3,9 @@ import { EncrypterGateway } from "../../gateways/user/encrypter.gateway"
 import { Either, left, right } from "src/core/Either"
 import { User } from "src/domain/portal/enterprise/user/user"
 import { IUserRepository } from "../../repositories/user/user-repository.interface"
-import { IClientProfileRepository } from "../../repositories/profile/client/client-profile.repository"
-import { IStoreProfileRepository } from "../../repositories/profile/store/store-profile.repository"
+import { FetchClientProfileUseCase } from "../profile/client/fetch-client-profile-use-case"
+import { FetchStoreProfileUseCase } from "../profile/store/fetch-store-profile"
+import { FetchStoreProfileByUserIdUseCase } from "../profile/store/fetch-store-profile-by-user-id"
 
 type UserAuthLoginUseCaseResponse = Either<
   InvalidCredentilsError,
@@ -18,8 +19,8 @@ export class UserAuthLoginUseCase {
   constructor(
     private userRepository: IUserRepository,
     private encrypterGateway: EncrypterGateway,
-    private clientProfileRepository: IClientProfileRepository,
-    private storeProfileRepository: IStoreProfileRepository,
+    private fetchClientProfile: FetchClientProfileUseCase,
+    private fetchStoreProfile: FetchStoreProfileByUserIdUseCase,
   ) {}
 
   async execute(
@@ -33,41 +34,39 @@ export class UserAuthLoginUseCase {
     if (!user.isStore && isStore) return left(new InvalidCredentilsError())
     const isPasswordValid: boolean =
       await this.encrypterGateway.comparePassword(password, user.password)
-    if (!isPasswordValid) return left(new InvalidCredentilsError())
 
+    if (!isPasswordValid) return left(new InvalidCredentilsError())
     if (!user.isStore) {
-      const profile = await this.clientProfileRepository.findByParam<{
-        userId: string
-      }>({ userId: user.id })
-      if (profile.length > 0) {
-        return right({
-          token: this.encrypterGateway.encryptToken({
-            id: user.id,
-            name: user.name,
-            isStore: user.isStore,
-            permission: user.permission,
-            profileId: profile[0].id,
-          }),
-          user,
-        })
-      }
+      const profile = await this.fetchClientProfile.execute(user.id)
+      if (profile.isLeft()) return left(profile.value)
+
+      return right({
+        token: this.encrypterGateway.encryptToken({
+          id: user.id,
+          name: user.name,
+          isStore: user.isStore,
+          permission: user.permission,
+          profileId: profile.value.profile.id,
+        }),
+        user,
+      })
     } else {
-      const storeProfile = await this.storeProfileRepository.findByParam<{
-        userId
-      }>({ userId: user.id })
-      if (storeProfile.length > 0) {
-        return right({
-          token: this.encrypterGateway.encryptToken({
-            id: user.id,
-            name: user.name,
-            isStore: user.isStore,
-            permission: user.permission,
-            profileId: storeProfile[0].id,
-            subscriptionPlanId: user.subscriptionPlanId,
-          }),
-          user,
-        })
-      }
+      const storeProfile = await this.fetchStoreProfile.execute(
+        user.id.toString(),
+      )
+
+      if (storeProfile.isLeft()) return left(storeProfile.value)
+      return right({
+        token: this.encrypterGateway.encryptToken({
+          id: user.id,
+          name: user.name,
+          isStore: user.isStore,
+          permission: user.permission,
+          profileId: storeProfile.value.profile.id,
+          subscriptionPlanId: user.subscriptionPlanId,
+        }),
+        user,
+      })
     }
   }
 }
