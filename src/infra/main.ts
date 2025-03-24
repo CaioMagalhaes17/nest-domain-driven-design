@@ -17,7 +17,7 @@ async function bootstrap() {
   )
 
   const baseUrlFactory = app.get(BaseFrontendUrlFactory)
-  const frontendUrl = baseUrlFactory.get()
+  const frontendUrl = baseUrlFactory.get() // Aqui você pega a URL baseada no ENV
 
   app.enableCors({
     origin: frontendUrl, // Origem permitida (URL do seu frontend)
