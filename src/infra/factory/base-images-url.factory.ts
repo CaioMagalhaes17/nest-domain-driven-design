@@ -10,9 +10,9 @@ export class BaseImagesUrlFactory {
       case "local":
         return this.configService.get<string>("BACKEND_IMGS_URL_LOCAL")
       case "hml":
-        return this.configService.get<string>("BACKEND_IMGS_URL_LOCAL")
+        return this.configService.get<string>("BACKEND_IMGS_URL_HML")
       case "prod":
-        return this.configService.get<string>("BACKEND_IMGS_URL_LOCAL")
+        return this.configService.get<string>("BACKEND_IMGS_URL_PROD")
       default:
         return this.configService.get<string>("BACKEND_IMGS_URL_LOCAL")
     }
