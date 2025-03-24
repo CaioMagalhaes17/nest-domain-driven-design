@@ -1,7 +1,7 @@
 import { NestFactory } from "@nestjs/core"
 import { AppModule } from "./app.module"
 import { ValidationPipe } from "@nestjs/common"
-import { BaseUrlFactory } from "./factory/base-url.factory"
+import { BaseFrontendUrlFactory } from "./factory/base-frontend-url.factory"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -16,8 +16,8 @@ async function bootstrap() {
     }),
   )
 
-  const baseUrlFactory = app.get(BaseUrlFactory)
-  const frontendUrl = baseUrlFactory.get() // Aqui você pega a URL baseada no ENV
+  const baseUrlFactory = app.get(BaseFrontendUrlFactory)
+  const frontendUrl = baseUrlFactory.get()
 
   app.enableCors({
     origin: frontendUrl, // Origem permitida (URL do seu frontend)
