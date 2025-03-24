@@ -10,8 +10,10 @@ COPY package*.json ./
 # Instale as dependências
 RUN npm install
 
+RUN npm build
+
 # Exponha a porta da aplicação
 EXPOSE 3001
 
 # Comando para iniciar o servidor no modo de desenvolvimento
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
