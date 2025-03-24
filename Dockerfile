@@ -4,16 +4,19 @@ FROM node:22-alpine AS builder
 # Defina o diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copie os arquivos de dependências primeiro (para melhor cache)
+# Copie os arquivos de dependência primeiro
 COPY package*.json ./
 
-# Instale apenas dependências de produção
-RUN npm install --only=production
+# Instale as dependências
+RUN npm install
+
+# Instale o NestJS CLI globalmente
+RUN npm install -g @nestjs/cli
 
 # Copie o restante dos arquivos
 COPY . .
 
-# Construa a aplicação (caso necessário, dependendo do seu projeto)
+# Construa a aplicação
 RUN npm run build
 
 # --------------------------------------------------
