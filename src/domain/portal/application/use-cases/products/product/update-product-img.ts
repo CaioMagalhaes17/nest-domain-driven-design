@@ -7,9 +7,13 @@ export class UpdateProductImgUseCase {
     private productRepository: IProductRepository,
   ) {}
 
-  async execute(id: string, imagePath: string, fileName: string) {
+  async execute(
+    id: string,
+    imagePath: string,
+    fileName: string,
+    urlBase: string,
+  ) {
     await this.imageResizer.resizeImage(imagePath, 400, 400)
-    const urlBase = "http://localhost:3001/uploads/imgs/"
     const cleanFile = fileName.replace(".png", "")
     await this.productRepository.updateById(id, {
       productImg: urlBase + cleanFile + "_resized.png",

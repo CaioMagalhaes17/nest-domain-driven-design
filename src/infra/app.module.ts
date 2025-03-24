@@ -10,9 +10,11 @@ import { ExpressAdapter } from "@bull-board/express"
 import { join } from "path"
 import { ServeStaticModule } from "@nestjs/serve-static"
 import { WebsocketModule } from "./gateways/websocket/websocket.module"
+import { FactoryModule } from "./factory/factory.module"
 
 @Module({
   imports: [
+    FactoryModule,
     HttpModule,
     MongoModule,
     ConsumersModule,

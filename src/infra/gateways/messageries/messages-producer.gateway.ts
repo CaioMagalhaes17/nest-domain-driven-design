@@ -1,6 +1,7 @@
 import { OnModuleInit } from "@nestjs/common"
 import { Kafka, Producer } from "kafkajs"
 import { MessagesProducerGateway } from "@/domain/portal/application/gateways/messageries/messages-producer.gateway"
+import { ConfigService } from "@nestjs/config"
 
 export class InfraMessagesProducerGateway
   extends MessagesProducerGateway
@@ -11,10 +12,14 @@ export class InfraMessagesProducerGateway
     brokers: this.brokers,
   })
 
+  private readonly configService: ConfigService = new ConfigService()
+
   private readonly producer: Producer = this.kafkaProducer.producer()
 
   async onModuleInit() {
-    await this.producer.connect()
+    if (this.configService.get<string>("USE_KAFKA") === "true") {
+      await this.producer.connect()
+    }
   }
 
   async produce(topic: string, messages) {

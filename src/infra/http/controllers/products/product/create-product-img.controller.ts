@@ -1,5 +1,6 @@
 import { CreateProductImgUseCase } from "@/domain/portal/application/use-cases/products/product/create-product-img"
 import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
+import { BaseImagesUrlFactory } from "@/infra/factory/base-images-url.factory"
 import {
   Controller,
   Post,
@@ -14,7 +15,10 @@ import { v4 as uuid } from "uuid"
 
 @Controller()
 export class CreateProductImgUseCaseController {
-  constructor(private createProductImgUseCase: CreateProductImgUseCase) {}
+  constructor(
+    private createProductImgUseCase: CreateProductImgUseCase,
+    private baseImagesUrlFactory: BaseImagesUrlFactory,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post("/product/img")
@@ -35,6 +39,10 @@ export class CreateProductImgUseCaseController {
       __dirname,
       "../../../../../../uploads/imgs/" + file.filename,
     )
-    return this.createProductImgUseCase.execute(imagePaths, file.filename)
+    return this.createProductImgUseCase.execute(
+      imagePaths,
+      file.filename,
+      this.baseImagesUrlFactory.get(),
+    )
   }
 }

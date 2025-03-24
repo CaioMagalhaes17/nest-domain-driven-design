@@ -7,9 +7,13 @@ export class UpdateStoreProfileImgUseCase {
     private storeProfileRepository: IStoreProfileRepository,
   ) {}
 
-  async execute(profileId: string, imagePath: string, fileName: string) {
+  async execute(
+    profileId: string,
+    imagePath: string,
+    fileName: string,
+    urlBase: string,
+  ) {
     await this.imageResizer.resizeImage(imagePath, 400, 400)
-    const urlBase = "http://localhost:3001/uploads/imgs/"
     const cleanFile = fileName.replace(".png", "")
     await this.storeProfileRepository.updateById(profileId, {
       profileImg: urlBase + cleanFile + "_resized.png",

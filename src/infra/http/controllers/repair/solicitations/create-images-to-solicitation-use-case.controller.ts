@@ -1,4 +1,5 @@
 import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
+import { BaseImagesUrlFactory } from "@/infra/factory/base-images-url.factory"
 import {
   Controller,
   Post,
@@ -13,6 +14,7 @@ import { v4 as uuid } from "uuid"
 
 @Controller()
 export class CreateImagesToSolicitationUseCaseController {
+  constructor(private baseImagesUrlFactory: BaseImagesUrlFactory) {}
   @UseGuards(JwtAuthGuard)
   @Post("/solicitation/image")
   @UseInterceptors(
@@ -29,7 +31,7 @@ export class CreateImagesToSolicitationUseCaseController {
   )
   async handle(@UploadedFile() file: Express.Multer.File) {
     return {
-      url: "http://localhost:3001/uploads/imgs/" + file.filename,
+      url: this.baseImagesUrlFactory.get() + file.filename,
       status: "ok",
     }
   }

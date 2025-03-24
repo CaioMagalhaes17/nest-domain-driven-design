@@ -11,6 +11,7 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 
 import { InvalidCredentilsError } from "src/domain/portal/application/errors/user/invalid-credentials.error"
 import { LoginInUseError } from "src/domain/portal/application/errors/user/login-in-use"
@@ -23,6 +24,7 @@ export class UserController {
     private userAuthLogin: UserAuthLoginUseCase,
     private userAuthSignUp: UserAuthSignUpUseCase,
     private updateUserUseCase: UpdateUserUseCase,
+    private configService: ConfigService,
   ) {}
   @Post("/user/login")
   async login(
@@ -108,6 +110,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get("checkAuth")
   async execute(@Req() req: { user: { isStore: boolean } }) {
+    console.log(
+      this.configService.get<string>("IS_LOCAL"),
+      this.configService.get<boolean>("IS_HML"),
+    )
     return { response: "ok", isStore: req.user.isStore }
   }
 }

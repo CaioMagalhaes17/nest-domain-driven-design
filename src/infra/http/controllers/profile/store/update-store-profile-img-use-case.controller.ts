@@ -1,5 +1,6 @@
 import { UpdateStoreProfileImgUseCase } from "@/domain/portal/application/use-cases/profile/store/update-store-profile-img-use-case"
 import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
+import { BaseImagesUrlFactory } from "@/infra/factory/base-images-url.factory"
 import {
   Controller,
   Post,
@@ -17,6 +18,7 @@ import { v4 as uuid } from "uuid"
 export class UpdateStoreProfileImgUseCaseController {
   constructor(
     private updateStoreProfileImgUseCase: UpdateStoreProfileImgUseCase,
+    private baseImagesUrlFactory: BaseImagesUrlFactory,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -45,6 +47,7 @@ export class UpdateStoreProfileImgUseCaseController {
       req.user.profileId,
       imagePaths,
       file.filename,
+      this.baseImagesUrlFactory.get(),
     )
   }
 }
