@@ -1,7 +1,3 @@
-import {
-  UserClientSignUpDTO,
-  UserStoreSignupDTO,
-} from "@/domain/portal/application/dto/user-signup.dto"
 import { UpdateUserUseCase } from "@/domain/portal/application/use-cases/user/user-update-use-case"
 import { User } from "@/domain/portal/enterprise/user/user"
 import { JwtAuthGuard } from "@/infra/auth/guards/jwt.guard"
@@ -67,9 +63,11 @@ export class UserController {
   @Post("/user")
   async signUp(
     @Body()
-    signUpData: Partial<UserClientSignUpDTO> | Partial<UserStoreSignupDTO>,
+    signUpData: any,
   ) {
+    console.log("321")
     const response = await this.userAuthSignUp.execute(signUpData)
+    console.log("321bbbg")
     if (response.isLeft()) {
       switch (response.value.constructor) {
         case LoginInUseError:

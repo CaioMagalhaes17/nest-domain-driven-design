@@ -37,9 +37,19 @@ export class UserAuthSignUpUseCase {
     permission,
     address,
     telNum,
+    location,
     useTelNumAsWpp,
-    location: { lat, lng },
-  }: any): Promise<UserAuthSignUpUseCaseResponse> {
+  }: {
+    location?: { lat: number; lng?: number }
+    name: string
+    password: string
+    login: string
+    isStore: boolean
+    useTelNumAsWpp?: boolean
+    telNum?: string
+    address?: string
+    permission?: string
+  }): Promise<UserAuthSignUpUseCaseResponse> {
     if (await this.userRepository.fetchUserByLogin(login))
       return left(new LoginInUseError())
     const passwordHash = await this.encrypterGateway.encryptPassword(password)
@@ -68,6 +78,7 @@ export class UserAuthSignUpUseCase {
         user: newUser,
       })
     } else {
+      console.log("332132121")
       const idNewUser = await this.userRepository.create({
         login,
         password: passwordHash,
@@ -96,11 +107,11 @@ export class UserAuthSignUpUseCase {
         storeProfileId: idNewProfile.value,
         email: login,
       })
-
+      console.log("pelo emor deu")
       await this.createGeolocation.execute(
         {
-          latitude: lat,
-          longitude: lng,
+          latitude: location.lat,
+          longitude: location.lng,
         },
         idNewProfile.value,
       )

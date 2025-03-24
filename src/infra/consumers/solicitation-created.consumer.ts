@@ -17,11 +17,11 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
       eachMessage: async ({ message }) => {
         const { topic, nearStores, solicitationId } = JSON.parse(message.value)
         nearStores.map(async (store) => {
-          const storeProfile = store.Profile
-          await this.emailQueue.add({ email: storeProfile.props.email })
+          const storeProfile = store.profile
+          await this.emailQueue.add({ email: storeProfile.email })
           await this.sendSolicitationCreatedToStore.add({
-            id: storeProfile._id,
-            name: storeProfile.props.name,
+            id: storeProfile.id,
+            name: storeProfile.name,
             topic,
             solicitationId,
           })

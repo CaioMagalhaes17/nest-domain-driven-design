@@ -82,6 +82,7 @@ import { FetchStoreProfileByUserIdUseCase } from "@/domain/portal/application/us
     CreateStoreContactsUseCase,
     CreateStoreProfileUseCase,
     FetchStoreProfileByUserIdUseCase,
+    FetchStoreProfileByIdUseCase,
   ],
   providers: [
     {
@@ -159,17 +160,20 @@ import { FetchStoreProfileByUserIdUseCase } from "@/domain/portal/application/us
         storeProfileRepository: IStoreProfileRepository,
         fetchGeoLocationUseCase: FetchGeolocationUseCase,
         fetchDistance: FetchStoreDistanceFromClientUseCase,
+        fetchStoreContactsUseCase: FetchStoreContactsUseCase,
       ) => {
         return new FetchStoreProfileByIdUseCase(
           storeProfileRepository,
           fetchGeoLocationUseCase,
           fetchDistance,
+          fetchStoreContactsUseCase,
         )
       },
       inject: [
         InfraStoreProfileRepository,
         FetchGeolocationUseCase,
         FetchStoreDistanceFromClientUseCase,
+        FetchStoreContactsUseCase,
       ],
     },
     {

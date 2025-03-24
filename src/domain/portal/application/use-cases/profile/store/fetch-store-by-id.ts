@@ -6,6 +6,7 @@ import { FetchGeolocationUseCase } from "../../geolocation/fetch-geolocation-use
 import { Geolocation } from "@/domain/portal/enterprise/geolocation/geolocation"
 import { GeolocationNotFound } from "../../../errors/geolocation/geolocation-not-found"
 import { FetchStoreDistanceFromClientUseCase } from "../../geolocation/fetch-store-distance-from-client"
+import { FetchStoreContactsUseCase } from "./contacts/fetch-store-contacts"
 
 type FetchStoreProfileResponse = Either<
   ProfileNotFound,
@@ -21,6 +22,7 @@ export class FetchStoreProfileByIdUseCase {
     private storeProfileRepository: IStoreProfileRepository,
     private fetchGeoLocationUseCase: FetchGeolocationUseCase,
     private fetchDistance: FetchStoreDistanceFromClientUseCase,
+    private fetchStoreContactsUseCase: FetchStoreContactsUseCase,
   ) {}
 
   async execute(
@@ -40,12 +42,13 @@ export class FetchStoreProfileByIdUseCase {
         storeGeoloation.value[0].radius,
         profile.id.toString(),
       )
-      console.log(distance)
+      const contacts = await this.fetchStoreContactsUseCase.execute(profile.id)
       const geoInfos = geoLocation.value[0]
       const retorno = {
         profile: profile,
         location: geoInfos,
         distance,
+        contacts,
       }
       return right(retorno)
     }

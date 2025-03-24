@@ -14,9 +14,11 @@ export class FetchStoreDistanceFromClientUseCase {
       longitude,
       radius,
     )
-
     const filtered = geolocations.map((item) => {
-      if (item.radius === 0 && storeProfileId === item.profileId) {
+      if (
+        (item.radius === 0 || !item.radius) &&
+        storeProfileId === item.profileId
+      ) {
         return item.distance
       }
     })

@@ -1,14 +1,14 @@
 import { Either, left, right } from "@/core/Either"
 import { IGeolocationRepository } from "../../repositories/geolocation/geolocation-repository"
 import { GeolocationNotFound } from "../../errors/geolocation/geolocation-not-found"
-import { FetchStoreProfileUseCase } from "../profile/store/fetch-store-profile"
+import { FetchStoreProfileByIdUseCase } from "../profile/store/fetch-store-by-id"
 
 type FetchStoresInsideClientRadiusResponse = Either<GeolocationNotFound, any>
 
 export class FetchStoresInsideClientRadiusUseCase {
   constructor(
     private geolocationRepository: IGeolocationRepository,
-    private fetchStoreUseCase: FetchStoreProfileUseCase,
+    private fetchStoreUseCase: FetchStoreProfileByIdUseCase,
   ) {}
 
   async execute(
@@ -26,18 +26,19 @@ export class FetchStoresInsideClientRadiusUseCase {
     if (stores.length > 0) {
       const filtered = stores.filter(
         (item: { profileId: string; radius: number }) =>
-          item.profileId !== clientProfileId && item.radius === 0,
+          item.profileId !== clientProfileId &&
+          (item.radius === 0 || !item.radius),
       )
 
       const transformedArray = await Promise.all(
         filtered.map(async (item) => {
-          const profile = await this.fetchStoreUseCase.execute(item.profileId)
+          const profile = await this.fetchStoreUseCase.execute(
+            item.profileId,
+            clientProfileId,
+          )
           if (profile.isRight()) {
-            return {
-              GeoLocation: item,
-              Profile: profile.value.profile,
-              contacts: profile.value.contacts,
-            }
+            console.log(profile.value.distance)
+            return profile.value
           }
         }),
       )
