@@ -10,6 +10,9 @@ COPY package*.json ./
 # Instale as dependências
 RUN npm install
 
+# Copie todos os arquivos da aplicação (incluindo o tsconfig.json)
+COPY . .
+
 # Exponha a porta da aplicação
 EXPOSE 3001
 
