@@ -13,6 +13,12 @@ export class StoreProfile extends Document {
   profileImg: string
 
   @Prop()
+  tags: string[]
+
+  @Prop()
+  workingTime: string
+
+  @Prop()
   rating: number
 
   @Prop({ required: true })

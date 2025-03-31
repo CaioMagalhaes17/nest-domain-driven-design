@@ -11,6 +11,8 @@ export type EditStoreProfilePayload = {
   description?: string
   telNum?: string
   email?: string
+  tags?: string[]
+  workingTime?: string
 }
 
 type EditStoreProfileReturn = Either<
