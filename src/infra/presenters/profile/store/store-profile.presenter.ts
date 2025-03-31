@@ -14,6 +14,8 @@ export class StoreProfilePresenter {
       profileImg: profile.profileImg,
       address: profile.address,
       rating: profile.rating,
+      tags: profile.tags,
+      workingTime: profile.workingTime,
       description: profile.description,
       subscriptionPlanId,
       location: {
