@@ -22,7 +22,7 @@ export class SendBudgetCreatedToStore {
     const message = `
     <div className="flex flex-col">
       <span>Defeito em ${topic}</span>
-      <span className="text-green flex flex-row">${price} - <span className="text-gray-500">${storeName}</span></span>
+      <span className="text-green flex flex-row">${price}</span>
     </div>
     `
     const response = await this.saveNotificationUseCase.execute({
@@ -36,6 +36,6 @@ export class SendBudgetCreatedToStore {
       profileId: clientProfileId,
       notificationBody: response,
     })
-    console.log("moshpit", clientProfileId)
+    console.log("caiu aqui?", clientProfileId)
   }
 }

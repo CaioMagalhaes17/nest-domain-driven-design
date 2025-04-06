@@ -45,7 +45,9 @@ export class WebsocketGateway {
     },
   ) {
     const socketId = this.users.get(profileId)
+    console.log("asndoisandaindasoind")
     if (socketId) {
+      console.log("bbbbb")
       this.server.to(socketId).emit("notification", {
         message: NotificationPresenter.toHttp(notificationBody),
       })
