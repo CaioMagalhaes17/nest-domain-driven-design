@@ -23,6 +23,7 @@ export class BudgetCreatedConsumer implements OnModuleInit {
           email,
           budgetId,
           storeProfileImg,
+          solicitationId,
         } = JSON.parse(message.value)
         await this.emailQueue.add({ email })
         await this.sendBudgetCreatedToStore.add({
@@ -32,6 +33,7 @@ export class BudgetCreatedConsumer implements OnModuleInit {
           storeName,
           budgetId,
           storeProfileImg,
+          solicitationId,
         })
       },
     })

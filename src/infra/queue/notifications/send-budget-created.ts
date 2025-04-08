@@ -18,6 +18,7 @@ export class SendBudgetCreatedToStore {
       price,
       budgetId,
       storeProfileImg,
+      solicitationId,
     } = job.data
     const message = `
     <div className="flex flex-col">
@@ -30,7 +31,7 @@ export class SendBudgetCreatedToStore {
       profileId: clientProfileId,
       senderName: storeName,
       type: "newBudget",
-      opts: { budgetId, storeProfileImg },
+      opts: { budgetId, storeProfileImg, solicitationId },
     })
     await this.websocketGateway.sendNotification({
       profileId: clientProfileId,

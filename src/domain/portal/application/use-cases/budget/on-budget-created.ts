@@ -12,6 +12,7 @@ export class OnBudgetCreatedUseCase {
     storeName,
     budgetId,
     storeProfileImg,
+    solicitationId,
   }: {
     clientProfileId: string
     topic: string
@@ -20,6 +21,7 @@ export class OnBudgetCreatedUseCase {
     storeName: string
     budgetId: string
     storeProfileImg: string
+    solicitationId: string
   }) {
     await this.messagesProducerGateway.produce("onBudgetCreated", [
       {
@@ -31,6 +33,7 @@ export class OnBudgetCreatedUseCase {
           storeName,
           budgetId,
           storeProfileImg,
+          solicitationId,
         }),
       },
     ])

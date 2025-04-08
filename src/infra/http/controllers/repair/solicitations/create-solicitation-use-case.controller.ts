@@ -20,13 +20,14 @@ export class CreateSolicitationUseCaseController {
   @UseGuards(JwtAuthGuard)
   @Post("/repair/solicitation")
   async handle(
-    @Req() req: { user: { profileId: string } },
+    @Req() req: { user: { profileId: string; id: string } },
     @Body() solicitationForm: SolicitationFormProps,
   ) {
     const response = await this.createSolicitationsUseCase.execute({
       status: OPEN_TO_BUDGETS_SOLICITATION_STATUS,
       profileId: req.user.profileId,
       solicitationForm,
+      userId: req.user.id,
     })
 
     if (response && response.isLeft()) {

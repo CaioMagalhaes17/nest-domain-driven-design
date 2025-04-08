@@ -11,18 +11,25 @@ export class SendSolicitationCreatedToStore {
   ) {}
   @Process()
   async handleNotification(job: Job) {
-    const { id, topic, name, solicitationId } = job.data
+    const { topic, solicitationId, timePreference, name, storeId } = job.data
+
+    const message = `
+    <div className="flex flex-col">
+      <span>Defeito em ${topic}</span>
+      <span className="text-green flex flex-row">${timePreference}</span>
+    </div>
+    `
     const response = await this.saveNotificationUseCase.execute({
-      message: "Defeito em " + topic,
-      profileId: id,
+      message: message,
+      profileId: storeId,
       senderName: name,
-      type: "newSolicitation",
+      type: "newBudget",
       opts: { solicitationId },
     })
     await this.websocketGateway.sendNotification({
-      profileId: id,
+      profileId: storeId,
       notificationBody: response,
     })
-    console.log("moshpit", id)
+    console.log("mandou notf new solicitation", storeId)
   }
 }

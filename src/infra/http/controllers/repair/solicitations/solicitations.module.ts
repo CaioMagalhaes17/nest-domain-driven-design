@@ -35,6 +35,8 @@ import { BudgetMongoModule } from "@/infra/databases/mongo/budget.module"
 import { DeleteFlaggedSolicitationsUseCase } from "@/domain/portal/application/use-cases/solicitations/delete-flagged-solicitations-use-case"
 import { DeleteFlaggedSolicitationsUseCaseController } from "./delete-flagged-solicitations.use-case.controller"
 import { CreateImagesToSolicitationUseCaseController } from "./create-images-to-solicitation-use-case.controller"
+import { FetchClientProfileUseCase } from "@/domain/portal/application/use-cases/profile/client/fetch-client-profile-use-case"
+import { ClientProfileModule } from "../../profile/client/client-profile.module"
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { CreateImagesToSolicitationUseCaseController } from "./create-images-to-
     GeolocationModule,
     ProfilesMongoModule,
     BudgetMongoModule,
+    ClientProfileModule,
   ],
   controllers: [
     DeleteFlaggedSolicitationsUseCaseController,
@@ -98,17 +101,20 @@ import { CreateImagesToSolicitationUseCaseController } from "./create-images-to-
         solicitationRepository: ISolicitationRepository,
         solicitationFormRepository: ISolicitationFormRepository,
         onSolicitationCreatedUseCase: OnSolicitationCreatedUseCase,
+        fetchClientProfileUseCase: FetchClientProfileUseCase,
       ) => {
         return new CreateSolicitationUseCase(
           solicitationRepository,
           solicitationFormRepository,
           onSolicitationCreatedUseCase,
+          fetchClientProfileUseCase,
         )
       },
       inject: [
         InfraSolicitationRepository,
         InfraSolicitationFormRepository,
         OnSolicitationCreatedUseCase,
+        FetchClientProfileUseCase,
       ],
     },
     {

@@ -15,15 +15,18 @@ export class SolicitationCreatedConsumer implements OnModuleInit {
   async onModuleInit() {
     await this.messagesConsumerGateway.consume("stores", "storesInside", {
       eachMessage: async ({ message }) => {
-        const { topic, nearStores, solicitationId } = JSON.parse(message.value)
+        const { topic, nearStores, solicitationId, timePreference, name } =
+          JSON.parse(message.value)
         nearStores.map(async (store) => {
-          const storeProfile = store.profile
+          console.log(store.profile._id, store.profile.props)
+          const storeProfile = store.profile.props
           await this.emailQueue.add({ email: storeProfile.email })
           await this.sendSolicitationCreatedToStore.add({
-            id: storeProfile.id,
-            name: storeProfile.name,
             topic,
             solicitationId,
+            timePreference,
+            name,
+            storeId: store.profile._id,
           })
         })
       },

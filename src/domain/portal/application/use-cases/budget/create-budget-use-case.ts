@@ -59,6 +59,7 @@ export class CreateBudgetUseCase {
       email: solicitation.clientProfile.email,
       storeName: storeProfile.name,
       budgetId: result.id,
+      solicitationId: createBudgetPayload.solicitationId,
       storeProfileImg: storeProfile.profileImg,
     })
     return right({ id: result.id })
